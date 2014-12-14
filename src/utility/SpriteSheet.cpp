@@ -8,7 +8,7 @@ SpriteSheet::SpriteSheet()
 
 SpriteSheet::~SpriteSheet()
 {
-
+    m_sprites.clear();
 }
 
 void SpriteSheet::AddSprite(const std::string &name, uint32_t x, uint32_t y, uint32_t w, uint32_t h)
@@ -19,9 +19,17 @@ void SpriteSheet::AddSprite(const std::string &name, uint32_t x, uint32_t y, uin
     sprite.w = w;
     sprite.h = h;
 
-    // TODO: (Pavel) Check Effective STL for a better way of doing this
+    SpriteMap::iterator lb = m_sprites.lower_bound(name);
 
-    m_sprites[name] = sprite;
+    // Efficient add or update (Effective STL - Item 24)
+    if(lb != m_sprites.end() && !(m_sprites.key_comp()(name, lb->first)))
+    {
+        lb->second = sprite;
+    }
+    else
+    {
+        m_sprites.insert(lb, SpriteMap::value_type(name, sprite));
+    }
 }
 
 

@@ -6,12 +6,14 @@
 class Vector2
 {
     public:
-        // constructors
+        // ctor
+        //
         Vector2();
         Vector2(real x, real y);
         Vector2(const Vector2 &rhs);
 
-        // functions
+        // methods
+        //
         void Normalize();
         void SetXY(real x, real y);
         void SetX(real x);
@@ -39,6 +41,7 @@ class Vector2
         real DotProduct(const Vector2 &rhs) const;
 
         // operators
+        //
         Vector2& operator=(const Vector2 &rhs);
         Vector2& operator+=(const Vector2 &rhs);
         Vector2& operator-=(const Vector2 &rhs);

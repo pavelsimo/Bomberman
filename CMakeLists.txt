@@ -68,15 +68,15 @@ endif()
 ADD_EXECUTABLE(
     ${PROJECT_NAME}
     src/main.cpp
-    src/Texture.cpp
-    src/SpriteSheet.cpp
-    src/SpriteSheetXMLParser.cxx
-    src/Drawing.cpp
-    src/BitmapFont.cpp
-    src/BitmapFontXMLParser.cxx
-    src/Vector2.cpp
-    src/MathUtilities.cpp
-    src/TileManager.cpp
+    src/utility/Texture.cpp
+    src/utility/SpriteSheet.cpp
+    src/utility/SpriteSheetXMLParser.cxx
+    src/utility/Drawing.cpp
+    src/utility/BitmapFont.cpp
+    src/utility/BitmapFontXMLParser.cxx
+    src/utility/Vector2.cpp
+    src/utility/MathUtilities.cpp
+    src/utility/TileManager.cpp
 )
 
 TARGET_LINK_LIBRARIES(

@@ -1,9 +1,9 @@
 #include <iostream>
-#include "LOpenGL.h"
-#include "LDevIL.h"
-#include "SpriteSheet.h"
-#include "TileManager.h"
-#include "Drawing.h"
+#include "utility/LOpenGL.h"
+#include "utility/LDevIL.h"
+#include "utility/SpriteSheet.h"
+#include "utility/TileManager.h"
+#include "utility/Drawing.h"
 
 // Constants
 //
@@ -31,6 +31,7 @@ TileManager *tileManager = nullptr;
 
 std::string curBmanSpriteStr = "Bman_F_f00.png";
 Sprite curBmanSprite;
+int bManSpeed = 10;
 
 int bX = 128, bY = 128;
 int bFS = 0, bBS = 0, bLS = 0, bRS = 0;
@@ -126,7 +127,9 @@ bool LoadingMedia()
     spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
-    tileManager = new TileManager(spriteSheet, 64, 64, 10, 10);
+
+    tileManager = new TileManager(spriteSheet, 64, 64);
+    tileManager->LoadTileMapFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt");
     tileManager->AddTile("Block_Background.png");
     tileManager->AddTile("Block_Solid.png");
     tileManager->AddTile("Block_Explodable.png");
@@ -172,25 +175,25 @@ void OnKeyDownEvent(unsigned char key, int x, int y)
     {
         case 'w':
         case 'W':
-            bY -= 5;
+            bY -= bManSpeed;
             curBmanSpriteStr = bmanBack[bBS];
             bBS = (bBS + 1) % 8;
             break;
         case 'a':
         case 'A':
-            bX -= 5;
+            bX -= bManSpeed;
             curBmanSpriteStr = bmanLSide[bLS];
             bLS = (bLS + 1) % 8;
             break;
         case 's':
         case 'S':
-            bY += 5;
+            bY += bManSpeed;
             curBmanSpriteStr = bmanFront[bFS];
             bFS = (bFS + 1) % 8;
             break;
         case 'd':
         case 'D':
-            bX += 5;
+            bX += bManSpeed;
             curBmanSpriteStr = bmanRSide[bRS];
             bRS = (bRS + 1) % 8;
             break;
