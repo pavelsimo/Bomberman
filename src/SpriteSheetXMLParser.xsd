@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="TextureAtlas">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="sprite"/>
+      </xs:sequence>
+      <xs:attribute name="height" use="required" type="xs:integer"/>
+      <xs:attribute name="imagePath" use="required" type="xs:NCName"/>
+      <xs:attribute name="width" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sprite">
+    <xs:complexType>
+      <xs:attribute name="h" use="required" type="xs:integer"/>
+      <xs:attribute name="n" use="required" type="xs:NCName"/>
+      <xs:attribute name="oH" type="xs:integer"/>
+      <xs:attribute name="oW" type="xs:integer"/>
+      <xs:attribute name="oX" type="xs:integer"/>
+      <xs:attribute name="oY" type="xs:integer"/>
+      <xs:attribute name="pX" use="required" type="xs:decimal"/>
+      <xs:attribute name="pY" use="required" type="xs:decimal"/>
+      <xs:attribute name="w" use="required" type="xs:integer"/>
+      <xs:attribute name="x" use="required" type="xs:integer"/>
+      <xs:attribute name="y" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
