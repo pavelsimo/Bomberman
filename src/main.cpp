@@ -4,6 +4,7 @@
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
 #include "utility/Drawing.h"
+#include "utility/SpriteAnimation.h"
 
 // Constants
 //
@@ -28,58 +29,16 @@ void Clean();
 
 SpriteSheet *spriteSheet = nullptr;
 TileManager *tileManager = nullptr;
+SpriteAnimation* curAnimation = nullptr;
 
-std::string curBmanSpriteStr = "Bman_F_f00.png";
-Sprite curBmanSprite;
+SpriteAnimation walkingAnimationFront;
+SpriteAnimation walkingAnimationBack;
+SpriteAnimation walkingAnimationLeft;
+SpriteAnimation walkingAnimationRight;
+
 int bManSpeed = 10;
-
 int bX = 128, bY = 128;
-int bFS = 0, bBS = 0, bLS = 0, bRS = 0;
-int NFS = 8, NBS = 8, NLS = 8, NRS = 8;
 
-std::string bmanFront[] = {
-    "Bman_F_f00.png",
-    "Bman_F_f01.png",
-    "Bman_F_f02.png",
-    "Bman_F_f03.png",
-    "Bman_F_f04.png",
-    "Bman_F_f05.png",
-    "Bman_F_f06.png",
-    "Bman_F_f07.png",
-};
-
-std::string bmanBack[] = {
-    "Bman_B_f00.png",
-    "Bman_B_f01.png",
-    "Bman_B_f02.png",
-    "Bman_B_f03.png",
-    "Bman_B_f04.png",
-    "Bman_B_f05.png",
-    "Bman_B_f06.png",
-    "Bman_B_f07.png"
-};
-
-std::string bmanLSide[] = {
-    "Bman_LS_f00.png",
-    "Bman_LS_f01.png",
-    "Bman_LS_f02.png",
-    "Bman_LS_f03.png",
-    "Bman_LS_f04.png",
-    "Bman_LS_f05.png",
-    "Bman_LS_f06.png",
-    "Bman_LS_f07.png"
-};
-
-std::string bmanRSide[] = {
-    "Bman_RS_f00.png",
-    "Bman_RS_f01.png",
-    "Bman_RS_f02.png",
-    "Bman_RS_f03.png",
-    "Bman_RS_f04.png",
-    "Bman_RS_f05.png",
-    "Bman_RS_f06.png",
-    "Bman_RS_f07.png"
-};
 
 bool InitializeGL()
 {
@@ -127,13 +86,58 @@ bool LoadingMedia()
     spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
-
     tileManager = new TileManager(spriteSheet, 64, 64);
-    tileManager->LoadTileMapFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt");
+    tileManager->LoadTileMapFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_001.txt");
     tileManager->AddTile("Block_Background.png");
     tileManager->AddTile("Block_Solid.png");
     tileManager->AddTile("Block_Explodable.png");
     tileManager->AddTile("Block_Portal.png");
+
+    walkingAnimationFront.SetSpriteSheet(spriteSheet);
+    walkingAnimationFront.SetPosition(bX, bY);
+    walkingAnimationFront.AddFrame("Bman_F_f00.png");
+    walkingAnimationFront.AddFrame("Bman_F_f01.png");
+    walkingAnimationFront.AddFrame("Bman_F_f02.png");
+    walkingAnimationFront.AddFrame("Bman_F_f03.png");
+    walkingAnimationFront.AddFrame("Bman_F_f04.png");
+    walkingAnimationFront.AddFrame("Bman_F_f05.png");
+    walkingAnimationFront.AddFrame("Bman_F_f06.png");
+    walkingAnimationFront.AddFrame("Bman_F_f07.png");
+
+    walkingAnimationBack.SetSpriteSheet(spriteSheet);
+    walkingAnimationBack.SetPosition(bX, bY);
+    walkingAnimationBack.AddFrame("Bman_B_f00.png");
+    walkingAnimationBack.AddFrame("Bman_B_f01.png");
+    walkingAnimationBack.AddFrame("Bman_B_f02.png");
+    walkingAnimationBack.AddFrame("Bman_B_f03.png");
+    walkingAnimationBack.AddFrame("Bman_B_f04.png");
+    walkingAnimationBack.AddFrame("Bman_B_f05.png");
+    walkingAnimationBack.AddFrame("Bman_B_f06.png");
+    walkingAnimationBack.AddFrame("Bman_B_f07.png");
+
+    walkingAnimationLeft.SetSpriteSheet(spriteSheet);
+    walkingAnimationLeft.SetPosition(bX, bY);
+    walkingAnimationLeft.AddFrame("Bman_LS_f00.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f01.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f02.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f03.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f04.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f05.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f06.png");
+    walkingAnimationLeft.AddFrame("Bman_LS_f07.png");
+
+    walkingAnimationRight.SetSpriteSheet(spriteSheet);
+    walkingAnimationRight.SetPosition(bX, bY);
+    walkingAnimationRight.AddFrame("Bman_RS_f00.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f01.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f02.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f03.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f04.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f05.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f06.png");
+    walkingAnimationRight.AddFrame("Bman_RS_f07.png");
+
+    curAnimation = &walkingAnimationFront;
 
     return true;
 }
@@ -143,6 +147,9 @@ void Render()
     glClear(GL_COLOR_BUFFER_BIT);
 
     tileManager->Render();
+    curAnimation->Render();
+
+    /*
     curBmanSprite = spriteSheet->GetSprite(curBmanSpriteStr);
 
     Rect rect2;
@@ -159,7 +166,7 @@ void Render()
             spriteSheet->GetTexHeight(),
             &rect2
     );
-
+    */
     glutSwapBuffers();
 }
 
@@ -176,26 +183,30 @@ void OnKeyDownEvent(unsigned char key, int x, int y)
         case 'w':
         case 'W':
             bY -= bManSpeed;
-            curBmanSpriteStr = bmanBack[bBS];
-            bBS = (bBS + 1) % 8;
+            curAnimation = &walkingAnimationBack;
+            curAnimation->SetPosition(bX, bY);
+            curAnimation->Next();
             break;
         case 'a':
         case 'A':
             bX -= bManSpeed;
-            curBmanSpriteStr = bmanLSide[bLS];
-            bLS = (bLS + 1) % 8;
+            curAnimation = &walkingAnimationLeft;
+            curAnimation->SetPosition(bX, bY);
+            curAnimation->Next();
             break;
         case 's':
         case 'S':
             bY += bManSpeed;
-            curBmanSpriteStr = bmanFront[bFS];
-            bFS = (bFS + 1) % 8;
+            curAnimation = &walkingAnimationFront;
+            curAnimation->SetPosition(bX, bY);
+            curAnimation->Next();
             break;
         case 'd':
         case 'D':
             bX += bManSpeed;
-            curBmanSpriteStr = bmanRSide[bRS];
-            bRS = (bRS + 1) % 8;
+            curAnimation = &walkingAnimationRight;
+            curAnimation->SetPosition(bX, bY);
+            curAnimation->Next();
             break;
     }
 

@@ -10,21 +10,19 @@ TileManager::TileManager(SpriteSheet *spriteSheet, uint32_t tileWidth, uint32_t 
 
 }
 
-
-
 TileManager::~TileManager()
 {
     m_tiles.clear();
     m_tileMap.clear();
 }
 
-void TileManager::AddTile(const std::string &spriteName)
+void TileManager::AddTile(const std::string& spriteName)
 {
     m_tiles.push_back(spriteName);
 }
 
 
-bool TileManager::LoadTileMapFromFile(const std::string filename)
+bool TileManager::LoadTileMapFromFile(const std::string& filename)
 {
     std::ifstream in(filename);
     std::string line = "";
@@ -44,9 +42,12 @@ void TileManager::Render()
 {
     assert(!m_tileMap.empty());
 
-    for(int i = 0; i < m_tileMap[0].size(); i++)
+    uint32_t m = m_tileMap[0].size();
+    uint32_t n = m_tileMap.size();
+
+    for(int i = 0; i < m; i++)
     {
-        for(int j = 0; j < m_tileMap.size(); j++)
+        for(int j = 0; j < n; j++)
         {
             assert(m_tileMap[j][i] < m_tiles.size());
 

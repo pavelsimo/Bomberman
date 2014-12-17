@@ -37,7 +37,7 @@ Sprite SpriteSheet::GetSprite(const std::string &name)
 {
     if(!m_sprites.empty())
     {
-        std::map<std::string , Sprite>::iterator it;
+        SpriteMap::iterator it;
         it = m_sprites.find(name);
         if(it != m_sprites.end())
         {
@@ -83,4 +83,10 @@ bool SpriteSheet::LoadSpritesFromXML(const std::string &filename)
         return false;
     }
     return true;
+}
+
+
+std::size_t SpriteSheet::Size() const
+{
+    return m_sprites.size();
 }

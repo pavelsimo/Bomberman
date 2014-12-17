@@ -77,6 +77,7 @@ ADD_EXECUTABLE(
     src/utility/Vector2.cpp
     src/utility/MathUtilities.cpp
     src/utility/TileManager.cpp
+    src/utility/SpriteAnimation.cpp
 )
 
 TARGET_LINK_LIBRARIES(

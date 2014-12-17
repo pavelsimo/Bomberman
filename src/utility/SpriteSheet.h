@@ -24,6 +24,7 @@ class SpriteSheet : public Texture
         void AddSprite(const std::string& name, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
         Sprite GetSprite(const std::string &name);
         bool LoadSpritesFromXML(const std::string &filename);
+        std::size_t Size() const;
 
     private:
         SpriteMap m_sprites;
