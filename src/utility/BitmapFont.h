@@ -55,6 +55,7 @@ class BitmapFont
 
         void SetStyle(const std::string& style);
         const std::string GetStyle() const;
+
     private:
         int m_size;
         int m_height;

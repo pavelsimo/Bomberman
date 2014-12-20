@@ -21,7 +21,7 @@ void SpriteSheet::AddSprite(const std::string &name, uint32_t x, uint32_t y, uin
 
     SpriteMap::iterator lb = m_sprites.lower_bound(name);
 
-    // Efficient add or update (Effective STL - Item 24)
+    // efficient add or update (Effective STL - Item 24)
     if(lb != m_sprites.end() && !(m_sprites.key_comp()(name, lb->first)))
     {
         lb->second = sprite;
@@ -58,7 +58,7 @@ bool SpriteSheet::LoadSpritesFromXML(const std::string &filename)
 {
     try
     {
-        std::auto_ptr<TextureAtlas> textureAtlas (TextureAtlas_(filename,
+        std::unique_ptr<TextureAtlas> textureAtlas (TextureAtlas_(filename,
                 xml_schema::flags::dont_validate));
 
         std::string texAtlasImgPath = static_cast<std::string>(textureAtlas->imagePath());

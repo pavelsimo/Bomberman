@@ -1,10 +1,6 @@
 #include <iostream>
-#include "utility/LOpenGL.h"
-#include "utility/LDevIL.h"
-#include "utility/SpriteSheet.h"
-#include "utility/TileManager.h"
-#include "utility/Drawing.h"
-#include "utility/SpriteAnimation.h"
+#include "World.h"
+
 
 // Constants
 //
@@ -26,26 +22,14 @@ void OnMouseClick(int button, int state, int x, int y);
 void GameLoop(int value);
 void Clean();
 
-
-SpriteSheet *spriteSheet = nullptr;
-TileManager *tileManager = nullptr;
-SpriteAnimation* curAnimation = nullptr;
-
-SpriteAnimation walkingAnimationFront;
-SpriteAnimation walkingAnimationBack;
-SpriteAnimation walkingAnimationLeft;
-SpriteAnimation walkingAnimationRight;
-
-int bManSpeed = 10;
-int bX = 128, bY = 128;
-
+World* g_world = nullptr;
 
 bool InitializeGL()
 {
-    glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0.f, 0.f, g_world->GetWidth(), g_world->GetHeight());
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1.0, 1.0);
+    glOrtho(g_world->GetLeft(), g_world->GetRight(), g_world->GetBottom(), g_world->GetTop(), -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glPushMatrix();
@@ -82,63 +66,7 @@ bool InitializeGL()
 
 bool LoadingMedia()
 {
-    spriteSheet = new SpriteSheet();
-    spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
-    spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
-
-    tileManager = new TileManager(spriteSheet, 64, 64);
-    tileManager->LoadTileMapFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_001.txt");
-    tileManager->AddTile("Block_Background.png");
-    tileManager->AddTile("Block_Solid.png");
-    tileManager->AddTile("Block_Explodable.png");
-    tileManager->AddTile("Block_Portal.png");
-
-    walkingAnimationFront.SetSpriteSheet(spriteSheet);
-    walkingAnimationFront.SetPosition(bX, bY);
-    walkingAnimationFront.AddFrame("Bman_F_f00.png");
-    walkingAnimationFront.AddFrame("Bman_F_f01.png");
-    walkingAnimationFront.AddFrame("Bman_F_f02.png");
-    walkingAnimationFront.AddFrame("Bman_F_f03.png");
-    walkingAnimationFront.AddFrame("Bman_F_f04.png");
-    walkingAnimationFront.AddFrame("Bman_F_f05.png");
-    walkingAnimationFront.AddFrame("Bman_F_f06.png");
-    walkingAnimationFront.AddFrame("Bman_F_f07.png");
-
-    walkingAnimationBack.SetSpriteSheet(spriteSheet);
-    walkingAnimationBack.SetPosition(bX, bY);
-    walkingAnimationBack.AddFrame("Bman_B_f00.png");
-    walkingAnimationBack.AddFrame("Bman_B_f01.png");
-    walkingAnimationBack.AddFrame("Bman_B_f02.png");
-    walkingAnimationBack.AddFrame("Bman_B_f03.png");
-    walkingAnimationBack.AddFrame("Bman_B_f04.png");
-    walkingAnimationBack.AddFrame("Bman_B_f05.png");
-    walkingAnimationBack.AddFrame("Bman_B_f06.png");
-    walkingAnimationBack.AddFrame("Bman_B_f07.png");
-
-    walkingAnimationLeft.SetSpriteSheet(spriteSheet);
-    walkingAnimationLeft.SetPosition(bX, bY);
-    walkingAnimationLeft.AddFrame("Bman_LS_f00.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f01.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f02.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f03.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f04.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f05.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f06.png");
-    walkingAnimationLeft.AddFrame("Bman_LS_f07.png");
-
-    walkingAnimationRight.SetSpriteSheet(spriteSheet);
-    walkingAnimationRight.SetPosition(bX, bY);
-    walkingAnimationRight.AddFrame("Bman_RS_f00.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f01.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f02.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f03.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f04.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f05.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f06.png");
-    walkingAnimationRight.AddFrame("Bman_RS_f07.png");
-
-    curAnimation = &walkingAnimationFront;
-
+    g_world->OnSetup();
     return true;
 }
 
@@ -146,75 +74,24 @@ void Render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    tileManager->Render();
-    curAnimation->Render();
+    g_world->OnRender();
 
-    /*
-    curBmanSprite = spriteSheet->GetSprite(curBmanSpriteStr);
-
-    Rect rect2;
-    rect2.x = curBmanSprite.x;
-    rect2.y = curBmanSprite.y;
-    rect2.w = curBmanSprite.w;
-    rect2.h = curBmanSprite.h;
-
-    DrawTexture(bX, bY,
-            spriteSheet->GetTexId(),
-            spriteSheet->GetImgWidth(),
-            spriteSheet->GetImgHeight(),
-            spriteSheet->GetTexWidth(),
-            spriteSheet->GetTexHeight(),
-            &rect2
-    );
-    */
     glutSwapBuffers();
 }
 
 void Update()
 {
-
+    g_world->OnUpdate();
 }
 
 void OnKeyDownEvent(unsigned char key, int x, int y)
 {
-
-    switch(key)
-    {
-        case 'w':
-        case 'W':
-            bY -= bManSpeed;
-            curAnimation = &walkingAnimationBack;
-            curAnimation->SetPosition(bX, bY);
-            curAnimation->Next();
-            break;
-        case 'a':
-        case 'A':
-            bX -= bManSpeed;
-            curAnimation = &walkingAnimationLeft;
-            curAnimation->SetPosition(bX, bY);
-            curAnimation->Next();
-            break;
-        case 's':
-        case 'S':
-            bY += bManSpeed;
-            curAnimation = &walkingAnimationFront;
-            curAnimation->SetPosition(bX, bY);
-            curAnimation->Next();
-            break;
-        case 'd':
-        case 'D':
-            bX += bManSpeed;
-            curAnimation = &walkingAnimationRight;
-            curAnimation->SetPosition(bX, bY);
-            curAnimation->Next();
-            break;
-    }
-
+    g_world->OnKeyDown(key);
 }
 
 void OnKeyUpEvent(unsigned char key, int x, int y)
 {
-
+    g_world->OnKeyUp(key);
 }
 
 void OnMouseMoveEvent(int x, int y)
@@ -236,16 +113,10 @@ void GameLoop(int value)
 
 void Clean()
 {
-    if(spriteSheet != nullptr)
+    if(g_world != nullptr)
     {
-        delete spriteSheet;
-        spriteSheet = nullptr;
-    }
-
-    if(tileManager != nullptr)
-    {
-        delete tileManager;
-        tileManager = nullptr;
+        delete g_world;
+        g_world = nullptr;
     }
 }
 
@@ -255,6 +126,8 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_DOUBLE);
     glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     glutCreateWindow(SCREEN_TITLE);
+
+    g_world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     if(!InitializeGL())
     {

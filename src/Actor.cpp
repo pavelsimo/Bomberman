@@ -5,6 +5,12 @@ Actor::Actor()
 
 }
 
+Actor::Actor(float x, float y)
+: m_position(x, y)
+{
+
+}
+
 Actor::~Actor()
 {
 
@@ -17,35 +23,45 @@ void Actor::Render()
 
 void Actor::OnRender()
 {
-
+    // overwrite
 }
 
-void Actor::Update(World & world)
+void Actor::Update(World& world)
 {
-    OnUpdate();
+    OnUpdate(world);
+
+    //
+    // updating axis aligned bounding box
+    //
+    m_aabb2.Empty();
+
+    for (auto it = m_geometry.cbegin(); it != m_geometry.cend(); ++it)
+    {
+        m_aabb2.Add(*it);
+    }
 }
 
-void Actor::OnUpdate(World & world)
+void Actor::OnUpdate(World& world)
 {
-
+    // overwrite
 }
 
-void Actor::MoveForward()
+void Actor::MoveUp()
 {
-    OnMoveForward();
+    OnMoveUp();
 }
 
-void Actor::OnMoveForward()
+void Actor::OnMoveUp()
 {
-
+    // overwrite
 }
 
-void Actor::MoveBackward()
+void Actor::MoveDown()
 {
-    OnMoveBackward();
+    OnMoveDown();
 }
 
-void Actor::OnMoveBackward()
+void Actor::OnMoveDown()
 {
 
 }
@@ -57,8 +73,9 @@ void Actor::MoveLeft()
 
 void Actor::OnMoveLeft()
 {
-
+    // overwrite
 }
+
 
 void Actor::MoveRight()
 {
@@ -67,7 +84,7 @@ void Actor::MoveRight()
 
 void Actor::OnMoveRight()
 {
-
+    // overwrite
 }
 
 bool Actor::IsColliding(const Actor &actor)
@@ -77,36 +94,36 @@ bool Actor::IsColliding(const Actor &actor)
 
 void Actor::SetPosition(const Vector2 &position)
 {
-
+    m_position = position;
 }
 
 void Actor::SetVelocity(const Vector2 &velocity)
 {
-
+    m_velocity = velocity;
 }
 
 void Actor::SetDirection(const Vector2 &direction)
 {
-
+    m_direction = direction;
 }
 
 Vector2 Actor::GetPosition() const
 {
-    return Vector2();
+    return m_position;
 }
 
 Vector2 Actor::GetVelocity() const
 {
-    return Vector2();
+    return m_velocity;
 }
 
 Vector2 Actor::GetDirection() const
 {
-    return Vector2();
+    return m_direction;
 }
 
 AABB2 Actor::GetAABB2() const
 {
-    return AABB2();
+    return m_aabb2;
 }
 

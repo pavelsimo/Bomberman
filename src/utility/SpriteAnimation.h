@@ -7,8 +7,8 @@
 
 typedef std::vector<std::string> FrameList;
 
-class SpriteAnimation {
-
+class SpriteAnimation
+{
     public:
         // ctor & dtor
         //
@@ -34,12 +34,13 @@ class SpriteAnimation {
 
         // Iterators
         //
-        bool Next();
-        bool Previous();
+        bool NextFrame();
+        bool PrevFrame();
 
-        // Display
+        // Render
         //
         void Render();
+
     private:
         uint32_t m_curFrame;
         FrameList m_frames;

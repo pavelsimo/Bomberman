@@ -42,14 +42,14 @@ void SpriteAnimation::SetPosition(float x, float y)
     m_position = Vector2(x, y);
 }
 
-bool SpriteAnimation::Next()
+bool SpriteAnimation::NextFrame()
 {
     int nxtFrame = (m_curFrame + 1) % Size();
     m_curFrame = nxtFrame;
     return true;
 }
 
-bool SpriteAnimation::Previous()
+bool SpriteAnimation::PrevFrame()
 {
     int nxtFrame = (Size() + m_curFrame - 1) % Size();
     m_curFrame = nxtFrame;
