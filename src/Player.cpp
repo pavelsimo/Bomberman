@@ -73,9 +73,7 @@ void Player::OnMoveUp()
     m_direction.x = 0;
     m_direction.y = -1;
     OnMove();
-    m_curAnimation = &m_walkingAnimationUp;
-    m_curAnimation->SetPosition(m_position.x, m_position.y);
-    m_curAnimation->NextFrame();
+    NextAnimation(m_walkingUpAnimation);
 }
 
 void Player::OnMoveDown()
@@ -83,9 +81,7 @@ void Player::OnMoveDown()
     m_direction.x = 0;
     m_direction.y = 1;
     OnMove();
-    m_curAnimation = &m_walkingAnimationDown;
-    m_curAnimation->SetPosition(m_position.x, m_position.y);
-    m_curAnimation->NextFrame();
+    NextAnimation(m_walkingDownAnimation);
 }
 
 void Player::OnMoveLeft()
@@ -93,9 +89,7 @@ void Player::OnMoveLeft()
     m_direction.x = -1;
     m_direction.y = 0;
     OnMove();
-    m_curAnimation = &m_walkingAnimationLeft;
-    m_curAnimation->SetPosition(m_position.x, m_position.y);
-    m_curAnimation->NextFrame();
+    NextAnimation(m_walkingLeftAnimation);
 }
 
 void Player::OnMoveRight()
@@ -103,18 +97,16 @@ void Player::OnMoveRight()
     m_direction.x = 1;
     m_direction.y = 0;
     OnMove();
-    m_curAnimation = &m_walkingAnimationRight;
-    m_curAnimation->SetPosition(m_position.x, m_position.y);
-    m_curAnimation->NextFrame();
+    NextAnimation(m_walkingRightAnimation);
 }
 
 void Player::SetSpriteSheet(SpriteSheet *spriteSheet)
 {
     m_spriteSheet = spriteSheet;
-    m_walkingAnimationDown.SetSpriteSheet(spriteSheet);
-    m_walkingAnimationUp.SetSpriteSheet(spriteSheet);
-    m_walkingAnimationLeft.SetSpriteSheet(spriteSheet);
-    m_walkingAnimationRight.SetSpriteSheet(spriteSheet);
+    m_walkingDownAnimation.SetSpriteSheet(spriteSheet);
+    m_walkingUpAnimation.SetSpriteSheet(spriteSheet);
+    m_walkingLeftAnimation.SetSpriteSheet(spriteSheet);
+    m_walkingRightAnimation.SetSpriteSheet(spriteSheet);
 }
 
 void Player::SetState(PlayeState state)
@@ -143,45 +135,53 @@ void Player::InitializeGeometry()
 
 void Player::InitializeAnimation()
 {
-    m_walkingAnimationDown.SetPosition(m_position.x, m_position.y);
-    m_walkingAnimationDown.AddFrame("Bman_F_f00.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f01.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f02.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f03.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f04.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f05.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f06.png");
-    m_walkingAnimationDown.AddFrame("Bman_F_f07.png");
+    m_walkingDownAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingDownAnimation.AddFrame("Bman_F_f00.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f01.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f02.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f03.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f04.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f05.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f06.png");
+    m_walkingDownAnimation.AddFrame("Bman_F_f07.png");
 
-    m_walkingAnimationUp.SetPosition(m_position.x, m_position.y);
-    m_walkingAnimationUp.AddFrame("Bman_B_f00.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f01.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f02.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f03.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f04.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f05.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f06.png");
-    m_walkingAnimationUp.AddFrame("Bman_B_f07.png");
+    m_walkingUpAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingUpAnimation.AddFrame("Bman_B_f00.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f01.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f02.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f03.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f04.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f05.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f06.png");
+    m_walkingUpAnimation.AddFrame("Bman_B_f07.png");
 
-    m_walkingAnimationLeft.SetPosition(m_position.x, m_position.y);
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f00.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f01.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f02.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f03.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f04.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f05.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f06.png");
-    m_walkingAnimationLeft.AddFrame("Bman_LS_f07.png");
+    m_walkingLeftAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f00.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f01.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f02.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f03.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f04.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f05.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f06.png");
+    m_walkingLeftAnimation.AddFrame("Bman_LS_f07.png");
 
-    m_walkingAnimationRight.SetPosition(m_position.x, m_position.y);
-    m_walkingAnimationRight.AddFrame("Bman_RS_f00.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f01.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f02.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f03.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f04.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f05.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f06.png");
-    m_walkingAnimationRight.AddFrame("Bman_RS_f07.png");
+    m_walkingRightAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingRightAnimation.AddFrame("Bman_RS_f00.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f01.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f02.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f03.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f04.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f05.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f06.png");
+    m_walkingRightAnimation.AddFrame("Bman_RS_f07.png");
 
-    m_curAnimation = &m_walkingAnimationDown;
+    m_curAnimation = &m_walkingDownAnimation;
+}
+
+
+void Player::NextAnimation(SpriteAnimation &animation)
+{
+    m_curAnimation = &animation;
+    m_curAnimation->SetPosition(m_position.x, m_position.y);
+    m_curAnimation->NextFrame();
 }

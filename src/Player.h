@@ -49,16 +49,17 @@ class Player : public Actor
 
         // sprite animations
         //
-        SpriteAnimation m_walkingAnimationDown;
-        SpriteAnimation m_walkingAnimationUp;
-        SpriteAnimation m_walkingAnimationLeft;
-        SpriteAnimation m_walkingAnimationRight;
+        SpriteAnimation m_walkingDownAnimation;
+        SpriteAnimation m_walkingUpAnimation;
+        SpriteAnimation m_walkingLeftAnimation;
+        SpriteAnimation m_walkingRightAnimation;
 
         // helpers
         //
-        void OnMove();
         void InitializeGeometry();
         void InitializeAnimation();
+        void OnMove();
+        void NextAnimation(SpriteAnimation &animation);
 };
 
 #endif //__PLAYER_H_
