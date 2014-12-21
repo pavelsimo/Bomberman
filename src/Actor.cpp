@@ -1,5 +1,7 @@
 #include "Actor.h"
 
+#include <iostream>
+
 Actor::Actor()
 {
 
@@ -37,8 +39,14 @@ void Actor::Update(World& world)
 
     for (auto it = m_geometry.cbegin(); it != m_geometry.cend(); ++it)
     {
-        m_aabb2.Add(*it);
+        Vector2 point = Vector2(it->x + m_position.x, it->y + m_position.y);
+        m_aabb2.Add(point);
     }
+
+    /*
+    std::cout << "(" << m_aabb2.min.x << "," << m_aabb2.min.y << ") (" <<
+            m_aabb2.max.x << "," << m_aabb2.max.y << ")" << std::endl;
+    */
 }
 
 void Actor::OnUpdate(World& world)

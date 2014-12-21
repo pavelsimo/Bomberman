@@ -79,9 +79,11 @@ ADD_EXECUTABLE(
     src/utility/TileManager.cpp
     src/utility/SpriteAnimation.cpp
     src/utility/AABB2.cpp
+    src/utility/TileMap.cpp
     src/Actor.cpp
     src/Player.cpp
     src/World.cpp
+    src/Block.cpp
 )
 
 TARGET_LINK_LIBRARIES(

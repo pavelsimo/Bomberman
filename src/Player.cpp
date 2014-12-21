@@ -100,7 +100,7 @@ void Player::OnMoveRight()
     NextAnimation(m_walkingRightAnimation);
 }
 
-void Player::SetSpriteSheet(SpriteSheet *spriteSheet)
+void Player::SetSpriteSheet(SpriteSheet* spriteSheet)
 {
     m_spriteSheet = spriteSheet;
     m_walkingDownAnimation.SetSpriteSheet(spriteSheet);
@@ -179,7 +179,7 @@ void Player::InitializeAnimation()
 }
 
 
-void Player::NextAnimation(SpriteAnimation &animation)
+void Player::NextAnimation(SpriteAnimation& animation)
 {
     m_curAnimation = &animation;
     m_curAnimation->SetPosition(m_position.x, m_position.y);

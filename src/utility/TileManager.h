@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cassert>
+
 #include "Drawing.h"
 #include "SpriteSheet.h"
 
