@@ -19,7 +19,7 @@ class SpriteAnimation
 
         // Frames
         //
-        void AddFrame(std::string spriteName);
+        void AddFrame(const std::string& spriteName);
 
         // Sprite sheet
         //

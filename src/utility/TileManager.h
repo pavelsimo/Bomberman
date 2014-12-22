@@ -4,11 +4,11 @@
 #include <vector>
 #include <cassert>
 
+#include "TileMap.h"
 #include "Drawing.h"
 #include "SpriteSheet.h"
 
-typedef std::vector<std::vector<uint32_t> > TileMap;
-typedef std::vector<std::string> TileList;
+typedef std::vector<std::string> SpriteList;
 
 class TileManager
 {
@@ -21,14 +21,15 @@ class TileManager
 
         // methods
         //
-        void AddTile(const std::string &spriteName);
-        bool LoadTileMapFromFile(const std::string &filename);
+        void AddSprite(const std::string &spriteName);
+        void SetTileMap(TileMap *tileMap);
+        TileMap* GetTileMap();
         void Render();
 
     private:
-        TileList m_tiles;
-        TileMap m_tileMap;
         SpriteSheet* m_spriteSheet;
+        SpriteList m_sprites;
+        TileMap* m_tileMap;
         uint32_t m_tileWidth;
         uint32_t m_tileHeight;
 };

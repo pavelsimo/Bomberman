@@ -12,7 +12,7 @@ SpriteAnimation::~SpriteAnimation()
 
 }
 
-void SpriteAnimation::AddFrame(std::string spriteName)
+void SpriteAnimation::AddFrame(const std::string& spriteName)
 {
     m_frames.push_back(spriteName);
 }

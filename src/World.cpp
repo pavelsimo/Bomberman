@@ -2,12 +2,15 @@
 
 const int TILE_WIDTH = 64;
 const int TILE_HEIGHT = 64;
+const int TILE_NROWS = 10;
+const int TILE_NCOLS = 10;
 
 World::World(float width, float height)
 : m_width(width),
   m_height(height),
   m_player(nullptr),
-  m_spriteSheet(nullptr)
+  m_spriteSheet(nullptr),
+  m_tileMap(nullptr)
 {
 
 }
@@ -25,10 +28,16 @@ World::~World() {
         m_tileManager = nullptr;
     }
 
-    if (m_spriteSheet != nullptr)
+    if(m_spriteSheet != nullptr)
     {
         delete m_spriteSheet;
         m_spriteSheet = nullptr;
+    }
+
+    if(m_tileMap != nullptr)
+    {
+        delete m_tileMap;
+        m_tileMap = nullptr;
     }
 }
 
@@ -38,12 +47,17 @@ void World::OnSetup()
     m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
+    m_tileMap = new TileMap();
+    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
+            TILE_NROWS, TILE_NCOLS);
+
     m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
-    m_tileManager->LoadTileMapFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt");
-    m_tileManager->AddTile("Block_Background.png");
-    m_tileManager->AddTile("Block_Solid.png");
-    m_tileManager->AddTile("Block_Explodable.png");
-    m_tileManager->AddTile("Block_Portal.png");
+    m_tileManager->SetTileMap(m_tileMap);
+
+    m_tileManager->AddSprite("Block_Background.png");
+    m_tileManager->AddSprite("Block_Solid.png");
+    m_tileManager->AddSprite("Block_Explodable.png");
+    m_tileManager->AddSprite("Block_Portal.png");
 
     m_player = new Player(128, 128);
     m_player->SetSpriteSheet(m_spriteSheet);

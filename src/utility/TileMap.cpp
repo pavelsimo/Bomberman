@@ -1,11 +1,15 @@
+#include <iostream>
 #include <cassert>
 #include <fstream>
 #include <cstdint>
+#include <stdint-gcc.h>
 
 #include "TileMap.h"
 
 TileMap::TileMap()
-: m_tiles(nullptr)
+: m_tiles(nullptr),
+  m_rows(0),
+  m_cols(0)
 {
 
 }
@@ -17,16 +21,15 @@ TileMap::~TileMap()
 
 bool TileMap::LoadFromFile(const std::string &filename, uint32_t rows, uint32_t cols)
 {
-    //
-    // if allocated, clean the previous tile map
-    //
     Clean();
 
-    //
-    // check invariants
-    //
     assert(m_tiles == nullptr);
-    assert(rows * cols <= MAX_TILES);
+
+    if(rows * cols >= MAX_TILES)
+    {
+        std::cerr << "ERROR: The tile number exceed the maximum allowed." << '\n';
+        return false;
+    }
 
     //
     // allocating tiles memory
@@ -58,7 +61,7 @@ bool TileMap::LoadFromFile(const std::string &filename, uint32_t rows, uint32_t 
     return true;
 }
 
-bool TileMap::LoadFromBuffer(uint8_t* buffer, uint32_t rows, uint32_t cols)
+bool TileMap::LoadFromBuffer(uint8_t* tiles, uint32_t rows, uint32_t cols)
 {
     return false;
 }
@@ -70,6 +73,11 @@ void TileMap::Clean()
         delete[] m_tiles;
         m_tiles = nullptr;
     }
+}
+
+bool TileMap::IsEmpty() const
+{
+    return m_rows == 0 && m_cols == 0;
 }
 
 uint8_t* TileMap::GetTiles()
@@ -90,4 +98,21 @@ uint32_t TileMap::GetColsCount() const
 uint32_t TileMap::GetTilesCount() const
 {
     return m_rows * m_cols;
+}
+
+uint8_t TileMap::GetTile(uint32_t row, uint32_t col)
+{
+    assert(IsTileOnBounds(row, col));
+    return m_tiles[row * m_cols + col];
+}
+
+void TileMap::SetTile(uint32_t row, uint32_t col, uint8_t tile)
+{
+    assert(IsTileOnBounds(row, col));
+    m_tiles[row * m_cols + col] = tile;
+}
+
+bool TileMap::IsTileOnBounds(uint32_t row, uint32_t col) const
+{
+    return row * m_cols + col < GetTilesCount();
 }

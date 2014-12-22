@@ -1,9 +1,10 @@
+#include <iostream>
 #include <fstream>
-
 #include "TileManager.h"
 
 TileManager::TileManager(SpriteSheet *spriteSheet, uint32_t tileWidth, uint32_t tileHeight
 ) : m_spriteSheet(spriteSheet),
+    m_tileMap(nullptr),
     m_tileWidth(tileWidth),
     m_tileHeight(tileHeight)
 {
@@ -12,51 +13,45 @@ TileManager::TileManager(SpriteSheet *spriteSheet, uint32_t tileWidth, uint32_t 
 
 TileManager::~TileManager()
 {
-    m_tiles.clear();
-    m_tileMap.clear();
+    m_sprites.clear();
 }
 
-void TileManager::AddTile(const std::string& spriteName)
+void TileManager::AddSprite(const std::string &spriteName)
 {
-    m_tiles.push_back(spriteName);
-}
-
-
-bool TileManager::LoadTileMapFromFile(const std::string& filename)
-{
-    std::ifstream in(filename);
-    std::string line = "";
-    while(std::getline(in, line))
-    {
-        m_tileMap.push_back(std::vector<uint32_t>());
-        int last = m_tileMap.size() - 1;
-        for(int i = 0; i < line.size(); ++i)
-        {
-            m_tileMap[last].push_back(line[i] - '0');
-        }
-    }
-    return true;
+    m_sprites.push_back(spriteName);
 }
 
 void TileManager::Render()
 {
-    assert(!m_tileMap.empty());
-
-    uint32_t m = m_tileMap[0].size();
-    uint32_t n = m_tileMap.size();
-
-    for(int i = 0; i < m; i++)
+    if(m_tileMap == nullptr)
     {
-        for(int j = 0; j < n; j++)
-        {
-            assert(m_tileMap[j][i] < m_tiles.size());
+        std::cerr << "ERROR: Unassigned TileMap. Try to set the TileMap before call the Render() function." << '\n';
+        return;
+    }
 
-            Sprite sprite = m_spriteSheet->GetSprite(m_tiles[m_tileMap[j][i]]);
+    if(m_tileMap->IsEmpty())
+    {
+        std::cerr << "ERROR: Empty TileMap." << '\n';
+        return;
+    }
+
+    uint32_t m = m_tileMap->GetColsCount();
+    uint32_t n = m_tileMap->GetRowsCount();
+    uint8_t* tiles = m_tileMap->GetTiles();
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            uint8_t curTile = tiles[i * n + j];
+            assert(curTile < m_sprites.size());
+
+            Sprite sprite = m_spriteSheet->GetSprite(m_sprites[curTile]);
             Rect rect(sprite.x, sprite.y, sprite.w, sprite.h);
 
             DrawTexture(
-                i * m_tileWidth,
-                j * m_tileHeight,
+                j * m_tileWidth,
+                i * m_tileHeight,
                 m_spriteSheet->GetTexId(),
                 m_spriteSheet->GetImgWidth(),
                 m_spriteSheet->GetImgHeight(),
@@ -68,3 +63,12 @@ void TileManager::Render()
     }
 }
 
+void TileManager::SetTileMap(TileMap *tileMap)
+{
+    m_tileMap = tileMap;
+}
+
+TileMap* TileManager::GetTileMap()
+{
+    return m_tileMap;
+}

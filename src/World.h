@@ -3,6 +3,7 @@
 
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
+#include "utility/TileMap.h"
 #include "Player.h"
 
 class World
@@ -28,6 +29,7 @@ class World
         float GetTop() const;
 
     private:
+        TileMap* m_tileMap;
         TileManager* m_tileManager;
         SpriteSheet* m_spriteSheet;
         Player* m_player;
