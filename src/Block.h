@@ -20,6 +20,8 @@ class Block : public Actor
         Block(float x, float y, BlockType type = BT_BACKGROUND);
         ~Block();
 
+        void Initialize();
+
         void SetType(BlockType type);
         BlockType GetType() const;
 

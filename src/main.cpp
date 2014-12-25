@@ -61,6 +61,9 @@ bool InitializeGL()
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_ALPHA_TEST);
 
+    // Point size
+    glEnable(GL_PROGRAM_POINT_SIZE);
+
     return true;
 }
 

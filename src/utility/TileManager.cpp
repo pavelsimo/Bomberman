@@ -43,7 +43,7 @@ void TileManager::Render()
     {
         for(int j = 0; j < m; j++)
         {
-            uint8_t curTile = tiles[i * n + j];
+            uint8_t curTile = tiles[i * m + j];
             assert(curTile < m_sprites.size());
 
             Sprite sprite = m_spriteSheet->GetSprite(m_sprites[curTile]);

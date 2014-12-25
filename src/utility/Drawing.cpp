@@ -1,6 +1,18 @@
 #include "Drawing.h"
 #include <cassert>
 
+void DrawPoint(const Vector2 &point)
+{
+    glPushMatrix();
+
+    glBegin(GL_POINTS);
+        glColor3f(1.f, 1.f, 1.f); // red
+        glVertex2f(point.x, point.y);
+    glEnd();
+
+    glPopMatrix();
+}
+
 void DrawLine(
     const Vector2& origin,
     const Vector2& end,
@@ -35,6 +47,7 @@ void DrawQuad(
     GLfloat maxX, GLfloat maxY
 )
 {
+
     glPushMatrix();
     glBegin( GL_QUADS );
         glColor3f(1.f, 1.f, 1.f); // white
@@ -70,6 +83,7 @@ void DrawPolygon(
     GLfloat lineWidth
 )
 {
+    // TODO: (Pavel) Add support for colors
     glPushMatrix();
     glLineWidth(lineWidth);
     glTranslatef(x, y, 0.f);
@@ -78,6 +92,7 @@ void DrawPolygon(
     for(auto it = points.begin(); it != points.end(); it++)
     {
         Vector2 p = *it;
+
         glVertex2d(p.x, p.y);
     }
     glEnd();
@@ -214,4 +229,26 @@ void DrawText(
 
         curX += clip.w + glyphOffset;
     }
+}
+
+
+void DrawAABB2(const AABB2 &aabb2)
+{
+    std::vector<Vector2> points;
+
+    points.push_back(aabb2.min);
+    points.push_back(Vector2(aabb2.max.x, aabb2.min.y));
+    points.push_back(aabb2.max);
+    points.push_back(Vector2(aabb2.min.x, aabb2.max.y));
+
+    DrawPolygon(points, 0, 0, 0, 4);
+
+    /*
+    DrawQuad(
+        aabb2.min.x,
+        aabb2.min.y,
+        aabb2.max.x,
+        aabb2.max.y
+    );
+    */
 }

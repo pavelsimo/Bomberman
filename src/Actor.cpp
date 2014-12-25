@@ -1,8 +1,11 @@
-#include "Actor.h"
-
 #include <iostream>
 
+#include "Actor.h"
+
 Actor::Actor()
+: m_position(0, 0),
+  m_velocity(0, 0),
+  m_direction(0, 0)
 {
 
 }
@@ -26,6 +29,7 @@ void Actor::Render()
 void Actor::OnRender()
 {
     // overwrite
+
 }
 
 void Actor::Update(World& world)
@@ -39,9 +43,12 @@ void Actor::Update(World& world)
 
     for (auto it = m_geometry.cbegin(); it != m_geometry.cend(); ++it)
     {
-        Vector2 point = Vector2(it->x + m_position.x, it->y + m_position.y);
+        Vector2 point = *it;
+        point += m_position;
         m_aabb2.Add(point);
     }
+
+
 
     /*
     std::cout << "(" << m_aabb2.min.x << "," << m_aabb2.min.y << ") (" <<
@@ -97,7 +104,9 @@ void Actor::OnMoveRight()
 
 bool Actor::IsColliding(const Actor &actor)
 {
-    return false;
+    AABB2 lhs = GetAABB2();
+    AABB2 rhs = actor.GetAABB2();
+    return lhs.Intersects(rhs);
 }
 
 void Actor::SetPosition(const Vector2 &position)

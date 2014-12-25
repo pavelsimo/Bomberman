@@ -3,10 +3,17 @@
 const float PLAYER_WIDTH = 47.0f;
 const float PLAYER_HEIGHT = 86.0f;
 const float PLAYER_SPEED = 5.0f;
+const float PLAYER_SHADOW_WIDTH = 16;
+const float PLAYER_SHADOW_HEIGHT = 8;
+const Vector2 PLAYER_DIR_UP = Vector2(0, -1);
+const Vector2 PLAYER_DIR_DOWN = Vector2(0, 1);
+const Vector2 PLAYER_DIR_LEFT = Vector2(-1, 0);
+const Vector2 PLAYER_DIR_RIGHT = Vector2(1, 0);
 
 Player::Player()
 : m_state(PST_IDLE),
-  m_curAnimation(nullptr)
+  m_curAnimation(nullptr),
+  m_lowerLeftCorner(0, 0)
 {
 
 }
@@ -14,7 +21,8 @@ Player::Player()
 Player::Player(float x, float y)
 : m_state(PST_IDLE),
   m_curAnimation(nullptr),
-  Actor(x, y)
+  m_lowerLeftCorner(x, y),
+  Actor(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10)
 {
 
 }
@@ -34,6 +42,10 @@ void Player::OnRender()
 {
     assert(m_spriteSheet != nullptr);
     m_curAnimation->Render();
+
+    #ifdef DEBUG
+    DrawAABB2(GetAABB2());
+    #endif
 }
 
 void Player::OnUpdate(World & world)
@@ -66,36 +78,33 @@ void Player::OnIdle()
 void Player::OnMove()
 {
     m_position += m_direction * PLAYER_SPEED;
+    m_lowerLeftCorner += m_direction * PLAYER_SPEED;
 }
 
 void Player::OnMoveUp()
 {
-    m_direction.x = 0;
-    m_direction.y = -1;
+    m_direction = PLAYER_DIR_UP;
     OnMove();
     NextAnimation(m_walkingUpAnimation);
 }
 
 void Player::OnMoveDown()
 {
-    m_direction.x = 0;
-    m_direction.y = 1;
+    m_direction = PLAYER_DIR_DOWN;
     OnMove();
     NextAnimation(m_walkingDownAnimation);
 }
 
 void Player::OnMoveLeft()
 {
-    m_direction.x = -1;
-    m_direction.y = 0;
+    m_direction = PLAYER_DIR_LEFT;
     OnMove();
     NextAnimation(m_walkingLeftAnimation);
 }
 
 void Player::OnMoveRight()
 {
-    m_direction.x = 1;
-    m_direction.y = 0;
+    m_direction = PLAYER_DIR_RIGHT;
     OnMove();
     NextAnimation(m_walkingRightAnimation);
 }
@@ -109,12 +118,12 @@ void Player::SetSpriteSheet(SpriteSheet* spriteSheet)
     m_walkingRightAnimation.SetSpriteSheet(spriteSheet);
 }
 
-void Player::SetState(PlayeState state)
+void Player::SetState(PlayerState state)
 {
     m_state = state;
 }
 
-PlayeState Player::GetState() const
+PlayerState Player::GetState() const
 {
     return m_state;
 }
@@ -127,15 +136,14 @@ SpriteSheet* Player::GetSpriteSheet()
 void Player::InitializeGeometry()
 {
     // upper-left corner
-    m_geometry.push_back(Vector2(PLAYER_WIDTH * -0.5f, PLAYER_HEIGHT * -0.5f));
-
+    m_geometry.push_back(Vector2(PLAYER_SHADOW_WIDTH, PLAYER_SHADOW_HEIGHT));
     // bottom-right corner
-    m_geometry.push_back(Vector2(PLAYER_WIDTH * 0.5f, PLAYER_HEIGHT * 0.5f));
+    m_geometry.push_back(Vector2(-PLAYER_SHADOW_WIDTH, -PLAYER_SHADOW_HEIGHT));
 }
 
 void Player::InitializeAnimation()
 {
-    m_walkingDownAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingDownAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingDownAnimation.AddFrame("Bman_F_f00.png");
     m_walkingDownAnimation.AddFrame("Bman_F_f01.png");
     m_walkingDownAnimation.AddFrame("Bman_F_f02.png");
@@ -145,7 +153,7 @@ void Player::InitializeAnimation()
     m_walkingDownAnimation.AddFrame("Bman_F_f06.png");
     m_walkingDownAnimation.AddFrame("Bman_F_f07.png");
 
-    m_walkingUpAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingUpAnimation.AddFrame("Bman_B_f00.png");
     m_walkingUpAnimation.AddFrame("Bman_B_f01.png");
     m_walkingUpAnimation.AddFrame("Bman_B_f02.png");
@@ -155,7 +163,7 @@ void Player::InitializeAnimation()
     m_walkingUpAnimation.AddFrame("Bman_B_f06.png");
     m_walkingUpAnimation.AddFrame("Bman_B_f07.png");
 
-    m_walkingLeftAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingLeftAnimation.AddFrame("Bman_LS_f00.png");
     m_walkingLeftAnimation.AddFrame("Bman_LS_f01.png");
     m_walkingLeftAnimation.AddFrame("Bman_LS_f02.png");
@@ -165,7 +173,7 @@ void Player::InitializeAnimation()
     m_walkingLeftAnimation.AddFrame("Bman_LS_f06.png");
     m_walkingLeftAnimation.AddFrame("Bman_LS_f07.png");
 
-    m_walkingRightAnimation.SetPosition(m_position.x, m_position.y);
+    m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingRightAnimation.AddFrame("Bman_RS_f00.png");
     m_walkingRightAnimation.AddFrame("Bman_RS_f01.png");
     m_walkingRightAnimation.AddFrame("Bman_RS_f02.png");
@@ -178,10 +186,9 @@ void Player::InitializeAnimation()
     m_curAnimation = &m_walkingDownAnimation;
 }
 
-
 void Player::NextAnimation(SpriteAnimation& animation)
 {
     m_curAnimation = &animation;
-    m_curAnimation->SetPosition(m_position.x, m_position.y);
+    m_curAnimation->SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_curAnimation->NextFrame();
 }

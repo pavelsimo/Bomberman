@@ -2,8 +2,7 @@
 #define __TEXTURE_H_
 
 #include "LOpenGL.h"
-#include <IL/il.h>
-#include <IL/ilu.h>
+#include "LDevIL.h"
 #include <cstdio>
 #include <iostream>
 

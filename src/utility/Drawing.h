@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "AABB2.h"
 #include "LOpenGL.h"
 #include "Vector2.h"
 #include "BitmapFont.h"
@@ -33,6 +34,8 @@ struct Rect
     GLfloat w;
     GLfloat h;
 };
+
+void DrawPoint(const Vector2 &point);
 
 void DrawLine(
     const Vector2& origin,
@@ -94,5 +97,7 @@ void DrawText(
     GLfloat spaceOffset = 32,
     GLfloat lineSeparatorOffset = 100
 );
+
+void DrawAABB2(const AABB2& aabb2);
 
 #endif // __DRAWING_H_

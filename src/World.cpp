@@ -10,7 +10,8 @@ World::World(float width, float height)
   m_height(height),
   m_player(nullptr),
   m_spriteSheet(nullptr),
-  m_tileMap(nullptr)
+  m_tileMap(nullptr),
+  m_blockManager(nullptr)
 {
 
 }
@@ -39,29 +40,68 @@ World::~World() {
         delete m_tileMap;
         m_tileMap = nullptr;
     }
+
+    if(m_blockManager != nullptr)
+    {
+        delete m_blockManager;
+        m_blockManager = nullptr;
+    }
 }
 
 void World::OnSetup()
 {
+    //
+    // Sprite sheet
+    //
     m_spriteSheet = new SpriteSheet();
     m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
+    //
+    // Tile map
+    //
     m_tileMap = new TileMap();
-    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
-            TILE_NROWS, TILE_NCOLS);
+    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt", TILE_NROWS, TILE_NCOLS);
 
+    //
+    // Tile manager
+    //
     m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
     m_tileManager->SetTileMap(m_tileMap);
-
     m_tileManager->AddSprite("Block_Background.png");
     m_tileManager->AddSprite("Block_Solid.png");
     m_tileManager->AddSprite("Block_Explodable.png");
     m_tileManager->AddSprite("Block_Portal.png");
 
+    //
+    // Player
+    //
     m_player = new Player(128, 128);
     m_player->SetSpriteSheet(m_spriteSheet);
     m_player->Initialize();
+
+    //
+    // Block Manager
+    //
+    m_blockManager = new BlockManager();
+    for(int i = 0; i < TILE_NROWS; ++i)
+    {
+        for(int j = 0; j < TILE_NCOLS; ++j)
+        {
+            int x = j * TILE_WIDTH + 0.5f * TILE_WIDTH;
+            int y = i * TILE_HEIGHT + 0.5f * TILE_HEIGHT;
+
+            BlockType blockType = static_cast<BlockType>(m_tileMap->GetTile(i, j));
+            Block* block = new Block();
+            block->Initialize();
+            block->SetType(blockType);
+            block->SetPosition(Vector2(x, y));
+            // FIXME: (Pavel) The AABB2 should be initialize before call update
+            block->Update(*this);
+
+            m_blockManager->AddBlock(block);
+        }
+    }
 }
 
 void World::OnDestroy()
@@ -72,6 +112,11 @@ void World::OnDestroy()
 void World::OnUpdate()
 {
     m_player->Update(*this);
+
+    if(m_blockManager->IsColliding(*m_player))
+    {
+        std::cout << "*** BLOCK COLLISION ***" << std::endl;
+    }
 }
 
 void World::OnRender()

@@ -26,6 +26,8 @@ class TileMap
         //
         uint8_t GetTile(uint32_t row, uint32_t col);
         void SetTile(uint32_t row, uint32_t col, uint8_t tile);
+
+        //FIXME: (Pavel) This breaks encapsulation, change to const
         uint8_t* GetTiles();
         uint32_t GetRowsCount() const;
         uint32_t GetColsCount() const;

@@ -4,6 +4,8 @@
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
 #include "utility/TileMap.h"
+#include "Block.h"
+#include "BlockManager.h"
 #include "Player.h"
 
 class World
@@ -33,6 +35,8 @@ class World
         TileManager* m_tileManager;
         SpriteSheet* m_spriteSheet;
         Player* m_player;
+        BlockManager* m_blockManager;
+
         float m_width;
         float m_height;
 };

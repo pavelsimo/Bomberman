@@ -7,7 +7,7 @@
 
 class World;
 
-enum PlayeState
+enum PlayerState
 {
     PST_IDLE         = 1,
     PST_MOVING_UP    = 2,
@@ -39,11 +39,12 @@ class Player : public Actor
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 
-        void SetState(PlayeState state);
-        PlayeState GetState() const;
+        void SetState(PlayerState state);
+        PlayerState GetState() const;
 
     private:
-        PlayeState m_state;
+        Vector2 m_lowerLeftCorner;
+        PlayerState m_state;
         SpriteSheet* m_spriteSheet;
         SpriteAnimation* m_curAnimation;
 

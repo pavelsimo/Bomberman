@@ -1,6 +1,4 @@
 #include "Texture.h"
-#include <IL/il.h>
-#include <IL/ilu.h>
 
 Texture::Texture()
 : m_texId(0),
