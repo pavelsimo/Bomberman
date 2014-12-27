@@ -43,7 +43,7 @@ void Player::OnRender()
     assert(m_spriteSheet != nullptr);
     m_curAnimation->Render();
 
-    #ifdef DEBUG
+    #ifdef _DEBUG
     DrawAABB2(GetAABB2());
     #endif
 }

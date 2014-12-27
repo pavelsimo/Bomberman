@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(Bomberman)
 
 # Debug
-ADD_DEFINITIONS(-DDEBUG)
+ADD_DEFINITIONS(-D_DEBUG)
 
 # Modules
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -43,6 +43,14 @@ IF(NOT XERCESC_FOUND)
     MESSAGE(ERROR " Xerces-C not found!")
 ENDIF(NOT XERCESC_FOUND)
 
+
+# SDL2
+FIND_PACKAGE(SDL2 REQUIRED)
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIR})
+IF(NOT SDL2_FOUND)
+    MESSAGE(ERROR " SDL2 not found!")
+ENDIF(NOT SDL2_FOUND)
+
 # OpenAL
 #FIND_PACKAGE(OPENAL REQUIRED)
 #IF(NOT OPENAL_FOUND)
@@ -64,9 +72,8 @@ if(COMPILER_SUPPORTS_CXX11)
 elseif(COMPILER_SUPPORTS_CXX0X)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 else()
-        MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
+    MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support.")
 endif()
-
 
 ADD_EXECUTABLE(
     ${PROJECT_NAME}
@@ -83,11 +90,13 @@ ADD_EXECUTABLE(
     src/utility/SpriteAnimation.cpp
     src/utility/AABB2.cpp
     src/utility/TileMap.cpp
+    src/utility/Game.cpp
     src/Actor.cpp
     src/Player.cpp
     src/World.cpp
     src/Block.cpp
     src/BlockManager.cpp
+    src/BombermanGame.cpp
 )
 
 TARGET_LINK_LIBRARIES(
@@ -98,6 +107,7 @@ TARGET_LINK_LIBRARIES(
     ${ILU_LIBRARIES}
     ${ILUT_LIBRARIES}
     ${XERCESC_LIBRARY}
+    ${SDL2_LIBRARY}
 #   ${OPENAL_LIBRARY}
 #   ${ALUT_LIBRARY}
 )

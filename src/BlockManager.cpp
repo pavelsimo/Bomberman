@@ -39,7 +39,7 @@ bool BlockManager::IsColliding(const Actor& actor)
         {
             if(block->IsColliding(actor))
             {
-                #ifdef DEBUG
+                #ifdef _DEBUG
                     std::cout << "ACTOR: " << "(" << actor.GetAABB2().min.x << "," << actor.GetAABB2().min.y << ")" << " " << "(" << actor.GetAABB2().max.x << "," << actor.GetAABB2().max.y << ")" << std::endl;
                     std::cout << "BLOCK: " << "(" << block->GetAABB2().min.x << "," << block->GetAABB2().min.y << ")" << " " << "(" << block->GetAABB2().max.x << "," << block->GetAABB2().max.y << ")" << std::endl;
                 #endif
