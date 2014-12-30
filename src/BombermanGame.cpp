@@ -16,9 +16,9 @@ BombermanGame::~BombermanGame()
     }
 }
 
-void BombermanGame::OnKeyDown(SDL_Keycode key)
+void BombermanGame::OnKeyDown(SDL_KeyboardEvent& event)
 {
-    switch(key)
+    switch(event.keysym.sym)
     {
         case SDLK_w:
             m_world->OnKeyDown('w');
@@ -35,9 +35,9 @@ void BombermanGame::OnKeyDown(SDL_Keycode key)
     }
 }
 
-void BombermanGame::OnKeyUp(SDL_Keycode key)
+void BombermanGame::OnKeyUp(SDL_KeyboardEvent& event)
 {
-    switch(key)
+    switch(event.keysym.sym)
     {
         case SDLK_w:
             m_world->OnKeyUp('w');

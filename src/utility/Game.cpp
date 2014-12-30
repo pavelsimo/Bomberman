@@ -7,7 +7,7 @@ Game::Game(const std::string &title, uint32_t width, uint32_t height,
   m_width(width),
   m_height(height),
   m_window(NULL),
-  m_state(GAME_RUNNING),
+  m_state(GS_RUNNING),
   m_framesPerSecond(framesPerSecond),
   m_timePerFrame(1000 / framesPerSecond) // milliseconds
 {
@@ -29,10 +29,6 @@ bool Game::Init()
         std::cerr << "ERROR: Initializing SDL." << '\n';
         return false;
     }
-
-
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
     //
     // GL CONTEXT ATTRIBUTES
@@ -117,12 +113,12 @@ bool Game::Init()
 
 void Game::OnInit()
 {
-
+    // override
 }
 
 void Game::Render()
 {
-    // FIXME: (Pavel) Clear color should me a setting
+    // FIXME: (Pavel) Clear color should be a setting
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -146,11 +142,11 @@ bool Game::Run()
 
     SDL_Event event;
 
-    while(m_state == GAME_RUNNING)
+    while(m_state == GS_RUNNING)
     {
         Uint32 start = SDL_GetTicks();
 
-        OnEvent(event);
+        HandleEvent(event);
         Update();
         Render();
 
@@ -161,10 +157,11 @@ bool Game::Run()
         }
     }
 
-    OnCleanup();
+    Cleanup();
+    return true;
 }
 
-void Game::OnEvent(SDL_Event &event)
+void Game::HandleEvent(SDL_Event &event)
 {
     //
     // EVENTS
@@ -174,43 +171,95 @@ void Game::OnEvent(SDL_Event &event)
         switch(event.type)
         {
             case SDL_QUIT:
-                OnExit();
+                Exit();
                 break;
             case SDL_KEYDOWN:
-                OnKeyDown(event.key.keysym.sym);
+                OnKeyDown(event.key);
                 break;
             case SDL_KEYUP:
-                OnKeyUp(event.key.keysym.sym);
+                OnKeyUp(event.key);
+                break;
+            case SDL_MOUSEMOTION:
+                OnMouseMotion(event.motion);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                OnMouseButtonDown(event.button);
+                break;
+            case SDL_MOUSEBUTTONUP:
+                OnMouseButtonUp(event.button);
                 break;
         }
     }
 }
 
-void Game::OnCleanup()
+
+void Game::Cleanup()
 {
+    OnCleanup();
+
     SDL_GL_DeleteContext(m_glContext);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
 
-void Game::OnKeyDown(SDL_Keycode key)
+void Game::OnCleanup()
 {
     // override
 }
 
-void Game::OnKeyUp(SDL_Keycode key)
+void Game::OnKeyDown(SDL_KeyboardEvent& event)
 {
+    /*
+    typedef struct SDL_KeyboardEvent
+    {
+        Uint32 type;        // < ::SDL_KEYDOWN or ::SDL_KEYUP
+        Uint32 timestamp;
+        Uint32 windowID;    // < The window with keyboard focus, if any
+        Uint8 state;        // < ::SDL_PRESSED or ::SDL_RELEASED
+        Uint8 repeat;       // < Non-zero if this is a key repeat
+        Uint8 padding2;
+        Uint8 padding3;
+        SDL_Keysym keysym;  // < The key that was pressed or released
+    } SDL_KeyboardEvent;
+    */
+
+    // override
+}
+
+void Game::OnKeyUp(SDL_KeyboardEvent& event)
+{
+    /*
+    typedef struct SDL_KeyboardEvent
+    {
+        Uint32 type;        // < ::SDL_KEYDOWN or ::SDL_KEYUP
+        Uint32 timestamp;
+        Uint32 windowID;    // < The window with keyboard focus, if any
+        Uint8 state;        // < ::SDL_PRESSED or ::SDL_RELEASED
+        Uint8 repeat;       // < Non-zero if this is a key repeat
+        Uint8 padding2;
+        Uint8 padding3;
+        SDL_Keysym keysym;  // < The key that was pressed or released
+    } SDL_KeyboardEvent;
+    */
+
     // override
 }
 
 void Game::OnResize(uint32_t width, uint32_t height)
 {
+    // override
+}
 
+void Game::Exit()
+{
+    OnExit();
+
+    m_state = GS_QUIT;
 }
 
 void Game::OnExit()
 {
-    m_state = GAME_QUIT;
+    // override
 }
 
 void Game::OnUpdate()
@@ -223,3 +272,65 @@ void Game::OnRender()
     // override
 }
 
+void Game::OnMouseButtonDown(SDL_MouseButtonEvent& event)
+{
+    /*
+    typedef struct SDL_MouseButtonEvent
+    {
+        Uint32 type;        // < ::SDL_MOUSEBUTTONDOWN or ::SDL_MOUSEBUTTONUP
+        Uint32 timestamp;
+        Uint32 windowID;    // < The window with mouse focus, if any
+        Uint32 which;       // < The mouse instance id, or SDL_TOUCH_MOUSEID
+        Uint8 button;       // < The mouse button index
+        Uint8 state;        // < ::SDL_PRESSED or ::SDL_RELEASED
+        Uint8 clicks;       // < 1 for single-click, 2 for double-click, etc.
+        Uint8 padding1;
+        Sint32 x;           // < X coordinate, relative to window
+        Sint32 y;           // < Y coordinate, relative to window
+    } SDL_MouseButtonEvent;
+    */
+
+    // override
+}
+
+
+void Game::OnMouseButtonUp(SDL_MouseButtonEvent &event)
+{
+    /*
+    typedef struct SDL_MouseButtonEvent
+    {
+        Uint32 type;        // < ::SDL_MOUSEBUTTONDOWN or ::SDL_MOUSEBUTTONUP
+        Uint32 timestamp;
+        Uint32 windowID;    // < The window with mouse focus, if any
+        Uint32 which;       // < The mouse instance id, or SDL_TOUCH_MOUSEID
+        Uint8 button;       // < The mouse button index
+        Uint8 state;        // < ::SDL_PRESSED or ::SDL_RELEASED
+        Uint8 clicks;       // < 1 for single-click, 2 for double-click, etc.
+        Uint8 padding1;
+        Sint32 x;           // < X coordinate, relative to window
+        Sint32 y;           // < Y coordinate, relative to window
+    } SDL_MouseButtonEvent;
+    */
+
+    // override
+}
+
+void Game::OnMouseMotion(SDL_MouseMotionEvent& event)
+{
+    /*
+    typedef struct SDL_MouseMotionEvent
+    {
+        Uint32 type;
+        Uint32 timestamp;
+        Uint32 windowID;    // The window with mouse focus, if any
+        Uint32 which;       // The mouse instance id, or SDL_TOUCH_MOUSEID
+        Uint32 state;       // The current button state
+        Sint32 x;           // X coordinate, relative to window
+        Sint32 y;           // Y coordinate, relative to window
+        Sint32 xrel;        // The relative motion in the X direction
+        Sint32 yrel;        // The relative motion in the Y direction
+    } SDL_MouseMotionEvent;
+    */
+
+    // override
+}
