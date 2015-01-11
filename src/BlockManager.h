@@ -15,7 +15,8 @@ class BlockManager
 
         void Clean();
         void AddBlock(Block* block);
-        bool IsColliding(const Actor& actor);
+        void RemoveBlock(Block* block);
+        bool IsColliding(const Actor& actor, Block& block);
 
     private:
         BlockList m_blocks;

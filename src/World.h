@@ -8,6 +8,8 @@
 #include "BlockManager.h"
 #include "Player.h"
 
+#define SAFE_DELETE(p) { if(p != nullptr) { delete(p); (p)=nullptr; } }
+
 class World
 {
     public:
@@ -29,6 +31,8 @@ class World
         float GetRight() const;
         float GetBottom() const;
         float GetTop() const;
+
+        BlockManager* GetBlockManager();
 
     private:
         TileMap* m_tileMap;

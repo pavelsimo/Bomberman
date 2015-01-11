@@ -37,10 +37,6 @@ class TileMap
         uint32_t m_rows;
         uint32_t m_cols;
         uint8_t* m_tiles;
-
-        // helpers
-        //
-        bool IsTileOnBounds(uint32_t row, uint32_t col) const;
 };
 
 #endif //__TILEMAP_H_

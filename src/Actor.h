@@ -32,7 +32,8 @@ class Actor
         // virtual
         //
         virtual void OnRender();
-        virtual void OnUpdate(World& world);
+        virtual void OnBeforeUpdate(World &world);
+        virtual void OnAfterUpdate(World &world);
         virtual void OnMoveUp();
         virtual void OnMoveDown();
         virtual void OnMoveLeft();

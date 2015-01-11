@@ -28,14 +28,19 @@ class Player : public Actor
 
         void OnIdle();
         virtual void OnRender() override;
-        virtual void OnUpdate(World& world) override;
+        virtual void OnBeforeUpdate(World &world) override;
+        virtual void OnAfterUpdate(World &world) override;
         virtual void OnMoveUp() override;
         virtual void OnMoveDown() override;
         virtual void OnMoveLeft() override;
         virtual void OnMoveRight() override;
 
+        void MoveTo(float x, float y);
+
         // getters & setters
         //
+        Vector2 GetLowerLeftCornerPosition() const;
+
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 

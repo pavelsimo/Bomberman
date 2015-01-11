@@ -106,18 +106,14 @@ uint32_t TileMap::GetTilesCount() const
 
 uint8_t TileMap::GetTile(uint32_t row, uint32_t col)
 {
-    assert(IsTileOnBounds(row, col));
+    assert(row < m_rows && col < m_cols);
     return m_tiles[row * m_cols + col];
 }
 
 void TileMap::SetTile(uint32_t row, uint32_t col, uint8_t tile)
 {
-    assert(IsTileOnBounds(row, col));
+    assert(row < m_rows && col < m_cols);
     m_tiles[row * m_cols + col] = tile;
 }
 
-bool TileMap::IsTileOnBounds(uint32_t row, uint32_t col) const
-{
-    return row < m_rows && col < m_cols;
-}
 

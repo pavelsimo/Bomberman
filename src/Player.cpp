@@ -1,14 +1,18 @@
 #include "Player.h"
+#include "World.h"
 
-const float PLAYER_WIDTH = 47.0f;
-const float PLAYER_HEIGHT = 86.0f;
-const float PLAYER_SPEED = 5.0f;
-const float PLAYER_SHADOW_WIDTH = 16;
-const float PLAYER_SHADOW_HEIGHT = 8;
-const Vector2 PLAYER_DIR_UP = Vector2(0, -1);
-const Vector2 PLAYER_DIR_DOWN = Vector2(0, 1);
-const Vector2 PLAYER_DIR_LEFT = Vector2(-1, 0);
-const Vector2 PLAYER_DIR_RIGHT = Vector2(1, 0);
+namespace
+{
+    const float PLAYER_WIDTH = 47.0f;
+    const float PLAYER_HEIGHT = 86.0f;
+    const float PLAYER_SPEED = 5.0f;
+    const float PLAYER_SHADOW_WIDTH = 16;
+    const float PLAYER_SHADOW_HEIGHT = 8;
+    const Vector2 PLAYER_DIR_UP = Vector2(0, -1);
+    const Vector2 PLAYER_DIR_DOWN = Vector2(0, 1);
+    const Vector2 PLAYER_DIR_LEFT = Vector2(-1, 0);
+    const Vector2 PLAYER_DIR_RIGHT = Vector2(1, 0);
+}
 
 Player::Player()
 : m_state(PST_IDLE),
@@ -48,7 +52,7 @@ void Player::OnRender()
     #endif
 }
 
-void Player::OnUpdate(World & world)
+void Player::OnBeforeUpdate(World &world)
 {
     switch(m_state)
     {
@@ -67,6 +71,39 @@ void Player::OnUpdate(World & world)
         case PST_MOVING_RIGHT:
             OnMoveRight();
             break;
+    }
+}
+
+void Player::OnAfterUpdate(World &world)
+{
+    // Player block collisions
+    Block collisionBlock;
+    if(world.GetBlockManager()->IsColliding(*this, collisionBlock))
+    {
+
+#if _DEBUG
+        std::cout << "CBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
+                << collisionBlock.GetAABB2().min.y << ")" << " "
+                << "(" << collisionBlock.GetAABB2().max.x << ","
+                << collisionBlock.GetAABB2().max.y << ")" << std::endl;
+#endif
+
+        if(GetDirection() == PLAYER_DIR_UP)
+        {
+            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().max.y - 64);
+        }
+        else if(GetDirection() == PLAYER_DIR_DOWN)
+        {
+            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().min.y - PLAYER_HEIGHT);
+        }
+        else if(GetDirection() == PLAYER_DIR_LEFT)
+        {
+            MoveTo(collisionBlock.GetAABB2().max.x - 5, m_lowerLeftCorner.y);
+        }
+        else if(GetDirection() == PLAYER_DIR_RIGHT)
+        {
+            MoveTo(collisionBlock.GetAABB2().min.x - PLAYER_WIDTH + 5, m_lowerLeftCorner.y);
+        }
     }
 }
 
@@ -191,4 +228,21 @@ void Player::NextAnimation(SpriteAnimation& animation)
     m_curAnimation = &animation;
     m_curAnimation->SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_curAnimation->NextFrame();
+}
+
+// FIXME: (Pavel) Should restrict the use of SetPosition
+void Player::MoveTo(float x, float y)
+{
+    m_position = Vector2(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10);
+    m_lowerLeftCorner = Vector2(x, y);
+
+    m_walkingDownAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+}
+
+Vector2 Player::GetLowerLeftCornerPosition() const
+{
+    return m_lowerLeftCorner;
 }

@@ -17,6 +17,11 @@ void BlockManager::AddBlock(Block* block)
     m_blocks.push_back(block);
 }
 
+void BlockManager::RemoveBlock(Block *block)
+{
+    // IMPLEMENT ME!
+}
+
 void BlockManager::Clean()
 {
     for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
@@ -29,20 +34,31 @@ void BlockManager::Clean()
     m_blocks.clear();
 }
 
-bool BlockManager::IsColliding(const Actor& actor)
+bool BlockManager::IsColliding(const Actor& actor, Block& block)
 {
     for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
     {
-        Block* block = *it;
+        Block* curBlock = *it;
 
-        if(block->GetType() == BT_SOLID || block->GetType() == BT_EXPLODABLE)
+        if(curBlock->GetType() == BT_SOLID || curBlock->GetType() == BT_EXPLODABLE)
         {
-            if(block->IsColliding(actor))
+            if(curBlock->IsColliding(actor))
             {
                 #ifdef _DEBUG
-                    std::cout << "ACTOR: " << "(" << actor.GetAABB2().min.x << "," << actor.GetAABB2().min.y << ")" << " " << "(" << actor.GetAABB2().max.x << "," << actor.GetAABB2().max.y << ")" << std::endl;
-                    std::cout << "BLOCK: " << "(" << block->GetAABB2().min.x << "," << block->GetAABB2().min.y << ")" << " " << "(" << block->GetAABB2().max.x << "," << block->GetAABB2().max.y << ")" << std::endl;
+
+                    std::cout << "ACTOR: " << "(" << actor.GetAABB2().min.x
+                              << "," << actor.GetAABB2().min.y << ")"
+                              << " " << "(" << actor.GetAABB2().max.x << ","
+                              << actor.GetAABB2().max.y << ")" << std::endl;
+
+                    std::cout << "BLOCK: " << "(" << curBlock->GetAABB2().min.x << ","
+                              << curBlock->GetAABB2().min.y << ")" << " " << "("
+                              << curBlock->GetAABB2().max.x << ","
+                              << curBlock->GetAABB2().max.y << ")" << std::endl;
+
                 #endif
+
+                block = *curBlock;
                 return true;
             }
         }
