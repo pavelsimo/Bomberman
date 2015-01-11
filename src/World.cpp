@@ -88,51 +88,6 @@ void World::OnDestroy()
 void World::OnUpdate()
 {
     m_player->Update(*this);
-    /*
-    Block collisionBlock;
-    if(m_blockManager->IsColliding(*m_player, collisionBlock))
-    {
-        std::cout << "CBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
-                  << collisionBlock.GetAABB2().min.y << ")" << " "
-                  << "(" << collisionBlock.GetAABB2().max.x << ","
-                  << collisionBlock.GetAABB2().max.y << ")" << std::endl;
-
-        // FIXME: (Pavel) Just for testing move this code to some other place...
-        Vector2 DIR_UP = Vector2(0, -1);
-        Vector2 DIR_DOWN = Vector2(0, 1);
-        Vector2 DIR_LEFT = Vector2(-1, 0);
-        Vector2 DIR_RIGHT = Vector2(1, 0);
-        Vector2 lowerLeftCorner = m_player->GetLowerLeftCornerPosition();
-        float x = lowerLeftCorner.x;
-        float y = lowerLeftCorner.y;
-        float playerWidth = 47;
-        float playerHeight = 86;
-        float playerShadowHeight = 16;
-
-        if(m_player->GetDirection() == DIR_UP)
-        {
-            // OK!!
-            m_player->MoveTo(x, collisionBlock.GetAABB2().max.y - 64);
-        }
-        else if(m_player->GetDirection() == DIR_DOWN)
-        {
-            // OK!!
-            m_player->MoveTo(x, collisionBlock.GetAABB2().min.y - playerHeight);
-        }
-        else if(m_player->GetDirection() == DIR_LEFT)
-        {
-            // OK!!
-            m_player->MoveTo(collisionBlock.GetAABB2().max.x - 5, y);
-        }
-        else if(m_player->GetDirection() == DIR_RIGHT)
-        {
-            // OK!!
-            m_player->MoveTo(collisionBlock.GetAABB2().min.x - playerWidth + 5, y);
-        }
-
-        std::cout << "*** BLOCK COLLISION ***" << std::endl;
-    }
-    */
 }
 
 
