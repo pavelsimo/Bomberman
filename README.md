@@ -1,4 +1,4 @@
-Asteroids
+Bomberman
 =========
 Bomberman is a strategic, maze-based video game franchise originally developed by Hudson Soft. The general goal throughout the series is to complete the levels by strategically placing bombs in order to kill enemies and destroy obstacles. Exploding bombs can set off other bombs, kill or injure enemies, and destroy obstacles. However, they can also kill or injure the player character.
 
