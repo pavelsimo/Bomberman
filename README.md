@@ -43,4 +43,4 @@ How the game looks
 Special thanks
 ==============
 
-[Jacob Zinman-Jeanes](http://jeanes.co/) for creating these awesome sprites!
+To [Jacob Zinman-Jeanes](http://jeanes.co/) for creating these awesome sprites!
