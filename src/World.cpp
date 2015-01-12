@@ -1,9 +1,12 @@
 #include "World.h"
 
-const int TILE_WIDTH = 64;
-const int TILE_HEIGHT = 64;
-const int TILE_NROWS = 10;
-const int TILE_NCOLS = 10;
+namespace
+{
+    const int TILE_WIDTH = 64;
+    const int TILE_HEIGHT = 64;
+    const int TILE_NROWS = 10;
+    const int TILE_NCOLS = 10;
+}
 
 World::World(float width, float height)
 : m_width(width),

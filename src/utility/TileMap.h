@@ -34,6 +34,10 @@ class TileMap
         uint32_t GetTilesCount() const;
 
     private:
+        // non-copyable
+        TileMap(const TileMap& rhs);
+        TileMap& operator=(const TileMap& rhs);
+
         uint32_t m_rows;
         uint32_t m_cols;
         uint8_t* m_tiles;

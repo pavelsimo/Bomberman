@@ -35,6 +35,10 @@ class World
         BlockManager* GetBlockManager();
 
     private:
+        // non-copyable
+        World(const World& rhs);
+        World& operator=(const World& rhs);
+
         TileMap* m_tileMap;
         TileManager* m_tileManager;
         SpriteSheet* m_spriteSheet;

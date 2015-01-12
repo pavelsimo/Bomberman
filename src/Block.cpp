@@ -1,7 +1,10 @@
 #include "Block.h"
 
-const uint32_t BLOCK_WIDTH = 64;
-const uint32_t BLOCK_HEIGHT = 64;
+namespace
+{
+    const uint32_t BLOCK_WIDTH = 64;
+    const uint32_t BLOCK_HEIGHT = 64;
+}
 
 Block::Block()
 : Actor(),

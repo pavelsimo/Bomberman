@@ -48,12 +48,6 @@ void Actor::Update(World& world)
         m_aabb2.Add(point);
     }
 
-    #if _DEBUG
-    std::cout << "ACTOR AABB2:" << std::endl;
-    std::cout << "(" << m_aabb2.min.x << "," << m_aabb2.min.y << ") (" <<
-            m_aabb2.max.x << "," << m_aabb2.max.y << ")" << std::endl;
-    #endif
-
     OnAfterUpdate(world);
 }
 

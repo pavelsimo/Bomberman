@@ -57,6 +57,10 @@ class BitmapFont
         const std::string GetStyle() const;
 
     private:
+        // non-copyable
+        BitmapFont(const BitmapFont& rhs);
+        BitmapFont& operator=(const BitmapFont& rhs);
+
         int m_size;
         int m_height;
         std::string m_family;

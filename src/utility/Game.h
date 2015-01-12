@@ -39,6 +39,10 @@ class Game
         virtual void OnRender();
 
     private:
+        // non-copyable
+        Game(const Game& rhs);
+        Game& operator=(const Game& rhs);
+
         void Render();
         void Update();
         bool Init();

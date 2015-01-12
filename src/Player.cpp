@@ -76,7 +76,6 @@ void Player::OnBeforeUpdate(World &world)
 
 void Player::OnAfterUpdate(World &world)
 {
-    // Player block collisions
     Block collisionBlock;
     if(world.GetBlockManager()->IsColliding(*this, collisionBlock))
     {
