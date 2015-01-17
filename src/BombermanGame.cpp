@@ -32,6 +32,9 @@ void BombermanGame::OnKeyDown(SDL_KeyboardEvent& event)
         case SDLK_d:
             m_world->OnKeyDown('d');
             break;
+        case SDLK_SPACE:
+            m_world->OnKeyDown(' ');
+            break;
     }
 }
 

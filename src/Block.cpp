@@ -49,4 +49,3 @@ void Block::InitializeGeometry()
     m_geometry.push_back(Vector2(BLOCK_WIDTH * 0.5f, BLOCK_HEIGHT * 0.5f));
 }
 
-

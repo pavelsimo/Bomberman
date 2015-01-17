@@ -4,6 +4,7 @@
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
 #include "utility/TileMap.h"
+#include "Bomb.h"
 #include "Block.h"
 #include "BlockManager.h"
 #include "Player.h"
@@ -43,6 +44,8 @@ class World
         TileManager* m_tileManager;
         SpriteSheet* m_spriteSheet;
         Player* m_player;
+        // TODO: (Pavel) this is going to be a manager, just for testing
+        Bomb* m_bomb;
         BlockManager* m_blockManager;
 
         float m_width;

@@ -14,7 +14,8 @@ World::World(float width, float height)
   m_player(nullptr),
   m_spriteSheet(nullptr),
   m_tileMap(nullptr),
-  m_blockManager(nullptr)
+  m_blockManager(nullptr),
+  m_bomb(nullptr)
 {
 
 }
@@ -25,6 +26,7 @@ World::~World() {
     SAFE_DELETE(m_spriteSheet);
     SAFE_DELETE(m_tileMap);
     SAFE_DELETE(m_blockManager);
+    SAFE_DELETE(m_bomb);
 }
 
 void World::OnSetup()
@@ -53,13 +55,6 @@ void World::OnSetup()
     m_tileManager->AddSprite("Block_Portal.png");
 
     //
-    // Player
-    //
-    m_player = new Player(128, 128);
-    m_player->SetSpriteSheet(m_spriteSheet);
-    m_player->Initialize();
-
-    //
     // Block Manager
     //
     m_blockManager = new BlockManager();
@@ -77,10 +72,25 @@ void World::OnSetup()
             block->SetPosition(Vector2(x, y));
             // FIXME: (Pavel) The AABB2 should be initialize before call update
             block->Update(*this);
-
             m_blockManager->AddBlock(block);
         }
     }
+
+    //
+    // Player
+    //
+    m_player = new Player(128, 128);
+    m_player->SetSpriteSheet(m_spriteSheet);
+    m_player->Initialize();
+    m_player->Update(*this);
+
+    //
+    // Bomb
+    //
+    m_bomb = new Bomb(128, 256);
+    m_bomb->SetSpriteSheet(m_spriteSheet);
+    m_bomb->Initialize();
+    m_bomb->Update(*this);
 }
 
 void World::OnDestroy()
@@ -102,6 +112,7 @@ BlockManager* World::GetBlockManager()
 void World::OnRender()
 {
     m_tileManager->Render();
+    m_bomb->Render();
     m_player->Render();
 }
 

@@ -89,7 +89,7 @@ void Player::OnAfterUpdate(World &world)
 
         if(GetDirection() == PLAYER_DIR_UP)
         {
-            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().max.y - 64);
+            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().min.y);
         }
         else if(GetDirection() == PLAYER_DIR_DOWN)
         {
@@ -97,11 +97,11 @@ void Player::OnAfterUpdate(World &world)
         }
         else if(GetDirection() == PLAYER_DIR_LEFT)
         {
-            MoveTo(collisionBlock.GetAABB2().max.x - 5, m_lowerLeftCorner.y);
+            MoveTo(collisionBlock.GetAABB2().max.x - PLAYER_SPEED, m_lowerLeftCorner.y);
         }
         else if(GetDirection() == PLAYER_DIR_RIGHT)
         {
-            MoveTo(collisionBlock.GetAABB2().min.x - PLAYER_WIDTH + 5, m_lowerLeftCorner.y);
+            MoveTo(collisionBlock.GetAABB2().min.x - PLAYER_WIDTH + PLAYER_SPEED, m_lowerLeftCorner.y);
         }
     }
 }
@@ -234,7 +234,6 @@ void Player::MoveTo(float x, float y)
 {
     m_position = Vector2(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10);
     m_lowerLeftCorner = Vector2(x, y);
-
     m_walkingDownAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);

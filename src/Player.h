@@ -9,12 +9,12 @@ class World;
 
 enum PlayerState
 {
-    PST_IDLE         = 1,
-    PST_MOVING_UP    = 2,
-    PST_MOVING_DOWN  = 4,
-    PST_MOVING_LEFT  = 8,
-    PST_MOVING_RIGHT = 16,
-    PST_DEAD         = 32
+    PST_IDLE         = 0,
+    PST_MOVING_UP    = 1,
+    PST_MOVING_DOWN  = 2,
+    PST_MOVING_LEFT  = 4,
+    PST_MOVING_RIGHT = 8,
+    PST_DEAD         = 16
 };
 
 class Player : public Actor
@@ -37,6 +37,7 @@ class Player : public Actor
 
         void MoveTo(float x, float y);
 
+
         // getters & setters
         //
         Vector2 GetLowerLeftCornerPosition() const;
@@ -52,6 +53,7 @@ class Player : public Actor
         PlayerState m_state;
         SpriteSheet* m_spriteSheet;
         SpriteAnimation* m_curAnimation;
+
 
         // sprite animations
         //
