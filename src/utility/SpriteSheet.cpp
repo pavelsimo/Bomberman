@@ -62,8 +62,8 @@ bool SpriteSheet::LoadSpritesFromXML(const std::string &filename)
                 xml_schema::flags::dont_validate));
 
         std::string texAtlasImgPath = static_cast<std::string>(textureAtlas->imagePath());
-        int texAtlasWidth = textureAtlas->width();
-        int textAtlasHeight = textureAtlas->height();
+        //int texAtlasWidth = textureAtlas->width();
+        //int textAtlasHeight = textureAtlas->height();
 
         TextureAtlas::sprite_sequence& ss(textureAtlas->sprite());
 

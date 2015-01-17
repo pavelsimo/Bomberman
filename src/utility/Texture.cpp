@@ -2,11 +2,11 @@
 
 Texture::Texture()
 : m_texId(0),
+  m_pixels(NULL),
   m_texWidth(0),
   m_texHeight(0),
   m_imgWidth(0),
-  m_imgHeight(0),
-  m_pixels(NULL)
+  m_imgHeight(0)
 {
 
 }

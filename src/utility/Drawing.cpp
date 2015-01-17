@@ -197,7 +197,7 @@ void DrawText(
 
     GLfloat curX = x;
     GLfloat curY = y;
-    for(int i = 0; i < text.size(); ++i)
+    for(int i = 0; i < (int) text.size(); ++i)
     {
         if(text[i] == '\n' || text[i] == '\r')
         {

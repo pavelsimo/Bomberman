@@ -8,12 +8,13 @@ namespace
     const int TILE_NCOLS = 10;
 }
 
-World::World(float width, float height)
+World::World(uint32_t width, uint32_t height)
 : m_width(width),
   m_height(height),
   m_player(nullptr),
   m_spriteSheet(nullptr),
   m_tileMap(nullptr),
+  m_tileManager(nullptr),
   m_blockManager(nullptr),
   m_bomb(nullptr)
 {
@@ -22,9 +23,9 @@ World::World(float width, float height)
 
 World::~World() {
     SAFE_DELETE(m_player);
-    SAFE_DELETE(m_tileManager);
     SAFE_DELETE(m_spriteSheet);
     SAFE_DELETE(m_tileMap);
+    SAFE_DELETE(m_tileManager);
     SAFE_DELETE(m_blockManager);
     SAFE_DELETE(m_bomb);
 }

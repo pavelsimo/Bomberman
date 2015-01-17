@@ -1,8 +1,9 @@
 #include "SpriteAnimation.h"
 
 SpriteAnimation::SpriteAnimation()
-: m_spriteSheet(nullptr),
-  m_curFrame(0)
+:
+  m_curFrame(0),
+  m_spriteSheet(nullptr)
 {
 
 }

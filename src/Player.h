@@ -38,10 +38,6 @@ class Player : public Actor
         void MoveTo(float x, float y);
 
 
-        // getters & setters
-        //
-        Vector2 GetLowerLeftCornerPosition() const;
-
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 
@@ -52,22 +48,21 @@ class Player : public Actor
         Vector2 m_lowerLeftCorner;
         PlayerState m_state;
         SpriteSheet* m_spriteSheet;
-        SpriteAnimation* m_curAnimation;
-
 
         // sprite animations
         //
+        SpriteAnimation* m_curAnimation;
         SpriteAnimation m_walkingDownAnimation;
         SpriteAnimation m_walkingUpAnimation;
         SpriteAnimation m_walkingLeftAnimation;
         SpriteAnimation m_walkingRightAnimation;
+        void NextAnimation(SpriteAnimation& animation);
 
         // helpers
         //
         void InitializeGeometry();
         void InitializeAnimation();
         void OnMove();
-        void NextAnimation(SpriteAnimation& animation);
 };
 
 #endif //__PLAYER_H_

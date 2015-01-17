@@ -7,9 +7,9 @@
 #include "TileMap.h"
 
 TileMap::TileMap()
-: m_tiles(nullptr),
-  m_rows(0),
-  m_cols(0)
+: m_rows(0),
+  m_cols(0),
+  m_tiles(nullptr)
 {
 
 }
@@ -41,7 +41,7 @@ bool TileMap::LoadFromFile(const std::string &filename, uint32_t rows, uint32_t 
 
     for(int row = 0; std::getline(in, line); ++row)
     {
-        for(int col = 0; col < line.size(); ++col)
+        for(int col = 0; col < (int) line.size(); ++col)
         {
             m_tiles[index] = line[col] - '0';
             index++;

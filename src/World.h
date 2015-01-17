@@ -14,7 +14,7 @@
 class World
 {
     public:
-        World(float width, float height);
+        World(uint32_t width, uint32_t height);
         ~World();
 
         void OnSetup();
@@ -40,16 +40,15 @@ class World
         World(const World& rhs);
         World& operator=(const World& rhs);
 
+        uint32_t m_width;
+        uint32_t  m_height;
+        Player* m_player;
+        SpriteSheet* m_spriteSheet;
         TileMap* m_tileMap;
         TileManager* m_tileManager;
-        SpriteSheet* m_spriteSheet;
-        Player* m_player;
+        BlockManager* m_blockManager;
         // TODO: (Pavel) this is going to be a manager, just for testing
         Bomb* m_bomb;
-        BlockManager* m_blockManager;
-
-        float m_width;
-        float m_height;
 };
 
 #endif //__WORLD_H_

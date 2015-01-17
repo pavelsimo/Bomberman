@@ -15,18 +15,18 @@ namespace
 }
 
 Player::Player()
-: m_state(PST_IDLE),
-  m_curAnimation(nullptr),
-  m_lowerLeftCorner(0, 0)
+: m_lowerLeftCorner(0, 0),
+  m_state(PST_IDLE),
+  m_curAnimation(nullptr)
 {
 
 }
 
 Player::Player(float x, float y)
-: m_state(PST_IDLE),
-  m_curAnimation(nullptr),
+: Actor(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10),
   m_lowerLeftCorner(x, y),
-  Actor(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10)
+  m_state(PST_IDLE),
+  m_curAnimation(nullptr)
 {
 
 }
@@ -70,6 +70,9 @@ void Player::OnBeforeUpdate(World &world)
             break;
         case PST_MOVING_RIGHT:
             OnMoveRight();
+            break;
+        case PST_DEAD:
+            // do nothing
             break;
     }
 }
@@ -238,9 +241,4 @@ void Player::MoveTo(float x, float y)
     m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
-}
-
-Vector2 Player::GetLowerLeftCornerPosition() const
-{
-    return m_lowerLeftCorner;
 }

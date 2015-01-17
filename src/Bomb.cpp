@@ -22,7 +22,6 @@ Bomb::~Bomb()
 
 }
 
-
 void Bomb::Initialize()
 {
     InitializeGeometry();

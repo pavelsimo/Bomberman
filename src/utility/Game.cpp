@@ -3,13 +3,13 @@
 
 Game::Game(const std::string &title, uint32_t width, uint32_t height,
         uint32_t framesPerSecond)
-: m_title(title),
+: m_state(GS_RUNNING),
+  m_title(title),
   m_width(width),
   m_height(height),
-  m_window(NULL),
-  m_state(GS_RUNNING),
   m_framesPerSecond(framesPerSecond),
-  m_timePerFrame(1000 / framesPerSecond) // milliseconds
+  m_timePerFrame(1000 / framesPerSecond), // milliseconds
+  m_window(NULL)
 {
 
 }

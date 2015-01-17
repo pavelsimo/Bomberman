@@ -35,8 +35,8 @@ void TileManager::Render()
         return;
     }
 
-    uint32_t m = m_tileMap->GetColsCount();
-    uint32_t n = m_tileMap->GetRowsCount();
+    int n = static_cast<int>(m_tileMap->GetRowsCount());
+    int m = static_cast<int>(m_tileMap->GetColsCount());
     uint8_t* tiles = m_tileMap->GetTiles();
 
     for(int i = 0; i < n; i++)

@@ -43,7 +43,7 @@ bool BitmapFont::LoadGlyphsFromXML(const std::string& filename)
             std::string code = static_cast<std::string>(ch->code());
             std::string offset = static_cast<std::string>(ch->offset());
             std::string rect = static_cast<std::string>(ch->rect());
-            int width = ch->width();
+            //int width = ch->width();
 
             BitmapFontGlyph bitmapFontGlyph;
             ParseGlyphRect(rect, bitmapFontGlyph.x, bitmapFontGlyph.y,
