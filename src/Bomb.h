@@ -4,6 +4,8 @@
 #include "Actor.h"
 #include "utility/SpriteAnimation.h"
 
+class World;
+
 class Bomb : public Actor
 {
     public:
@@ -15,6 +17,7 @@ class Bomb : public Actor
 
         void Initialize();
         virtual void OnRender() override;
+        virtual void OnBeforeUpdate(World &world) override;
 
         // getters & setters
         //

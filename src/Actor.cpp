@@ -102,7 +102,7 @@ void Actor::OnMoveRight()
     // overwrite
 }
 
-bool Actor::IsColliding(const Actor &actor)
+bool Actor::IsColliding(const Actor &actor) const
 {
     AABB2 lhs = GetAABB2();
     AABB2 rhs = actor.GetAABB2();

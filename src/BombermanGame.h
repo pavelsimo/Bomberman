@@ -1,7 +1,6 @@
 #ifndef __BOMBERMANGAME_H_
 #define __BOMBERMANGAME_H_
 
-
 #include "utility/Game.h"
 #include "World.h"
 

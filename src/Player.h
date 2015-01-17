@@ -35,7 +35,6 @@ class Player : public Actor
         virtual void OnMoveLeft() override;
         virtual void OnMoveRight() override;
 
-        void MoveTo(float x, float y);
 
 
         void SetSpriteSheet(SpriteSheet* spriteSheet);
@@ -62,6 +61,8 @@ class Player : public Actor
         //
         void InitializeGeometry();
         void InitializeAnimation();
+        void Clamp(const Actor& collisionActor);
+        void MoveTo(float x, float y);
         void OnMove(SpriteAnimation& animation, const Vector2& direction);
 };
 

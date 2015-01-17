@@ -79,8 +79,8 @@ void Player::OnBeforeUpdate(World &world)
 
 void Player::OnAfterUpdate(World &world)
 {
-    Block collisionBlock;
-    if(world.GetBlockManager()->IsColliding(*this, collisionBlock))
+    Actor collisionBlock;
+    if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
 
 #if _DEBUG
@@ -90,22 +90,33 @@ void Player::OnAfterUpdate(World &world)
                 << collisionBlock.GetAABB2().max.y << ")" << std::endl;
 #endif
 
-        if(GetDirection() == PLAYER_DIR_UP)
-        {
-            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().min.y);
-        }
-        else if(GetDirection() == PLAYER_DIR_DOWN)
-        {
-            MoveTo(m_lowerLeftCorner.x, collisionBlock.GetAABB2().min.y - PLAYER_HEIGHT);
-        }
-        else if(GetDirection() == PLAYER_DIR_LEFT)
-        {
-            MoveTo(collisionBlock.GetAABB2().max.x - PLAYER_SPEED, m_lowerLeftCorner.y);
-        }
-        else if(GetDirection() == PLAYER_DIR_RIGHT)
-        {
-            MoveTo(collisionBlock.GetAABB2().min.x - PLAYER_WIDTH + PLAYER_SPEED, m_lowerLeftCorner.y);
-        }
+        Clamp(collisionBlock);
+    }
+
+    Actor collisionBomb;
+    if(world.GetBombManager()->IsColliding(*this, &collisionBomb))
+    {
+        Clamp(collisionBomb);
+    }
+}
+
+void Player::Clamp(const Actor &collisionActor)
+{
+    if(GetDirection() == PLAYER_DIR_UP)
+    {
+        MoveTo(m_lowerLeftCorner.x, collisionActor.GetAABB2().max.y - PLAYER_HEIGHT + PLAYER_SHADOW_HEIGHT + 10);
+    }
+    else if(GetDirection() == PLAYER_DIR_DOWN)
+    {
+        MoveTo(m_lowerLeftCorner.x, collisionActor.GetAABB2().min.y - PLAYER_HEIGHT);
+    }
+    else if(GetDirection() == PLAYER_DIR_LEFT)
+    {
+        MoveTo(collisionActor.GetAABB2().max.x - PLAYER_SPEED, m_lowerLeftCorner.y);
+    }
+    else if(GetDirection() == PLAYER_DIR_RIGHT)
+    {
+        MoveTo(collisionActor.GetAABB2().min.x - PLAYER_WIDTH + PLAYER_SPEED, m_lowerLeftCorner.y);
     }
 }
 
@@ -114,7 +125,6 @@ void Player::OnIdle()
     // do nothing
 }
 
-;
 void Player::OnMove(SpriteAnimation& animation, const Vector2& direction)
 {
     m_direction = direction;

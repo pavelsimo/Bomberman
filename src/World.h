@@ -6,6 +6,7 @@
 #include "utility/TileMap.h"
 #include "Bomb.h"
 #include "Block.h"
+#include "BombManager.h"
 #include "BlockManager.h"
 #include "Player.h"
 
@@ -34,6 +35,7 @@ class World
         float GetTop() const;
 
         BlockManager* GetBlockManager();
+        BombManager* GetBombManager();
 
     private:
         // non-copyable
@@ -47,6 +49,7 @@ class World
         TileMap* m_tileMap;
         TileManager* m_tileManager;
         BlockManager* m_blockManager;
+        BombManager* m_bombManager;
         // TODO: (Pavel) this is going to be a manager, just for testing
         Bomb* m_bomb;
 };

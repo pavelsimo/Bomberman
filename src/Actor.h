@@ -27,7 +27,7 @@ class Actor
         void MoveDown();
         void MoveLeft();
         void MoveRight();
-        bool IsColliding(const Actor& actor);
+        bool IsColliding(const Actor& actor) const;
 
         // virtual
         //

@@ -1,5 +1,6 @@
 #include "BlockManager.h"
-
+#include "World.h"
+#include "Actor.h"
 #include <iostream>
 
 BlockManager::BlockManager()
@@ -9,40 +10,54 @@ BlockManager::BlockManager()
 
 BlockManager::~BlockManager()
 {
-    Clean();
-}
-
-void BlockManager::AddBlock(Block* block)
-{
-    m_blocks.push_back(block);
-}
-
-void BlockManager::RemoveBlock(Block *block)
-{
-    // IMPLEMENT ME!
-}
-
-void BlockManager::Clean()
-{
     for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
     {
-        if(*it == nullptr)
+        ActorPtr actor = *it;
+        if(actor != nullptr)
         {
-            delete *it;
+            delete actor;
         }
     }
     m_blocks.clear();
 }
 
-bool BlockManager::IsColliding(const Actor& actor, Block& block)
+void BlockManager::Add(const ActorPtr actor)
+{
+    m_blocks.push_back(actor);
+}
+
+void BlockManager::Remove(ActorPtr actor)
+{
+    // TODO: (Pavel) IMPLEMENT ME!
+}
+
+void BlockManager::Update(World &world)
 {
     for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
     {
-        Block* curBlock = *it;
+        ActorPtr actor = *it;
+        actor->Update(world);
+    }
+}
 
-        if(curBlock->GetType() == BT_SOLID || curBlock->GetType() == BT_EXPLODABLE)
+void BlockManager::Render()
+{
+    for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
+    {
+        ActorPtr actor = *it;
+        actor->Render();
+    }
+}
+
+bool BlockManager::IsColliding(const Actor &actor, ActorPtr collisionActor)
+{
+    for(auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
+    {
+        Block* currentBlock = dynamic_cast<Block*>(*it);
+
+        if(currentBlock->GetType() == BT_SOLID || currentBlock->GetType() == BT_EXPLODABLE)
         {
-            if(curBlock->IsColliding(actor))
+            if(actor.IsColliding(*currentBlock))
             {
 
 #ifdef _DEBUG
@@ -51,12 +66,13 @@ bool BlockManager::IsColliding(const Actor& actor, Block& block)
                         << " " << "(" << actor.GetAABB2().max.x << ","
                         << actor.GetAABB2().max.y << ")" << std::endl;
 
-                std::cout << "BLOCK: " << "(" << curBlock->GetAABB2().min.x << ","
-                        << curBlock->GetAABB2().min.y << ")" << " " << "("
-                        << curBlock->GetAABB2().max.x << ","
-                        << curBlock->GetAABB2().max.y << ")" << std::endl;
+                std::cout << "BLOCK: " << "(" << currentBlock->GetAABB2().min.x << ","
+                        << currentBlock->GetAABB2().min.y << ")" << " " << "("
+                        << currentBlock->GetAABB2().max.x << ","
+                        << currentBlock->GetAABB2().max.y << ")" << std::endl;
 #endif
-                block = *curBlock;
+
+                *collisionActor = *currentBlock;
                 return true;
             }
         }

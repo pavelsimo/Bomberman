@@ -1,4 +1,5 @@
 #include "Bomb.h"
+#include "World.h"
 
 namespace
 {
@@ -26,6 +27,11 @@ void Bomb::Initialize()
 {
     InitializeGeometry();
     InitializeAnimation();
+}
+
+void Bomb::OnBeforeUpdate(World &world)
+{
+    m_animation.NextFrame();
 }
 
 void Bomb::OnRender()

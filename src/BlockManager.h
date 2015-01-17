@@ -1,25 +1,31 @@
 #ifndef __BLOCKMANAGER_H_
 #define __BLOCKMANAGER_H_
 
-#include <list>
 
-#include "Block.h"
+#include "IActorManager.h"
+#include "Actor.h"
 
-typedef std::list<Block*> BlockList;
+class World;
 
-class BlockManager
+class BlockManager : public IActorManager
 {
     public:
         BlockManager();
         ~BlockManager();
 
-        void Clean();
-        void AddBlock(Block* block);
-        void RemoveBlock(Block* block);
-        bool IsColliding(const Actor& actor, Block& block);
+        virtual void Add(const ActorPtr actor) override;
+        virtual void Remove(ActorPtr actor) override;
+        virtual void Update(World &world) override;
+        virtual void Render() override;
+        virtual bool IsColliding(const Actor &actor, ActorPtr collisionActor) override;
 
     private:
-        BlockList m_blocks;
+        // non-copyable
+        BlockManager(const BlockManager& rhs);
+        BlockManager& operator=(const BlockManager& rhs);
+
+
+        ActorList m_blocks;
 };
 
 

@@ -98,6 +98,7 @@ ADD_EXECUTABLE(
     src/Block.cpp
     src/Bomb.cpp
     src/BlockManager.cpp
+    src/BombManager.cpp
     src/BombermanGame.cpp
 )
 
