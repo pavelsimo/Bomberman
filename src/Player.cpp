@@ -114,38 +114,33 @@ void Player::OnIdle()
     // do nothing
 }
 
-void Player::OnMove()
+;
+void Player::OnMove(SpriteAnimation& animation, const Vector2& direction)
 {
+    m_direction = direction;
     m_position += m_direction * PLAYER_SPEED;
     m_lowerLeftCorner += m_direction * PLAYER_SPEED;
+    NextAnimation(animation);
 }
 
 void Player::OnMoveUp()
 {
-    m_direction = PLAYER_DIR_UP;
-    OnMove();
-    NextAnimation(m_walkingUpAnimation);
+    OnMove(m_walkingUpAnimation, PLAYER_DIR_UP);
 }
 
 void Player::OnMoveDown()
 {
-    m_direction = PLAYER_DIR_DOWN;
-    OnMove();
-    NextAnimation(m_walkingDownAnimation);
+    OnMove(m_walkingDownAnimation, PLAYER_DIR_DOWN);
 }
 
 void Player::OnMoveLeft()
 {
-    m_direction = PLAYER_DIR_LEFT;
-    OnMove();
-    NextAnimation(m_walkingLeftAnimation);
+    OnMove(m_walkingLeftAnimation, PLAYER_DIR_LEFT);
 }
 
 void Player::OnMoveRight()
 {
-    m_direction = PLAYER_DIR_RIGHT;
-    OnMove();
-    NextAnimation(m_walkingRightAnimation);
+    OnMove(m_walkingRightAnimation, PLAYER_DIR_RIGHT);
 }
 
 void Player::SetSpriteSheet(SpriteSheet* spriteSheet)

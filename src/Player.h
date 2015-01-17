@@ -62,7 +62,7 @@ class Player : public Actor
         //
         void InitializeGeometry();
         void InitializeAnimation();
-        void OnMove();
+        void OnMove(SpriteAnimation& animation, const Vector2& direction);
 };
 
 #endif //__PLAYER_H_
