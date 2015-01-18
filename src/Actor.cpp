@@ -144,3 +144,7 @@ AABB2 Actor::GetAABB2() const
     return m_aabb2;
 }
 
+bool Actor::CanDelete()
+{
+    return false;
+}

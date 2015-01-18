@@ -7,7 +7,7 @@ class Actor;
 class World;
 
 typedef Actor* ActorPtr;
-typedef std::list<ActorPtr> ActorList;
+typedef std::list<ActorPtr> ActorPtrList;
 
 class IActorManager
 {

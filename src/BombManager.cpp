@@ -1,4 +1,5 @@
 #include "BombManager.h"
+#include "World.h"
 
 
 BombManager::BombManager()
@@ -8,55 +9,30 @@ BombManager::BombManager()
 
 BombManager::~BombManager()
 {
-    for(auto it = m_bombs.begin(); it != m_bombs.end(); ++it)
-    {
-        ActorPtr actor = *it;
-        if(actor != nullptr)
-        {
-            delete actor;
-        }
-    }
-    m_bombs.clear();
+
 }
 
 void BombManager::Add(const ActorPtr actor)
 {
-    m_bombs.push_back(actor);
+    ActorManager::Add(actor);
 }
 
-void BombManager::Remove(const ActorPtr actor)
+void BombManager::Remove(ActorPtr actor)
 {
-    // TODO: (Pavel) IMPLEMENT ME!
+    ActorManager::Remove(actor);
 }
 
 void BombManager::Update(World &world)
 {
-    for(auto it = m_bombs.begin(); it != m_bombs.end(); ++it)
-    {
-        ActorPtr actor = *it;
-        actor->Update(world);
-    }
+    ActorManager::Update(world);
 }
 
 void BombManager::Render()
 {
-    for(auto it = m_bombs.begin(); it != m_bombs.end(); ++it)
-    {
-        ActorPtr actor = *it;
-        actor->Render();
-    }
+    ActorManager::Render();
 }
 
 bool BombManager::IsColliding(const Actor &actor, ActorPtr collisionActor)
 {
-    for(auto it = m_bombs.begin(); it != m_bombs.end(); ++it)
-    {
-        ActorPtr currentBomb = *it;
-        if(actor.IsColliding(*currentBomb))
-        {
-            *collisionActor = *currentBomb;
-            return true;
-        }
-    }
-    return false;
+    return ActorManager::IsColliding(actor, collisionActor);
 }

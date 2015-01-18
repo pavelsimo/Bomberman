@@ -29,6 +29,7 @@ class Actor
         void MoveRight();
         bool IsColliding(const Actor& actor) const;
 
+
         // virtual
         //
         virtual void OnRender();
@@ -38,6 +39,7 @@ class Actor
         virtual void OnMoveDown();
         virtual void OnMoveLeft();
         virtual void OnMoveRight();
+        virtual bool CanDelete();
 
         // getters & setters
         //

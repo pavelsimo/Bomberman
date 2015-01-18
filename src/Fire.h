@@ -1,19 +1,20 @@
-#ifndef __BOMB_H_
-#define __BOMB_H_
+#ifndef __FIRE_H_
+#define __FIRE_H_
 
 #include "Actor.h"
+#include "utility/SpriteSheet.h"
 #include "utility/SpriteAnimation.h"
 
 class World;
 
-class Bomb : public Actor
+class Fire : public Actor
 {
     public:
         // ctor & dtor
         //
-        Bomb();
-        Bomb(float x, float y);
-        ~Bomb();
+        Fire();
+        Fire(float x, float y);
+        ~Fire();
 
         void Initialize();
         virtual void OnRender() override;
@@ -35,4 +36,4 @@ class Bomb : public Actor
 };
 
 
-#endif //__BOMB_H_
+#endif //__FIRE_H_

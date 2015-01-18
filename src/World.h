@@ -4,11 +4,13 @@
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
 #include "utility/TileMap.h"
-#include "Bomb.h"
 #include "Block.h"
 #include "BombManager.h"
 #include "BlockManager.h"
+#include "FireManager.h"
 #include "Player.h"
+#include "Bomb.h"
+#include "Fire.h"
 
 #define SAFE_DELETE(p) { if(p != nullptr) { delete(p); (p)=nullptr; } }
 
@@ -50,8 +52,10 @@ class World
         TileManager* m_tileManager;
         BlockManager* m_blockManager;
         BombManager* m_bombManager;
+        FireManager* m_fireManager;
         // TODO: (Pavel) this is going to be a manager, just for testing
         Bomb* m_bomb;
+        Fire* m_fire;
 };
 
 #endif //__WORLD_H_

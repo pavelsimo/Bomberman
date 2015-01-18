@@ -5,15 +5,21 @@ namespace
 {
     const uint32_t BOMB_WIDTH = 48;
     const uint32_t BOMB_HEIGHT = 48;
+    const uint32_t BOMB_NEXTFRAME_WAIT = 10;
 }
 
 Bomb::Bomb()
+: Actor(),
+  m_spriteSheet(nullptr),
+  m_nextFrameWait(BOMB_NEXTFRAME_WAIT)
 {
 
 }
 
 Bomb::Bomb(float x, float y)
-: Actor(x, y)
+: Actor(x, y),
+  m_spriteSheet(nullptr),
+  m_nextFrameWait(BOMB_NEXTFRAME_WAIT)
 {
 
 }
@@ -31,7 +37,15 @@ void Bomb::Initialize()
 
 void Bomb::OnBeforeUpdate(World &world)
 {
-    m_animation.NextFrame();
+    if(CanRenderNextFrame())
+    {
+        m_animation.NextFrame();
+        m_nextFrameWait = BOMB_NEXTFRAME_WAIT;
+    }
+    else
+    {
+        m_nextFrameWait = std::max<uint32_t>(0, m_nextFrameWait - 1);
+    }
 }
 
 void Bomb::OnRender()
@@ -69,4 +83,9 @@ void Bomb::SetSpriteSheet(SpriteSheet *spriteSheet)
 SpriteSheet *Bomb::GetSpriteSheet()
 {
     return m_spriteSheet;
+}
+
+bool Bomb::CanRenderNextFrame()
+{
+    return m_nextFrameWait == 0;
 }

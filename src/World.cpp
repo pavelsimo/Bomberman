@@ -17,7 +17,9 @@ World::World(uint32_t width, uint32_t height)
   m_tileManager(nullptr),
   m_blockManager(nullptr),
   m_bombManager(nullptr),
-  m_bomb(nullptr)
+  m_fireManager(nullptr),
+  m_bomb(nullptr),
+  m_fire(nullptr)
 {
 
 }
@@ -29,11 +31,15 @@ World::~World() {
     SAFE_DELETE(m_tileManager)
     SAFE_DELETE(m_blockManager)
     SAFE_DELETE(m_bombManager)
+    SAFE_DELETE(m_fireManager)
     SAFE_DELETE(m_bomb)
+    SAFE_DELETE(m_fire)
 }
 
 void World::OnSetup()
 {
+    // FIXME: (Pavel) Replaced this absolute paths with relative ones.
+
     //
     // Sprite sheet
     //
@@ -79,7 +85,6 @@ void World::OnSetup()
         }
     }
 
-
     //
     // Bomb
     //
@@ -88,8 +93,25 @@ void World::OnSetup()
     m_bomb->Initialize();
     m_bomb->Update(*this);
 
+    //
+    // Fire
+    //
+    m_fire = new Fire(512, 256);
+    m_fire->SetSpriteSheet(m_spriteSheet);
+    m_fire->Initialize();
+    m_fire->Update(*this);
+
+    //
+    // Bomb Manager
+    //
     m_bombManager = new BombManager();
     m_bombManager->Add(m_bomb);
+
+    //
+    // Bomb Manager
+    //
+    m_fireManager = new FireManager();
+    m_fireManager->Add(m_fire);
 
     //
     // Player
@@ -109,6 +131,7 @@ void World::OnUpdate()
 {
     m_player->Update(*this);
     m_bombManager->Update(*this);
+    m_fireManager->Update(*this);
 }
 
 BlockManager* World::GetBlockManager()
@@ -125,6 +148,7 @@ void World::OnRender()
 {
     m_tileManager->Render();
     m_bombManager->Render();
+    m_fireManager->Render();
     m_player->Render();
 }
 

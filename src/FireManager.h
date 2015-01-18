@@ -1,16 +1,15 @@
-#ifndef __BOMBMANAGER_H_
-#define __BOMBMANAGER_H_
+#ifndef __FIREMANAGER_H_
+#define __FIREMANAGER_H_
 
 #include "ActorManager.h"
-#include "Actor.h"
 
 class World;
 
-class BombManager : public ActorManager
+class FireManager : public ActorManager
 {
     public:
-        BombManager();
-        ~BombManager();
+        FireManager();
+        virtual ~FireManager();
 
         virtual void Add(const ActorPtr actor) override;
         virtual void Remove(ActorPtr actor) override;
@@ -19,5 +18,4 @@ class BombManager : public ActorManager
         virtual bool IsColliding(const Actor &actor, ActorPtr collisionActor) override;
 };
 
-#endif //__BOMBMANAGER_H_
-
+#endif //__FIREMANAGER_H_

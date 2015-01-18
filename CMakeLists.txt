@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(Bomberman)
 
 # Debug
-ADD_DEFINITIONS(-D_DEBUG)
+#ADD_DEFINITIONS(-D_DEBUG)
 ADD_DEFINITIONS(-Wall)
 
 # Modules
@@ -97,8 +97,11 @@ ADD_EXECUTABLE(
     src/World.cpp
     src/Block.cpp
     src/Bomb.cpp
+    src/Fire.cpp
+    src/ActorManager.cpp
     src/BlockManager.cpp
     src/BombManager.cpp
+    src/FireManager.cpp
     src/BombermanGame.cpp
 )
 
