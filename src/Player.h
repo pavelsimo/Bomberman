@@ -35,6 +35,8 @@ class Player : public Actor
         virtual void OnMoveLeft() override;
         virtual void OnMoveRight() override;
 
+        void DropBomb(World &world);
+
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 

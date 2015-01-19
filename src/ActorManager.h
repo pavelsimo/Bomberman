@@ -1,5 +1,5 @@
-#ifndef __ACTORMANAGERBASE_H_
-#define __ACTORMANAGERBASE_H_
+#ifndef __ACTORMANAGER_H_
+#define __ACTORMANAGER_H_
 
 #include "IActorManager.h"
 #include "Actor.h"
@@ -27,4 +27,4 @@ class ActorManager : public IActorManager
         ActorPtrList m_actors;
 };
 
-#endif //__ACTORMANAGERBASE_H_
+#endif //__ACTORMANAGER_H_

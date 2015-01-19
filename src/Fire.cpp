@@ -1,6 +1,5 @@
 #include "Fire.h"
 #include "World.h"
-#include <algorithm>
 
 namespace
 {

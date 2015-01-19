@@ -92,12 +92,13 @@ void Player::OnAfterUpdate(World &world)
 
         Clamp(collisionBlock);
     }
-
+    /*
     Actor collisionBomb;
     if(world.GetBombManager()->IsColliding(*this, &collisionBomb))
     {
         Clamp(collisionBomb);
     }
+    */
 }
 
 void Player::Clamp(const Actor &collisionActor)
@@ -246,4 +247,27 @@ void Player::MoveTo(float x, float y)
     m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
     m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+}
+
+void Player::DropBomb(World& world)
+{
+    // FIXME: (Pavel) Create a BombFactory
+    // FIXME: (Pavel) Remove this magic numbers
+
+    // (x / TILE_WIDTH) * TILE_WIDTH + BOMB_WIDTH / 2
+    // (y / TILE_HEIGHT) * TILE_HEIGHT + BOMB_HEIGHT / 2
+
+    int x = floor(m_position.x / 64) * 64 + 8;
+    int y = floor(m_position.y / 64) * 64 + 8;
+    Bomb *bomb = new Bomb(x, y);
+    bomb->SetSpriteSheet(m_spriteSheet);
+    bomb->Initialize();
+    bomb->Update(world);
+
+#if _DEBUG
+    std::cout << "BOMB: " << x << " " << y << std::endl;
+#endif
+
+    // adding a bomb to the world
+    world.GetBombManager()->Add(bomb);
 }

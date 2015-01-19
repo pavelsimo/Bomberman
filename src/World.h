@@ -53,8 +53,6 @@ class World
         BlockManager* m_blockManager;
         BombManager* m_bombManager;
         FireManager* m_fireManager;
-        // TODO: (Pavel) this is going to be a manager, just for testing
-        Bomb* m_bomb;
         Fire* m_fire;
 };
 

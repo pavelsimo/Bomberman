@@ -18,7 +18,6 @@ World::World(uint32_t width, uint32_t height)
   m_blockManager(nullptr),
   m_bombManager(nullptr),
   m_fireManager(nullptr),
-  m_bomb(nullptr),
   m_fire(nullptr)
 {
 
@@ -32,7 +31,6 @@ World::~World() {
     SAFE_DELETE(m_blockManager)
     SAFE_DELETE(m_bombManager)
     SAFE_DELETE(m_fireManager)
-    SAFE_DELETE(m_bomb)
     SAFE_DELETE(m_fire)
 }
 
@@ -86,14 +84,6 @@ void World::OnSetup()
     }
 
     //
-    // Bomb
-    //
-    m_bomb = new Bomb(128, 256);
-    m_bomb->SetSpriteSheet(m_spriteSheet);
-    m_bomb->Initialize();
-    m_bomb->Update(*this);
-
-    //
     // Fire
     //
     m_fire = new Fire(512, 256);
@@ -105,7 +95,6 @@ void World::OnSetup()
     // Bomb Manager
     //
     m_bombManager = new BombManager();
-    m_bombManager->Add(m_bomb);
 
     //
     // Bomb Manager
@@ -171,6 +160,9 @@ void World::OnKeyDown(unsigned char key)
         case 'd':
         case 'D':
             m_player->SetState(PST_MOVING_RIGHT);
+            break;
+        case ' ':
+            m_player->DropBomb(*this);
             break;
     }
 }
