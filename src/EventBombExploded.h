@@ -13,6 +13,7 @@ class EventBombExploded : public BaseEvent
         virtual const EventType& GetEventType() const override;
         virtual void Serialize(std::ostream &out) const override;
         virtual const std::string& GetName() const override;
+        ActorId GetActorId() const;
 
         static const EventType Id_EventType;
     private:

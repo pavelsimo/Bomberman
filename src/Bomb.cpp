@@ -1,9 +1,13 @@
 #include "Bomb.h"
 #include "World.h"
+#include "EventBombExploded.h"
+
+#include <memory>
 
 namespace
 {
     const uint32_t BOMB_NEXTFRAME_WAIT = 10;
+    const int32_t BOMB_LIFESPAN = 100;
 }
 
 const uint32_t Bomb::WIDTH(48);
@@ -12,7 +16,9 @@ const uint32_t Bomb::HEIGHT(48);
 Bomb::Bomb()
 : Actor(),
   m_spriteSheet(nullptr),
-  m_nextFrameWait(BOMB_NEXTFRAME_WAIT)
+  m_nextFrameWait(BOMB_NEXTFRAME_WAIT),
+  m_lifeSpan(BOMB_LIFESPAN),
+  m_bCanTriggerExplosion(true)
 {
 
 }
@@ -20,7 +26,9 @@ Bomb::Bomb()
 Bomb::Bomb(float x, float y)
 : Actor(x, y),
   m_spriteSheet(nullptr),
-  m_nextFrameWait(BOMB_NEXTFRAME_WAIT)
+  m_nextFrameWait(BOMB_NEXTFRAME_WAIT),
+  m_lifeSpan(BOMB_LIFESPAN),
+  m_bCanTriggerExplosion(true)
 {
 
 }
@@ -40,6 +48,15 @@ void Bomb::Initialize()
 
 void Bomb::OnBeforeUpdate(World &world)
 {
+    m_lifeSpan = std::max<int32_t>(0, m_lifeSpan - 1);
+
+    if(CanDelete() && m_bCanTriggerExplosion)
+    {
+        std::shared_ptr<EventBombExploded> bombExplosionEvent(new EventBombExploded(GetId()));
+        world.GetEventManager().QueueEvent(bombExplosionEvent);
+        m_bCanTriggerExplosion = false;
+    }
+
     if(CanRenderNextFrame())
     {
         m_animation.NextFrame();
@@ -91,4 +108,9 @@ SpriteSheet *Bomb::GetSpriteSheet()
 bool Bomb::CanRenderNextFrame()
 {
     return m_nextFrameWait == 0;
+}
+
+bool Bomb::CanDelete()
+{
+    return m_lifeSpan == 0;
 }

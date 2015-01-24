@@ -29,3 +29,7 @@ const std::string& EventBombExploded::GetName() const
     return m_name;
 }
 
+ActorId EventBombExploded::GetActorId() const
+{
+    return m_id;
+}
