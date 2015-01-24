@@ -13,10 +13,11 @@ class ActorManager : public IActorManager
         virtual ~ActorManager();
 
         virtual void Add(const ActorPtr actor) override;
-        virtual void Remove(ActorPtr actor) override;
+        virtual bool Remove(ActorId id) override;
+        virtual ActorPtr Get(ActorId id) override;
         virtual void Update(World &world) override;
         virtual void Render() override;
-        virtual bool IsColliding(const Actor &actor, ActorPtr collisionActor) override;
+        virtual bool IsColliding(const Actor &actor, ActorPtr collider) override;
 
     private:
         // non-copyable

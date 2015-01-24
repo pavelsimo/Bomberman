@@ -26,7 +26,9 @@ Fire::Fire(float x, float y)
 
 Fire::~Fire()
 {
-
+    #ifdef _DEBUG
+        std::cout << "DESTROY FIRE: " << GetId() << '\n';
+    #endif
 }
 
 void Fire::Initialize()

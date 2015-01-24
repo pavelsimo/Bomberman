@@ -15,9 +15,6 @@ class BombermanGame : public Game
         virtual void OnKeyUp(SDL_KeyboardEvent& event);
         virtual void OnUpdate();
         virtual void OnRender();
-
-    private:
-        World* m_world;
 };
 
 #endif //__BOMBERMANGAME_H_

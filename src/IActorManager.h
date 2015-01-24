@@ -2,8 +2,8 @@
 #define __IACTORMANAGER_H_
 
 #include <list>
+#include "Actor.h"
 
-class Actor;
 class World;
 
 typedef Actor* ActorPtr;
@@ -14,7 +14,8 @@ class IActorManager
     public:
         virtual ~IActorManager() {}
         virtual void Add(const ActorPtr actor) = 0;
-        virtual void Remove(ActorPtr actor) = 0;
+        virtual bool Remove(ActorId id) = 0;
+        virtual ActorPtr Get(ActorId id) = 0;
         virtual void Update(World& world) = 0;
         virtual void Render() = 0;
         virtual bool IsColliding(const Actor& actor, ActorPtr collisionActor) = 0;

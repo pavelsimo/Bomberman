@@ -12,27 +12,7 @@ BlockManager::~BlockManager()
 
 }
 
-void BlockManager::Add(const ActorPtr actor)
-{
-    ActorManager::Add(actor);
-}
-
-void BlockManager::Remove(ActorPtr actor)
-{
-    ActorManager::Remove(actor);
-}
-
-void BlockManager::Update(World &world)
-{
-    //ActorManager::Update(world);
-}
-
-void BlockManager::Render()
-{
-    //ActorManager::Render();
-}
-
-bool BlockManager::IsColliding(const Actor &actor, ActorPtr collisionActor)
+bool BlockManager::IsColliding(const Actor &actor, ActorPtr collider)
 {
     for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
     {
@@ -53,7 +33,7 @@ bool BlockManager::IsColliding(const Actor &actor, ActorPtr collisionActor)
                         << currentBlock->GetAABB2().max.x << ","
                         << currentBlock->GetAABB2().max.y << ")" << std::endl;
 #endif
-                *collisionActor = *currentBlock;
+                *collider = *currentBlock;
                 return true;
             }
         }

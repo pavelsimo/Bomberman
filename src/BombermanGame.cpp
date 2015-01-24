@@ -1,19 +1,14 @@
 #include "BombermanGame.h"
 
 BombermanGame::BombermanGame(const std::string &title, uint32_t width, uint32_t height)
-: Game(title, width, height),
-  m_world(new World(width, height))
+: Game(title, width, height)
 {
 
 }
 
 BombermanGame::~BombermanGame()
 {
-    if(m_world != nullptr)
-    {
-        delete m_world;
-        m_world = nullptr;
-    }
+
 }
 
 void BombermanGame::OnKeyDown(SDL_KeyboardEvent& event)
@@ -21,19 +16,19 @@ void BombermanGame::OnKeyDown(SDL_KeyboardEvent& event)
     switch(event.keysym.sym)
     {
         case SDLK_w:
-            m_world->OnKeyDown('w');
+            World::GetInstance().OnKeyDown('w');
             break;
         case SDLK_s:
-            m_world->OnKeyDown('s');
+            World::GetInstance().OnKeyDown('s');
             break;
         case SDLK_a:
-            m_world->OnKeyDown('a');
+            World::GetInstance().OnKeyDown('a');
             break;
         case SDLK_d:
-            m_world->OnKeyDown('d');
+            World::GetInstance().OnKeyDown('d');
             break;
         case SDLK_SPACE:
-            m_world->OnKeyDown(' ');
+            World::GetInstance().OnKeyDown(' ');
             break;
     }
 }
@@ -43,31 +38,31 @@ void BombermanGame::OnKeyUp(SDL_KeyboardEvent& event)
     switch(event.keysym.sym)
     {
         case SDLK_w:
-            m_world->OnKeyUp('w');
+            World::GetInstance().OnKeyUp('w');
             break;
         case SDLK_s:
-            m_world->OnKeyUp('s');
+            World::GetInstance().OnKeyUp('s');
             break;
         case SDLK_a:
-            m_world->OnKeyUp('a');
+            World::GetInstance().OnKeyUp('a');
             break;
         case SDLK_d:
-            m_world->OnKeyUp('d');
+            World::GetInstance().OnKeyUp('d');
             break;
     }
 }
 
 void BombermanGame::OnUpdate()
 {
-    m_world->OnUpdate();
+    World::GetInstance().OnUpdate();
 }
 
 void BombermanGame::OnRender()
 {
-    m_world->OnRender();
+    World::GetInstance().OnRender();
 }
 
 void BombermanGame::OnInit()
 {
-    m_world->OnSetup();
+    World::GetInstance().Initialize(m_width, m_height);
 }

@@ -3,10 +3,11 @@
 
 namespace
 {
-    const uint32_t BOMB_WIDTH = 48;
-    const uint32_t BOMB_HEIGHT = 48;
     const uint32_t BOMB_NEXTFRAME_WAIT = 10;
 }
+
+const uint32_t Bomb::WIDTH(48);
+const uint32_t Bomb::HEIGHT(48);
 
 Bomb::Bomb()
 : Actor(),
@@ -26,7 +27,9 @@ Bomb::Bomb(float x, float y)
 
 Bomb::~Bomb()
 {
-
+    #ifdef _DEBUG
+        std::cout << "DESTROY BOMB: " << GetId() << '\n';
+    #endif
 }
 
 void Bomb::Initialize()
@@ -63,7 +66,7 @@ void Bomb::InitializeGeometry()
     // upper-left corner
     m_geometry.push_back(Vector2(0, 0));
     // bottom-right corner
-    m_geometry.push_back(Vector2(BOMB_WIDTH, BOMB_HEIGHT));
+    m_geometry.push_back(Vector2(Bomb::WIDTH, Bomb::HEIGHT));
 }
 
 void Bomb::InitializeAnimation()

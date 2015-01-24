@@ -33,7 +33,9 @@ Player::Player(float x, float y)
 
 Player::~Player()
 {
-
+    #ifdef _DEBUG
+        std::cout << "DESTROY PLAYER: " << GetId() << '\n';
+    #endif
 }
 
 void Player::Initialize()
@@ -80,7 +82,7 @@ void Player::OnBeforeUpdate(World &world)
 void Player::OnAfterUpdate(World &world)
 {
     Actor collisionBlock;
-    if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
+    if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
     {
 
 #if _DEBUG
@@ -251,14 +253,12 @@ void Player::MoveTo(float x, float y)
 
 void Player::DropBomb(World& world)
 {
+    uint32_t TILE_WIDTH = world.GetTileManager().GetTileWidth();
+    uint32_t TILE_HEIGHT = world.GetTileManager().GetTileWidth();
+    int x = floor(m_position.x / TILE_WIDTH) * TILE_WIDTH + (TILE_WIDTH - Bomb::WIDTH) * 0.5;
+    int y = floor(m_position.y / TILE_HEIGHT) * TILE_HEIGHT + (TILE_HEIGHT - Bomb::HEIGHT) * 0.5;
+
     // FIXME: (Pavel) Create a BombFactory
-    // FIXME: (Pavel) Remove this magic numbers
-
-    // (x / TILE_WIDTH) * TILE_WIDTH + BOMB_WIDTH / 2
-    // (y / TILE_HEIGHT) * TILE_HEIGHT + BOMB_HEIGHT / 2
-
-    int x = floor(m_position.x / 64) * 64 + 8;
-    int y = floor(m_position.y / 64) * 64 + 8;
     Bomb *bomb = new Bomb(x, y);
     bomb->SetSpriteSheet(m_spriteSheet);
     bomb->Initialize();
@@ -269,5 +269,5 @@ void Player::DropBomb(World& world)
 #endif
 
     // adding a bomb to the world
-    world.GetBombManager()->Add(bomb);
+    world.GetBombManager().Add(bomb);
 }

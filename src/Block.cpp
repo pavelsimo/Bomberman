@@ -1,5 +1,7 @@
 #include "Block.h"
 
+#include <iostream>
+
 namespace
 {
     const uint32_t BLOCK_WIDTH = 64;
@@ -28,7 +30,9 @@ Block::Block(float x, float y, BlockType type)
 
 Block::~Block()
 {
-
+    #ifdef _DEBUG
+        std::cout << "DESTROY BLOCK: " << GetId() << '\n';
+    #endif
 }
 
 void Block::SetType(BlockType type)

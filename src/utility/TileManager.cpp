@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <elf.h>
 #include "TileManager.h"
 
 TileManager::TileManager(SpriteSheet *spriteSheet, uint32_t tileWidth, uint32_t tileHeight
@@ -71,4 +72,15 @@ void TileManager::SetTileMap(TileMap *tileMap)
 TileMap* TileManager::GetTileMap()
 {
     return m_tileMap;
+}
+
+
+uint32_t TileManager::GetTileWidth()
+{
+    return m_tileWidth;
+}
+
+uint32_t TileManager::GetTileHeight()
+{
+    return m_tileHeight;
 }

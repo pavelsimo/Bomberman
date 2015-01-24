@@ -1,38 +1,33 @@
 #include "BombManager.h"
 #include "World.h"
-
+#include "EventBombExploded.h"
 
 BombManager::BombManager()
+: ActorManager()
 {
 
 }
 
 BombManager::~BombManager()
 {
+    EventListener callback = fastdelegate::MakeDelegate(this,
+            &BombManager::EvtHandlerBombExploded);
 
+    World::GetInstance().GetEventManager().RemoveListener(callback,
+            EventBombExploded::Id_EventType);
 }
 
-void BombManager::Add(const ActorPtr actor)
+
+void BombManager::Initialize()
 {
-    ActorManager::Add(actor);
+    EventListener callback = fastdelegate::MakeDelegate(this,
+            &BombManager::EvtHandlerBombExploded);
+
+    World::GetInstance().GetEventManager().AddListener(callback,
+            EventBombExploded::Id_EventType);
 }
 
-void BombManager::Remove(ActorPtr actor)
+void BombManager::EvtHandlerBombExploded(IEventPtr pEvent)
 {
-    ActorManager::Remove(actor);
-}
 
-void BombManager::Update(World &world)
-{
-    ActorManager::Update(world);
-}
-
-void BombManager::Render()
-{
-    ActorManager::Render();
-}
-
-bool BombManager::IsColliding(const Actor &actor, ActorPtr collisionActor)
-{
-    return ActorManager::IsColliding(actor, collisionActor);
 }

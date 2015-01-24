@@ -2,16 +2,20 @@
 
 #include "Actor.h"
 
+std::atomic<ActorId> Actor::counter(0);
+
 Actor::Actor()
 : m_position(0, 0),
   m_velocity(0, 0),
-  m_direction(0, 0)
+  m_direction(0, 0),
+  m_id(++counter)
 {
 
 }
 
 Actor::Actor(float x, float y)
-: m_position(x, y)
+: m_position(x, y),
+  m_id(++counter)
 {
 
 }
@@ -61,47 +65,6 @@ void Actor::OnAfterUpdate(World &world)
     // overwrite
 }
 
-void Actor::MoveUp()
-{
-    OnMoveUp();
-}
-
-void Actor::OnMoveUp()
-{
-    // overwrite
-}
-
-void Actor::MoveDown()
-{
-    OnMoveDown();
-}
-
-void Actor::OnMoveDown()
-{
-
-}
-
-void Actor::MoveLeft()
-{
-    OnMoveLeft();
-}
-
-void Actor::OnMoveLeft()
-{
-    // overwrite
-}
-
-
-void Actor::MoveRight()
-{
-    OnMoveRight();
-}
-
-void Actor::OnMoveRight()
-{
-    // overwrite
-}
-
 bool Actor::IsColliding(const Actor &actor) const
 {
     AABB2 lhs = GetAABB2();
@@ -147,4 +110,9 @@ AABB2 Actor::GetAABB2() const
 bool Actor::CanDelete()
 {
     return false;
+}
+
+ActorId Actor::GetId() const
+{
+    return m_id;
 }

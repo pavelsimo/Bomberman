@@ -2,6 +2,9 @@
 #define __ACTOR_H_
 
 #include <vector>
+#include <atomic>
+
+#include "ActorType.h"
 
 #include "utility/Vector2.h"
 #include "utility/AABB2.h"
@@ -9,6 +12,7 @@
 class World;
 
 typedef std::vector<Vector2> VertexLst;
+typedef uint32_t ActorId;
 
 class Actor
 {
@@ -23,22 +27,13 @@ class Actor
         //
         void Render();
         void Update(World& world);
-        void MoveUp();
-        void MoveDown();
-        void MoveLeft();
-        void MoveRight();
         bool IsColliding(const Actor& actor) const;
-
 
         // virtual
         //
         virtual void OnRender();
         virtual void OnBeforeUpdate(World &world);
         virtual void OnAfterUpdate(World &world);
-        virtual void OnMoveUp();
-        virtual void OnMoveDown();
-        virtual void OnMoveLeft();
-        virtual void OnMoveRight();
         virtual bool CanDelete();
 
         // getters & setters
@@ -53,6 +48,7 @@ class Actor
         Vector2 GetDirection() const;
 
         AABB2 GetAABB2() const;
+        ActorId GetId() const;
 
     protected:
         VertexLst m_geometry;
@@ -61,6 +57,8 @@ class Actor
         Vector2 m_direction;
 
     private:
+        static std::atomic<ActorId> counter;
+        ActorId m_id;
         AABB2 m_aabb2;
 };
 

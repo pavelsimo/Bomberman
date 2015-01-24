@@ -30,10 +30,10 @@ class Player : public Actor
         virtual void OnRender() override;
         virtual void OnBeforeUpdate(World &world) override;
         virtual void OnAfterUpdate(World &world) override;
-        virtual void OnMoveUp() override;
-        virtual void OnMoveDown() override;
-        virtual void OnMoveLeft() override;
-        virtual void OnMoveRight() override;
+        void OnMoveUp();
+        void OnMoveDown();
+        void OnMoveLeft();
+        void OnMoveRight();
 
         void DropBomb(World &world);
 

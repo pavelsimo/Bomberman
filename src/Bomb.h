@@ -24,6 +24,9 @@ class Bomb : public Actor
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 
+        static const uint32_t WIDTH;
+        static const uint32_t HEIGHT;
+
     private:
         SpriteAnimation m_animation;
         SpriteSheet* m_spriteSheet;

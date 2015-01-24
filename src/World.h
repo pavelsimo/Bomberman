@@ -8,6 +8,7 @@
 #include "BombManager.h"
 #include "BlockManager.h"
 #include "FireManager.h"
+#include "EventManager.h"
 #include "Player.h"
 #include "Bomb.h"
 #include "Fire.h"
@@ -17,10 +18,9 @@
 class World
 {
     public:
-        World(uint32_t width, uint32_t height);
         ~World();
 
-        void OnSetup();
+        void Initialize(uint32_t width, uint32_t height);
         void OnKeyDown(unsigned char key);
         void OnKeyUp(unsigned char key);
         void OnMouseMove(int x, int y);
@@ -36,10 +36,20 @@ class World
         float GetBottom() const;
         float GetTop() const;
 
-        BlockManager* GetBlockManager();
-        BombManager* GetBombManager();
+        static World& GetInstance()
+        {
+            static World instance;
+            return instance;
+        }
+
+        BlockManager& GetBlockManager();
+        BombManager& GetBombManager();
+        TileMap& GetTileMap();
+        TileManager& GetTileManager();
+        EventManager& GetEventManager();
 
     private:
+        World() {};
         // non-copyable
         World(const World& rhs);
         World& operator=(const World& rhs);
@@ -54,6 +64,7 @@ class World
         BombManager* m_bombManager;
         FireManager* m_fireManager;
         Fire* m_fire;
+        EventManager *m_eventManager;
 };
 
 #endif //__WORLD_H_

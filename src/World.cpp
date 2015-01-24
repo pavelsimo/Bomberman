@@ -8,21 +8,6 @@ namespace
     const int TILE_NCOLS = 10;
 }
 
-World::World(uint32_t width, uint32_t height)
-: m_width(width),
-  m_height(height),
-  m_player(nullptr),
-  m_spriteSheet(nullptr),
-  m_tileMap(nullptr),
-  m_tileManager(nullptr),
-  m_blockManager(nullptr),
-  m_bombManager(nullptr),
-  m_fireManager(nullptr),
-  m_fire(nullptr)
-{
-
-}
-
 World::~World() {
     SAFE_DELETE(m_player)
     SAFE_DELETE(m_spriteSheet)
@@ -32,28 +17,38 @@ World::~World() {
     SAFE_DELETE(m_bombManager)
     SAFE_DELETE(m_fireManager)
     SAFE_DELETE(m_fire)
+    SAFE_DELETE(m_eventManager)
 }
 
-void World::OnSetup()
+void World::Initialize(uint32_t width, uint32_t height)
 {
+    m_player = nullptr;
+    m_spriteSheet = nullptr;
+    m_tileMap = nullptr;
+    m_tileManager = nullptr;
+    m_blockManager = nullptr;
+    m_bombManager = nullptr;
+    m_fireManager = nullptr;
+    m_eventManager = nullptr;
+    m_fire = nullptr;
+    m_width = width;
+    m_height = height;
+
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
 
-    //
+    // Event Manager
+    m_eventManager = new EventManager();
+
     // Sprite sheet
-    //
     m_spriteSheet = new SpriteSheet();
     m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
-    //
     // Tile map
-    //
     m_tileMap = new TileMap();
     m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_001.txt", TILE_NROWS, TILE_NCOLS);
 
-    //
     // Tile manager
-    //
     m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
     m_tileManager->SetTileMap(m_tileMap);
     m_tileManager->AddSprite("Block_Background.png");
@@ -61,9 +56,7 @@ void World::OnSetup()
     m_tileManager->AddSprite("Block_Explodable.png");
     m_tileManager->AddSprite("Block_Portal.png");
 
-    //
     // Block Manager
-    //
     m_blockManager = new BlockManager();
     for(int i = 0; i < TILE_NROWS; ++i)
     {
@@ -83,28 +76,21 @@ void World::OnSetup()
         }
     }
 
-    //
     // Fire
-    //
     m_fire = new Fire(512, 256);
     m_fire->SetSpriteSheet(m_spriteSheet);
     m_fire->Initialize();
     m_fire->Update(*this);
 
-    //
     // Bomb Manager
-    //
     m_bombManager = new BombManager();
+    m_bombManager->Initialize();
 
-    //
     // Bomb Manager
-    //
     m_fireManager = new FireManager();
     m_fireManager->Add(m_fire);
 
-    //
     // Player
-    //
     m_player = new Player(128, 128);
     m_player->SetSpriteSheet(m_spriteSheet);
     m_player->Initialize();
@@ -118,19 +104,38 @@ void World::OnDestroy()
 
 void World::OnUpdate()
 {
+    m_eventManager->Update();
     m_player->Update(*this);
     m_bombManager->Update(*this);
     m_fireManager->Update(*this);
 }
 
-BlockManager* World::GetBlockManager()
+BlockManager& World::GetBlockManager()
 {
-    return m_blockManager;
+    return *m_blockManager;
 }
 
-BombManager* World::GetBombManager()
+BombManager& World::GetBombManager()
 {
-    return m_bombManager;
+    return *m_bombManager;
+}
+
+
+TileMap& World::GetTileMap()
+{
+    return *m_tileMap;
+}
+
+
+TileManager& World::GetTileManager()
+{
+    return *m_tileManager;
+}
+
+
+EventManager &World::GetEventManager()
+{
+    return *m_eventManager;
 }
 
 void World::OnRender()

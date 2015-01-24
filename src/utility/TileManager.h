@@ -22,9 +22,14 @@ class TileManager
         // methods
         //
         void AddSprite(const std::string &spriteName);
+        void Render();
+
+        // getters & setters
+        //
         void SetTileMap(TileMap *tileMap);
         TileMap* GetTileMap();
-        void Render();
+        uint32_t GetTileWidth();
+        uint32_t GetTileHeight();
 
     private:
         SpriteSheet* m_spriteSheet;

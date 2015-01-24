@@ -3,6 +3,7 @@
 
 #include "ActorManager.h"
 #include "Actor.h"
+#include "IEventManager.h"
 
 class World;
 
@@ -12,12 +13,12 @@ class BombManager : public ActorManager
         BombManager();
         ~BombManager();
 
-        virtual void Add(const ActorPtr actor) override;
-        virtual void Remove(ActorPtr actor) override;
-        virtual void Update(World &world) override;
-        virtual void Render() override;
-        virtual bool IsColliding(const Actor &actor, ActorPtr collisionActor) override;
+        void Initialize();
+
+        void EvtHandlerBombExploded(IEventPtr pEvent);
 };
+
+
 
 #endif //__BOMBMANAGER_H_
 
