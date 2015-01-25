@@ -12,10 +12,10 @@ FireManager::FireManager()
 FireManager::~FireManager()
 {
     // Removing Listener OnBombExploded
-    EventListener callback = fastdelegate::MakeDelegate(this,
+    EventListener callbackBombExploded = fastdelegate::MakeDelegate(this,
             &FireManager::OnBombExploded);
 
-    World::GetInstance().GetEventManager().RemoveListener(callback,
+    World::GetInstance().GetEventManager().RemoveListener(callbackBombExploded,
             EventBombExploded::Id_EventType);
 
     // Removing Listener OnFireExtinguished
@@ -52,6 +52,9 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     Vector2 position = bombExplosionEvent->GetBombPosition();
     SpriteSheet& spriteSheet = World::GetInstance().GetSpriteSheet();
 
+    // FIXME: (Pavel) Use a FireFactory
+
+
     Fire *fire = new Fire(position.x, position.y);
     fire->SetSpriteSheet(&spriteSheet);
     fire->Initialize();
@@ -63,12 +66,14 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     {
         if(dis == 0) continue;
 
+        // FIXME: (Pavel) Replace this magic numbers
         Fire *fire1 = new Fire(position.x + dis * 64, position.y);
         fire1->SetSpriteSheet(&spriteSheet);
         fire1->Initialize();
         fire1->Update(World::GetInstance());
         Add(fire1);
 
+        // FIXME: (Pavel) Replace this magic numbers
         Fire *fire2 = new Fire(position.x, position.y + dis * 64);
         fire2->SetSpriteSheet(&spriteSheet);
         fire2->Initialize();
