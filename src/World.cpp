@@ -76,19 +76,13 @@ void World::Initialize(uint32_t width, uint32_t height)
         }
     }
 
-    // Fire
-    m_fire = new Fire(512, 256);
-    m_fire->SetSpriteSheet(m_spriteSheet);
-    m_fire->Initialize();
-    m_fire->Update(*this);
-
     // Bomb Manager
     m_bombManager = new BombManager();
     m_bombManager->Initialize();
 
     // Bomb Manager
     m_fireManager = new FireManager();
-    m_fireManager->Add(m_fire);
+    m_fireManager->Initialize();
 
     // Player
     m_player = new Player(128, 128);
@@ -136,6 +130,12 @@ TileManager& World::GetTileManager()
 EventManager &World::GetEventManager()
 {
     return *m_eventManager;
+}
+
+
+SpriteSheet &World::GetSpriteSheet()
+{
+    return *m_spriteSheet;
 }
 
 void World::OnRender()

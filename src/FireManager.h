@@ -2,6 +2,7 @@
 #define __FIREMANAGER_H_
 
 #include "ActorManager.h"
+#include "IEventManager.h"
 
 class World;
 
@@ -10,6 +11,14 @@ class FireManager : public ActorManager
     public:
         FireManager();
         ~FireManager();
+
+        void Initialize();
+
+        //
+        // Events
+        //
+        void OnBombExploded(IEventPtr pEvent);
+        void OnFireExtinguished(IEventPtr pEvent);
 };
 
 #endif //__FIREMANAGER_H_

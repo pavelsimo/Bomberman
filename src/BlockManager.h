@@ -15,5 +15,4 @@ class BlockManager : public ActorManager
         virtual bool IsColliding(const Actor &actor, ActorPtr collider) override;
 };
 
-
 #endif //__BLOCKMANAGER_H_

@@ -47,6 +47,7 @@ class World
         TileMap& GetTileMap();
         TileManager& GetTileManager();
         EventManager& GetEventManager();
+        SpriteSheet& GetSpriteSheet();
 
     private:
         World() {};

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <elf.h>
 
 #include "Actor.h"
 
@@ -8,16 +9,16 @@ Actor::Actor()
 : m_position(0, 0),
   m_velocity(0, 0),
   m_direction(0, 0),
-  m_id(++counter)
+  m_lifeSpan(0)
 {
-
+    m_id = ++counter;
 }
 
 Actor::Actor(float x, float y)
 : m_position(x, y),
-  m_id(++counter)
+  m_lifeSpan(0)
 {
-
+    m_id = ++counter;
 }
 
 Actor::~Actor()
@@ -39,6 +40,11 @@ void Actor::OnRender()
 void Actor::Update(World& world)
 {
     OnBeforeUpdate(world);
+
+    //
+    // updating lifespan
+    //
+    m_lifeSpan = std::max<int32_t>(0, m_lifeSpan - 1);
 
     //
     // updating axis aligned bounding box
@@ -87,6 +93,12 @@ void Actor::SetDirection(const Vector2 &direction)
     m_direction = direction;
 }
 
+
+void Actor::SetLifeSpan(int32_t lifeSpan)
+{
+    m_lifeSpan = lifeSpan;
+}
+
 Vector2 Actor::GetPosition() const
 {
     return m_position;
@@ -107,9 +119,14 @@ AABB2 Actor::GetAABB2() const
     return m_aabb2;
 }
 
+int32_t Actor::GetLifeSpan() const
+{
+    return m_lifeSpan;
+}
+
 bool Actor::CanDelete()
 {
-    return false;
+    return GetLifeSpan() == 0;
 }
 
 ActorId Actor::GetId() const

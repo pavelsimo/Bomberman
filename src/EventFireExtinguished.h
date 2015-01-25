@@ -1,15 +1,15 @@
-#ifndef __EVENTBOMBEXPLODED_H_
-#define __EVENTBOMBEXPLODED_H_
+#ifndef __EVENTFIREEXTINGUISHED_H_
+#define __EVENTFIREEXTINGUISHED_H_
 
 #include "BaseEvent.h"
 #include "Actor.h"
 #include "utility/Vector2.h"
 
-class EventBombExploded : public BaseEvent
+class EventFireExtinguished : public BaseEvent
 {
     public:
-        EventBombExploded(ActorId id, const Vector2& position);
-        ~EventBombExploded();
+        EventFireExtinguished(ActorId id, const Vector2& position);
+        ~EventFireExtinguished();
 
         virtual const EventType& GetEventType() const override;
         virtual void Serialize(std::ostream &out) const override;
@@ -24,4 +24,5 @@ class EventBombExploded : public BaseEvent
         std::string m_name;
 };
 
-#endif //__EVENTBOMBEXPLODED_H_
+
+#endif //__EVENTFIREEXTINGUISHED_H_

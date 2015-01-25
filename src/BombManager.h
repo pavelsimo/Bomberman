@@ -14,11 +14,8 @@ class BombManager : public ActorManager
         ~BombManager();
 
         void Initialize();
-
-        void EvtHandlerBombExploded(IEventPtr pEvent);
+        void OnBombExploded(IEventPtr pEvent);
 };
-
-
 
 #endif //__BOMBMANAGER_H_
 

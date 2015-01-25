@@ -29,11 +29,29 @@ void ActorManager::Add(const ActorPtr actor)
 
 bool ActorManager::Remove(ActorId id)
 {
+    for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
+    {
+        ActorPtr actor = *it;
+        if(actor->GetId() == id)
+        {
+            delete actor;
+            m_actors.erase(it);
+            return true;
+        }
+    }
     return false;
 }
 
 ActorPtr ActorManager::Get(ActorId id)
 {
+    for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
+    {
+        ActorPtr actor = *it;
+        if(actor->GetId() == id)
+        {
+            return actor;
+        }
+    }
     return nullptr;
 }
 
@@ -43,7 +61,6 @@ void ActorManager::Update(World &world)
     {
         ActorPtr actor = *it;
         actor->Update(world);
-
     }
 }
 

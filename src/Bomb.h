@@ -24,9 +24,6 @@ class Bomb : public Actor
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
 
-
-        virtual bool CanDelete() override;
-
         static const uint32_t WIDTH;
         static const uint32_t HEIGHT;
 
@@ -34,7 +31,6 @@ class Bomb : public Actor
         SpriteAnimation m_animation;
         SpriteSheet* m_spriteSheet;
         uint32_t m_nextFrameWait;
-        int32_t m_lifeSpan;
         bool m_bCanTriggerExplosion;
 
         bool CanRenderNextFrame();

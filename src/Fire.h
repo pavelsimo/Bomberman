@@ -29,6 +29,7 @@ class Fire : public Actor
         SpriteAnimation m_animation;
         SpriteSheet* m_spriteSheet;
         uint32_t m_nextFrameWait;
+        bool m_bCanTriggerFireExtinguished;
 
         bool CanRenderNextFrame();
         void InitializeGeometry();
