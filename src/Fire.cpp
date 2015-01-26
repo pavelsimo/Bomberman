@@ -7,7 +7,7 @@ namespace
     const uint32_t FIRE_WIDTH = 48;
     const uint32_t FIRE_HEIGHT = 48;
     const uint32_t FIRE_NEXTFRAME_WAIT = 10;
-    const int32_t FIRE_LIFESPAN = 150;
+    const uint32_t FIRE_LIFESPAN = 150;
 }
 
 Fire::Fire()

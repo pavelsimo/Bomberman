@@ -35,7 +35,7 @@ ActorId EventFireExtinguished::GetActorId() const
     return m_id;
 }
 
-Vector2 EventFireExtinguished::GetBombPosition() const
+Vector2 EventFireExtinguished::GetFirePosition() const
 {
     return m_position;
 }

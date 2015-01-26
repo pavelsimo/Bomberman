@@ -7,7 +7,7 @@
 namespace
 {
     const uint32_t BOMB_NEXTFRAME_WAIT = 10;
-    const int32_t BOMB_LIFESPAN = 150;
+    const uint32_t BOMB_LIFESPAN = 150;
 }
 
 const uint32_t Bomb::WIDTH(48);

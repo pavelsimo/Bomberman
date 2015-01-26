@@ -44,7 +44,7 @@ void Actor::Update(World& world)
     //
     // updating lifespan
     //
-    m_lifeSpan = std::max<int32_t>(0, m_lifeSpan - 1);
+    m_lifeSpan = std::max<uint32_t>(0, m_lifeSpan - 1);
 
     //
     // updating axis aligned bounding box
@@ -94,7 +94,7 @@ void Actor::SetDirection(const Vector2 &direction)
 }
 
 
-void Actor::SetLifeSpan(int32_t lifeSpan)
+void Actor::SetLifeSpan(uint32_t lifeSpan)
 {
     m_lifeSpan = lifeSpan;
 }
@@ -119,7 +119,7 @@ AABB2 Actor::GetAABB2() const
     return m_aabb2;
 }
 
-int32_t Actor::GetLifeSpan() const
+uint32_t Actor::GetLifeSpan() const
 {
     return m_lifeSpan;
 }

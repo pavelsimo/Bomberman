@@ -54,7 +54,6 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
 
     // FIXME: (Pavel) Use a FireFactory
 
-
     Fire *fire = new Fire(position.x, position.y);
     fire->SetSpriteSheet(&spriteSheet);
     fire->Initialize();
@@ -62,18 +61,25 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     Add(fire);
 
     // Fire
+    // FIXME: (Pavel) Replace this magic numbers: -2, 2
     for(int dis = -2; dis <= 2; ++dis)
     {
-        if(dis == 0) continue;
+        // TODO: (Pavel) Check for BT_SOLID Blocks. Not fire should be created
+        // TODO: (Pavel) Check for BT_EXPLODABLE Blocks. Fire should be created, and trigger OnBlockExplosion().
 
-        // FIXME: (Pavel) Replace this magic numbers
+        if(dis == 0)
+        {
+            continue;
+        }
+
+        // FIXME: (Pavel) Replace this magic number: 64
         Fire *fire1 = new Fire(position.x + dis * 64, position.y);
         fire1->SetSpriteSheet(&spriteSheet);
         fire1->Initialize();
         fire1->Update(World::GetInstance());
         Add(fire1);
 
-        // FIXME: (Pavel) Replace this magic numbers
+        // FIXME: (Pavel) Replace this magic numbers: 64
         Fire *fire2 = new Fire(position.x, position.y + dis * 64);
         fire2->SetSpriteSheet(&spriteSheet);
         fire2->Initialize();

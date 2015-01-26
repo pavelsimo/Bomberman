@@ -12,10 +12,8 @@ ActorManager::~ActorManager()
     for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
     {
         ActorPtr actor = *it;
-
         if(actor != nullptr)
         {
-
             delete actor;
         }
     }

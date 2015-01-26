@@ -30,7 +30,8 @@ void BombManager::Initialize()
 
 void BombManager::OnBombExploded(IEventPtr pEvent)
 {
-    std::shared_ptr<EventBombExploded> bombExplosionEvent = std::static_pointer_cast<EventBombExploded>(pEvent);
+    std::shared_ptr<EventBombExploded> bombExplosionEvent =
+            std::static_pointer_cast<EventBombExploded>(pEvent);
 
     #ifdef _DEBUG
         std::cout << "BOOOM!!! " << bombExplosionEvent->GetName() << " " <<

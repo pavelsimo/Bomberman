@@ -15,7 +15,7 @@ class EventFireExtinguished : public BaseEvent
         virtual void Serialize(std::ostream &out) const override;
         virtual const std::string& GetName() const override;
         ActorId GetActorId() const;
-        Vector2 GetBombPosition() const;
+        Vector2 GetFirePosition() const;
 
         static const EventType Id_EventType;
     private:

@@ -50,20 +50,20 @@ class Actor
         AABB2 GetAABB2() const;
         ActorId GetId() const;
 
-        int32_t GetLifeSpan() const;
-        void SetLifeSpan(int32_t lifeSpan);
+        uint32_t GetLifeSpan() const;
+        void SetLifeSpan(uint32_t lifeSpan);
 
     protected:
         VertexLst m_geometry;
         Vector2 m_position;
         Vector2 m_velocity;
         Vector2 m_direction;
-    
+
     private:
         static std::atomic<ActorId> counter;
         ActorId m_id;
         AABB2 m_aabb2;
-        int32_t m_lifeSpan;
+        uint32_t m_lifeSpan;
 };
 
 #endif //__ACTOR_H_
