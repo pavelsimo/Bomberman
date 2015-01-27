@@ -80,6 +80,11 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
                 {
                     Fire *fireHorizontal = FireFactory::GetInstance().CreateFire(xHorizontal, yHorizontal);
                     Add(fireHorizontal);
+
+                    if(btHorizontal == BT_EXPLODABLE)
+                    {
+                        bCanPropagateHorizontal = false;
+                    }
                 }
                 else
                 {
@@ -98,6 +103,11 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
                 {
                     Fire *fireVertical = FireFactory::GetInstance().CreateFire(xVertical, yVertical);
                     Add(fireVertical);
+
+                    if(btVertical == BT_EXPLODABLE)
+                    {
+                        bCanPropagateVertical = false;
+                    }
                 }
                 else
                 {

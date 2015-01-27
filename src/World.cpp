@@ -45,7 +45,7 @@ void World::Initialize(uint32_t width, uint32_t height)
 
     // Tile map
     m_tileMap = new TileMap();
-    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_001.txt", TILE_NROWS, TILE_NCOLS);
+    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt", TILE_NROWS, TILE_NCOLS);
 
     // Tile manager
     m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
