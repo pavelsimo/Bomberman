@@ -105,8 +105,8 @@ ADD_EXECUTABLE(
     src/BombermanGame.cpp
     src/BaseEvent.cpp
     src/EventManager.cpp
-    src/EventBombExploded.cpp
-    src/EventFireExtinguished.cpp
+    src/BombExplodedEvent.cpp
+    src/FireExtinguishedEvent.cpp
 )
 
 TARGET_LINK_LIBRARIES(

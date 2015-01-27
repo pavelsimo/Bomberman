@@ -1,6 +1,6 @@
 #include "Bomb.h"
 #include "World.h"
-#include "EventBombExploded.h"
+#include "BombExplodedEvent.h"
 
 #include <memory>
 
@@ -47,7 +47,7 @@ void Bomb::OnBeforeUpdate(World &world)
 {
     if(CanDelete() && m_bCanTriggerExplosion)
     {
-        std::shared_ptr<EventBombExploded> bombExplosionEvent(new EventBombExploded(GetId(), m_position));
+        std::shared_ptr<BombExplodedEvent> bombExplosionEvent(new BombExplodedEvent(GetId(), m_position));
         world.GetEventManager().QueueEvent(bombExplosionEvent);
         m_bCanTriggerExplosion = false;
     }

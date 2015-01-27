@@ -18,7 +18,7 @@ class IActorManager
         virtual ActorPtr Get(ActorId id) = 0;
         virtual void Update(World& world) = 0;
         virtual void Render() = 0;
-        virtual bool IsColliding(const Actor& actor, ActorPtr collisionActor) = 0;
+        virtual bool IsColliding(const Actor& actor, ActorPtr collider) = 0;
 };
 
 #endif //__IACTORMANAGER_H_

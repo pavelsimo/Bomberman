@@ -1,6 +1,6 @@
 #include "FireManager.h"
-#include "EventBombExploded.h"
-#include "EventFireExtinguished.h"
+#include "BombExplodedEvent.h"
+#include "FireExtinguishedEvent.h"
 #include "World.h"
 
 FireManager::FireManager()
@@ -16,14 +16,14 @@ FireManager::~FireManager()
             &FireManager::OnBombExploded);
 
     World::GetInstance().GetEventManager().RemoveListener(callbackBombExploded,
-            EventBombExploded::Id_EventType);
+            BombExplodedEvent::Id_EventType);
 
     // Removing Listener OnFireExtinguished
     EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
             &FireManager::OnFireExtinguished);
 
     World::GetInstance().GetEventManager().RemoveListener(callbackFireExtinguished,
-            EventFireExtinguished::Id_EventType);
+            FireExtinguishedEvent::Id_EventType);
 }
 
 void FireManager::Initialize()
@@ -33,20 +33,20 @@ void FireManager::Initialize()
             &FireManager::OnBombExploded);
 
     World::GetInstance().GetEventManager().AddListener(callbackBombExploded,
-            EventBombExploded::Id_EventType);
+            BombExplodedEvent::Id_EventType);
 
     // Adding Listener OnFireExtinguished
     EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
             &FireManager::OnFireExtinguished);
 
     World::GetInstance().GetEventManager().AddListener(callbackFireExtinguished,
-            EventFireExtinguished::Id_EventType);
+            FireExtinguishedEvent::Id_EventType);
 }
 
 void FireManager::OnBombExploded(IEventPtr pEvent)
 {
-    std::shared_ptr<EventBombExploded> bombExplosionEvent =
-            std::static_pointer_cast<EventBombExploded>(pEvent);
+    std::shared_ptr<BombExplodedEvent> bombExplosionEvent =
+            std::static_pointer_cast<BombExplodedEvent>(pEvent);
 
     ActorId id = bombExplosionEvent->GetActorId();
     Vector2 position = bombExplosionEvent->GetBombPosition();
@@ -90,8 +90,8 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
 
 void FireManager::OnFireExtinguished(IEventPtr pEvent)
 {
-    std::shared_ptr<EventFireExtinguished> fireExtinguishedEvent =
-            std::static_pointer_cast<EventFireExtinguished>(pEvent);
+    std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent =
+            std::static_pointer_cast<FireExtinguishedEvent>(pEvent);
 
     ActorId id = fireExtinguishedEvent->GetActorId();
     Remove(id);
