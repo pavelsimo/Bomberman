@@ -64,7 +64,6 @@ class World
         BlockManager* m_blockManager;
         BombManager* m_bombManager;
         FireManager* m_fireManager;
-        Fire* m_fire;
         EventManager *m_eventManager;
 };
 

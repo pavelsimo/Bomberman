@@ -1,6 +1,7 @@
 /.idea
 /build
 /bin
+TODO.txt
 
 # Compiled Object files
 *.slo

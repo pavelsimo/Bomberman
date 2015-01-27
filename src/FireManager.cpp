@@ -2,6 +2,9 @@
 #include "BombExplodedEvent.h"
 #include "FireExtinguishedEvent.h"
 #include "World.h"
+#include "FireFactory.h"
+
+#include <cstdio>
 
 FireManager::FireManager()
 : ActorManager()
@@ -48,43 +51,60 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     std::shared_ptr<BombExplodedEvent> bombExplosionEvent =
             std::static_pointer_cast<BombExplodedEvent>(pEvent);
 
-    ActorId id = bombExplosionEvent->GetActorId();
-    Vector2 position = bombExplosionEvent->GetBombPosition();
-    SpriteSheet& spriteSheet = World::GetInstance().GetSpriteSheet();
+    World& world = World::GetInstance();
+    TileMap& tileMap = world.GetTileMap();
+    Vector2 bombPosition = bombExplosionEvent->GetBombPosition();
+    int tileWidth = world.GetTileManager().GetTileWidth();
+    int tileHeight = world.GetTileManager().GetTileHeight();
 
-    // FIXME: (Pavel) Use a FireFactory
+    Fire *fireCenter = FireFactory::GetInstance().CreateFire(bombPosition.x, bombPosition.y);
+    Add(fireCenter);
 
-    Fire *fire = new Fire(position.x, position.y);
-    fire->SetSpriteSheet(&spriteSheet);
-    fire->Initialize();
-    fire->Update(World::GetInstance());
-    Add(fire);
-
-    // Fire
-    // FIXME: (Pavel) Replace this magic numbers: -2, 2
-    for(int dis = -2; dis <= 2; ++dis)
+    // FIXME: (Pavel) Replace this magic numbers
+    for(int direction = -1; direction <= 1; direction+= 2)
     {
-        // TODO: (Pavel) Check for BT_SOLID Blocks. Not fire should be created
-        // TODO: (Pavel) Check for BT_EXPLODABLE Blocks. Fire should be created, and trigger OnBlockExplosion().
-
-        if(dis == 0)
+        bool bCanPropagateVertical = true;
+        bool bCanPropagateHorizontal = true;
+        for(int amplitude = 1; amplitude <= 2; ++amplitude)
         {
-            continue;
+            // FIXME: (Pavel) Create a method for both kinds of propagation
+            if(bCanPropagateHorizontal)
+            {
+                int xHorizontal = bombPosition.x + (direction * amplitude) * tileWidth;
+                int yHorizontal = bombPosition.y;
+                int rowHorizontal = yHorizontal / tileHeight;
+                int colHorizontal = xHorizontal / tileWidth;
+                BlockType btHorizontal = static_cast<BlockType>(tileMap.GetTile(rowHorizontal, colHorizontal));
+
+                if(btHorizontal == BT_BACKGROUND || btHorizontal == BT_EXPLODABLE)
+                {
+                    Fire *fireHorizontal = FireFactory::GetInstance().CreateFire(xHorizontal, yHorizontal);
+                    Add(fireHorizontal);
+                }
+                else
+                {
+                    bCanPropagateHorizontal = false;
+                }
+            }
+
+            if(bCanPropagateVertical)
+            {
+                int xVertical = bombPosition.x;
+                int yVertical = bombPosition.y + (direction * amplitude) * tileHeight;
+                int rowVertical = yVertical / tileHeight;
+                int colVertical = xVertical / tileWidth;
+                BlockType btVertical = static_cast<BlockType>(tileMap.GetTile(rowVertical, colVertical));
+                if(btVertical == BT_BACKGROUND || btVertical == BT_EXPLODABLE)
+                {
+                    Fire *fireVertical = FireFactory::GetInstance().CreateFire(xVertical, yVertical);
+                    Add(fireVertical);
+                }
+                else
+                {
+                    bCanPropagateVertical = false;
+                }
+            }
         }
-
-        // FIXME: (Pavel) Replace this magic number: 64
-        Fire *fire1 = new Fire(position.x + dis * 64, position.y);
-        fire1->SetSpriteSheet(&spriteSheet);
-        fire1->Initialize();
-        fire1->Update(World::GetInstance());
-        Add(fire1);
-
-        // FIXME: (Pavel) Replace this magic numbers: 64
-        Fire *fire2 = new Fire(position.x, position.y + dis * 64);
-        fire2->SetSpriteSheet(&spriteSheet);
-        fire2->Initialize();
-        fire2->Update(World::GetInstance());
-        Add(fire2);
     }
 }
 

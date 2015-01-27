@@ -28,8 +28,8 @@ class TileManager
         //
         void SetTileMap(TileMap *tileMap);
         TileMap* GetTileMap();
-        uint32_t GetTileWidth();
-        uint32_t GetTileHeight();
+        uint32_t GetTileWidth() const;
+        uint32_t GetTileHeight() const;
 
     private:
         SpriteSheet* m_spriteSheet;

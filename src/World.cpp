@@ -16,7 +16,6 @@ World::~World() {
     SAFE_DELETE(m_blockManager)
     SAFE_DELETE(m_bombManager)
     SAFE_DELETE(m_fireManager)
-    SAFE_DELETE(m_fire)
     SAFE_DELETE(m_eventManager)
 }
 
@@ -30,7 +29,7 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_bombManager = nullptr;
     m_fireManager = nullptr;
     m_eventManager = nullptr;
-    m_fire = nullptr;
+
     m_width = width;
     m_height = height;
 
@@ -58,6 +57,8 @@ void World::Initialize(uint32_t width, uint32_t height)
 
     // Block Manager
     m_blockManager = new BlockManager();
+    m_blockManager->Initialize();
+
     for(int i = 0; i < TILE_NROWS; ++i)
     {
         for(int j = 0; j < TILE_NCOLS; ++j)

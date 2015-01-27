@@ -1,5 +1,6 @@
 #include "BlockManager.h"
 #include "World.h"
+#include "FireExtinguishedEvent.h"
 
 BlockManager::BlockManager()
 : ActorManager()
@@ -9,7 +10,23 @@ BlockManager::BlockManager()
 
 BlockManager::~BlockManager()
 {
+    // Removing Listener OnFireExtinguished
+    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
+            &BlockManager::OnFireExtinguished);
 
+    World::GetInstance().GetEventManager().RemoveListener(callbackFireExtinguished,
+            FireExtinguishedEvent::Id_EventType);
+}
+
+
+void BlockManager::Initialize()
+{
+    // Adding Listener OnFireExtinguished
+    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
+            &BlockManager::OnFireExtinguished);
+
+    World::GetInstance().GetEventManager().AddListener(callbackFireExtinguished,
+            FireExtinguishedEvent::Id_EventType);
 }
 
 bool BlockManager::IsColliding(const Actor &actor, ActorPtr collider)
@@ -39,4 +56,38 @@ bool BlockManager::IsColliding(const Actor &actor, ActorPtr collider)
         }
     }
     return false;
+}
+
+
+void BlockManager::OnFireExtinguished(IEventPtr pEvent)
+{
+    std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent =
+            std::static_pointer_cast<FireExtinguishedEvent>(pEvent);
+
+    ActorId id = fireExtinguishedEvent->GetActorId();
+    Vector2 firePosition = fireExtinguishedEvent->GetFirePosition();
+
+    for(auto it = m_actors.begin(); it != m_actors.end(); )
+    {
+        Block* currentBlock = dynamic_cast<Block*>(*it);
+        assert(currentBlock != nullptr);
+
+        if(currentBlock->GetType() == BT_EXPLODABLE &&
+                currentBlock->GetAABB2().IsInside(firePosition))
+        {
+            SAFE_DELETE(currentBlock)
+            it = m_actors.erase(it);
+            int row = firePosition.y / 64;
+            int col = firePosition.x / 64;
+
+#ifdef _DEBUG
+            std::cout << "DESTROYING BLOCK : " << row << " " << col << std::endl;
+#endif
+            World::GetInstance().GetTileMap().SetTile(row, col, BT_BACKGROUND);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }

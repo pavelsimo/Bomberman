@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(Bomberman)
 
 # Debug
-#ADD_DEFINITIONS(-D_DEBUG)
+ADD_DEFINITIONS(-D_DEBUG)
 ADD_DEFINITIONS(-Wall)
 
 # Modules
@@ -107,6 +107,7 @@ ADD_EXECUTABLE(
     src/EventManager.cpp
     src/BombExplodedEvent.cpp
     src/FireExtinguishedEvent.cpp
+    src/FireFactory.cpp
 )
 
 TARGET_LINK_LIBRARIES(

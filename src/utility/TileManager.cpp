@@ -75,12 +75,12 @@ TileMap* TileManager::GetTileMap()
 }
 
 
-uint32_t TileManager::GetTileWidth()
+uint32_t TileManager::GetTileWidth() const
 {
     return m_tileWidth;
 }
 
-uint32_t TileManager::GetTileHeight()
+uint32_t TileManager::GetTileHeight() const
 {
     return m_tileHeight;
 }
