@@ -1,4 +1,5 @@
 #include "World.h"
+#include "events/PlayerFireCollisionEvent.h"
 
 namespace
 {
@@ -8,7 +9,10 @@ namespace
     const int TILE_NCOLS = 10;
 }
 
-World::~World() {
+World::~World()
+{
+    OnDestroy();
+
     SAFE_DELETE(m_player)
     SAFE_DELETE(m_spriteSheet)
     SAFE_DELETE(m_tileMap)
@@ -29,22 +33,23 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_bombManager = nullptr;
     m_fireManager = nullptr;
     m_eventManager = nullptr;
-
     m_width = width;
     m_height = height;
 
-    // FIXME: (Pavel) Replaced this absolute paths with relative ones.
+
 
     // Event Manager
     m_eventManager = new EventManager();
 
     // Sprite sheet
     m_spriteSheet = new SpriteSheet();
+    // FIXME: (Pavel) Replaced this absolute paths with relative ones.
     m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
     // Tile map
     m_tileMap = new TileMap();
+    // FIXME: (Pavel) Replaced this absolute paths with relative ones.
     m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt", TILE_NROWS, TILE_NCOLS);
 
     // Tile manager
@@ -90,11 +95,21 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_player->SetSpriteSheet(m_spriteSheet);
     m_player->Initialize();
     m_player->Update(*this);
+
+    // Adding listener OnPlayerFireCollision
+    EventListener callbackPlayerFireCollision = fastdelegate::MakeDelegate(this,
+            &World::OnPlayerFireCollision);
+    World::GetInstance().GetEventManager().AddListener(callbackPlayerFireCollision,
+            PlayerFireCollisionEvent::Id_EventType);
 }
 
 void World::OnDestroy()
 {
-
+    // Removing listener OnPlayerFireCollision
+    EventListener callbackPlayerFireCollision = fastdelegate::MakeDelegate(this,
+            &World::OnPlayerFireCollision);
+    World::GetInstance().GetEventManager().RemoveListener(callbackPlayerFireCollision,
+            PlayerFireCollisionEvent::Id_EventType);
 }
 
 void World::OnUpdate()
@@ -236,4 +251,13 @@ float World::GetTop() const
     return 0;
 }
 
+void World::OnPlayerFireCollision(IEventPtr pEvent)
+{
+    std::shared_ptr<PlayerFireCollisionEvent> fireExtinguishedEvent =
+            std::static_pointer_cast<PlayerFireCollisionEvent>(pEvent);
 
+    // TODO: (Pavel) Trigger OnPlayerDead()
+
+    ActorId fireId = fireExtinguishedEvent->GetFireId();
+    std::cout << "OnPlayerFireCollision()" << std::endl;
+}

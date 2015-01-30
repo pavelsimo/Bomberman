@@ -50,6 +50,10 @@ class World
         EventManager& GetEventManager();
         SpriteSheet& GetSpriteSheet();
 
+        // events
+        //
+        void OnPlayerFireCollision(IEventPtr pEvent);
+
     private:
         World() {};
         // non-copyable

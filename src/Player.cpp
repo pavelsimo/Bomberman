@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "World.h"
+#include "events/PlayerFireCollisionEvent.h"
 
 namespace
 {
@@ -84,20 +85,26 @@ void Player::OnAfterUpdate(World &world)
     Actor collisionBlock;
     if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
     {
-
 #if _DEBUG
         std::cout << "CBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
                 << collisionBlock.GetAABB2().min.y << ")" << " "
                 << "(" << collisionBlock.GetAABB2().max.x << ","
                 << collisionBlock.GetAABB2().max.y << ")" << std::endl;
 #endif
-
         Clamp(collisionBlock);
     }
 
     Actor collisionFire;
     if(world.GetFireManager().IsColliding(*this, &collisionFire))
     {
+        ActorId fireId = collisionFire.GetId();
+        Vector2 firePosition = collisionFire.GetPosition();
+        Vector2 playerPosition = GetPosition();
+
+        std::shared_ptr<PlayerFireCollisionEvent> playerFireCollisionEvent(
+                new PlayerFireCollisionEvent(fireId, firePosition, playerPosition));
+        world.GetEventManager().QueueEvent(playerFireCollisionEvent);
+
         #if _DEBUG
                 std::cout << "PLAYER IS DEAD!!" << std::endl;
         #endif

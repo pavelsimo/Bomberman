@@ -79,6 +79,13 @@ endif()
 ADD_EXECUTABLE(
     ${PROJECT_NAME}
     src/main.cpp
+    src/Actor.cpp
+    src/Player.cpp
+    src/World.cpp
+    src/Block.cpp
+    src/Bomb.cpp
+    src/Fire.cpp
+    src/BombermanGame.cpp
     src/utility/Texture.cpp
     src/utility/SpriteSheet.cpp
     src/utility/SpriteSheetXMLParser.cxx
@@ -92,21 +99,15 @@ ADD_EXECUTABLE(
     src/utility/AABB2.cpp
     src/utility/TileMap.cpp
     src/utility/Game.cpp
-    src/Actor.cpp
-    src/Player.cpp
-    src/World.cpp
-    src/Block.cpp
-    src/Bomb.cpp
-    src/Fire.cpp
     src/managers/ActorManager.cpp
     src/managers/BlockManager.cpp
     src/managers/BombManager.cpp
     src/managers/FireManager.cpp
-    src/BombermanGame.cpp
     src/events/BaseEvent.cpp
     src/events/EventManager.cpp
     src/events/BombExplodedEvent.cpp
     src/events/FireExtinguishedEvent.cpp
+    src/events/PlayerFireCollisionEvent.cpp
     src/factories/FireFactory.cpp
 )
 
