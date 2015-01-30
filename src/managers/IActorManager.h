@@ -2,7 +2,7 @@
 #define __IACTORMANAGER_H_
 
 #include <list>
-#include "Actor.h"
+#include "../Actor.h"
 
 class World;
 

@@ -5,10 +5,10 @@
 #include "utility/TileManager.h"
 #include "utility/TileMap.h"
 #include "Block.h"
-#include "BombManager.h"
-#include "BlockManager.h"
-#include "FireManager.h"
-#include "EventManager.h"
+#include "managers/BombManager.h"
+#include "managers/BlockManager.h"
+#include "managers/FireManager.h"
+#include "events/EventManager.h"
 #include "Player.h"
 #include "Bomb.h"
 #include "Fire.h"
@@ -44,6 +44,7 @@ class World
 
         BlockManager& GetBlockManager();
         BombManager& GetBombManager();
+        FireManager& GetFireManager();
         TileMap& GetTileMap();
         TileManager& GetTileManager();
         EventManager& GetEventManager();

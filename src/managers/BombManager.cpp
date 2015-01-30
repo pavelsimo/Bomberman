@@ -1,6 +1,6 @@
 #include "BombManager.h"
-#include "World.h"
-#include "BombExplodedEvent.h"
+#include "../World.h"
+#include "../events/BombExplodedEvent.h"
 #include <iostream>
 #include <memory>
 

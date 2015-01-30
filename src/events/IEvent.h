@@ -4,7 +4,7 @@
 #include <ostream>
 
 #include "EventType.h"
-#include "utility/FastDelegate.h"
+#include "../utility/FastDelegate.h"
 
 class IEvent
 {

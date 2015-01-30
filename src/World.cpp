@@ -139,6 +139,12 @@ SpriteSheet &World::GetSpriteSheet()
     return *m_spriteSheet;
 }
 
+FireManager &World::GetFireManager()
+{
+    return *m_fireManager;
+}
+
+
 void World::OnRender()
 {
     m_tileManager->Render();
@@ -229,3 +235,5 @@ float World::GetTop() const
 {
     return 0;
 }
+
+

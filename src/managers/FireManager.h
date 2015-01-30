@@ -2,7 +2,7 @@
 #define __FIREMANAGER_H_
 
 #include "ActorManager.h"
-#include "IEventManager.h"
+#include "../events/IEventManager.h"
 
 class World;
 

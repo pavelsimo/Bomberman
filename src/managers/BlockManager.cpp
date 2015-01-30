@@ -1,6 +1,6 @@
 #include "BlockManager.h"
-#include "World.h"
-#include "FireExtinguishedEvent.h"
+#include "../World.h"
+#include "../events/FireExtinguishedEvent.h"
 
 BlockManager::BlockManager()
 : ActorManager()

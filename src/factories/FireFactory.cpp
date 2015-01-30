@@ -1,5 +1,5 @@
 #include "FireFactory.h"
-#include "World.h"
+#include "../World.h"
 
 
 FireFactory::~FireFactory()

@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(Bomberman)
 
 # Debug
-#ADD_DEFINITIONS(-D_DEBUG)
+ADD_DEFINITIONS(-D_DEBUG)
 ADD_DEFINITIONS(-Wall)
 
 # Modules
@@ -98,16 +98,16 @@ ADD_EXECUTABLE(
     src/Block.cpp
     src/Bomb.cpp
     src/Fire.cpp
-    src/ActorManager.cpp
-    src/BlockManager.cpp
-    src/BombManager.cpp
-    src/FireManager.cpp
+    src/managers/ActorManager.cpp
+    src/managers/BlockManager.cpp
+    src/managers/BombManager.cpp
+    src/managers/FireManager.cpp
     src/BombermanGame.cpp
-    src/BaseEvent.cpp
-    src/EventManager.cpp
-    src/BombExplodedEvent.cpp
-    src/FireExtinguishedEvent.cpp
-    src/FireFactory.cpp
+    src/events/BaseEvent.cpp
+    src/events/EventManager.cpp
+    src/events/BombExplodedEvent.cpp
+    src/events/FireExtinguishedEvent.cpp
+    src/factories/FireFactory.cpp
 )
 
 TARGET_LINK_LIBRARIES(

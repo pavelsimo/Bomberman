@@ -94,6 +94,15 @@ void Player::OnAfterUpdate(World &world)
 
         Clamp(collisionBlock);
     }
+
+    Actor collisionFire;
+    if(world.GetFireManager().IsColliding(*this, &collisionFire))
+    {
+        #if _DEBUG
+                std::cout << "PLAYER IS DEAD!!" << std::endl;
+        #endif
+    }
+
     /*
     Actor collisionBomb;
     if(world.GetBombManager()->IsColliding(*this, &collisionBomb))

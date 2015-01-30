@@ -1,7 +1,7 @@
 #ifndef __FIREFACTORY_H_
 #define __FIREFACTORY_H_
 
-#include "Fire.h"
+#include "../Fire.h"
 
 class FireFactory
 {
@@ -23,7 +23,5 @@ class FireFactory
         FireFactory(const FireFactory& rhs);
         FireFactory& operator=(const FireFactory& rhs);
 };
-
-
 
 #endif //__FIREFACTORY_H_

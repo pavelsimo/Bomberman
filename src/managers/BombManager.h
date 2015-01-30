@@ -2,8 +2,8 @@
 #define __BOMBMANAGER_H_
 
 #include "ActorManager.h"
-#include "Actor.h"
-#include "IEventManager.h"
+#include "../Actor.h"
+#include "../events/IEventManager.h"
 
 class World;
 

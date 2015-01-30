@@ -1,9 +1,9 @@
 #ifndef __BLOCKMANAGER_H_
 #define __BLOCKMANAGER_H_
 
-#include "IEventManager.h"
+#include "../events/IEventManager.h"
 #include "ActorManager.h"
-#include "Actor.h"
+#include "../Actor.h"
 
 class World;
 

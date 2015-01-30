@@ -1,8 +1,8 @@
 #include "FireManager.h"
-#include "BombExplodedEvent.h"
-#include "FireExtinguishedEvent.h"
-#include "World.h"
-#include "FireFactory.h"
+#include "../events/BombExplodedEvent.h"
+#include "../events/FireExtinguishedEvent.h"
+#include "../World.h"
+#include "../factories/FireFactory.h"
 
 #include <cstdio>
 

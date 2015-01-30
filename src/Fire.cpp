@@ -1,6 +1,6 @@
 #include "Fire.h"
 #include "World.h"
-#include "FireExtinguishedEvent.h"
+#include "events/FireExtinguishedEvent.h"
 
 namespace
 {
@@ -55,8 +55,8 @@ void Fire::OnBeforeUpdate(World &world)
 {
     if(CanDelete() && m_bCanTriggerFireExtinguished)
     {
-        std::shared_ptr<FireExtinguishedEvent> bombExplosionEvent(new FireExtinguishedEvent(GetId(), m_position));
-        world.GetEventManager().QueueEvent(bombExplosionEvent);
+        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent(new FireExtinguishedEvent(GetId(), m_position));
+        world.GetEventManager().QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
 
