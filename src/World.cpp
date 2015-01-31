@@ -21,6 +21,7 @@ World::~World()
     SAFE_DELETE(m_bombManager)
     SAFE_DELETE(m_fireManager)
     SAFE_DELETE(m_eventManager)
+    SAFE_DELETE(m_inputHandler)
 }
 
 void World::Initialize(uint32_t width, uint32_t height)
@@ -35,8 +36,6 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_eventManager = nullptr;
     m_width = width;
     m_height = height;
-
-
 
     // Event Manager
     m_eventManager = new EventManager();
@@ -96,24 +95,39 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_player->Initialize();
     m_player->Update(*this);
 
-    // Adding listener OnPlayerFireCollision
-    EventListener callbackPlayerFireCollision = fastdelegate::MakeDelegate(this,
-            &World::OnPlayerFireCollision);
-    World::GetInstance().GetEventManager().AddListener(callbackPlayerFireCollision,
-            PlayerFireCollisionEvent::Id_EventType);
+    // Input handler
+    m_inputHandler = new InputHandler();
+
+    // Adding Listener OnPlayerFireCollision
+    EVENT_MGR_ADD_LISTENER(callbackPlayerFireCollision,
+            &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
 }
 
 void World::OnDestroy()
 {
-    // Removing listener OnPlayerFireCollision
-    EventListener callbackPlayerFireCollision = fastdelegate::MakeDelegate(this,
-            &World::OnPlayerFireCollision);
-    World::GetInstance().GetEventManager().RemoveListener(callbackPlayerFireCollision,
-            PlayerFireCollisionEvent::Id_EventType);
+    EVENT_MGR_REMOVE_LISTENER(callbackPlayerFireCollision,
+            &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
 }
 
 void World::OnUpdate()
 {
+    CommandList commands;
+    m_inputHandler->FetchCommands(commands);
+
+    if(!commands.empty())
+    {
+        for(auto it = commands.begin(); it != commands.end(); ++it)
+        {
+            CommandPtr command = *it;
+            command->execute(*m_player);
+        }
+    }
+    else
+    {
+        CommandPtr idleCommand = m_inputHandler->GetIdleCommand();
+        idleCommand->execute(*m_player);
+    }
+
     m_eventManager->Update();
     m_player->Update(*this);
     m_bombManager->Update(*this);
@@ -130,24 +144,20 @@ BombManager& World::GetBombManager()
     return *m_bombManager;
 }
 
-
 TileMap& World::GetTileMap()
 {
     return *m_tileMap;
 }
-
 
 TileManager& World::GetTileManager()
 {
     return *m_tileManager;
 }
 
-
 EventManager &World::GetEventManager()
 {
     return *m_eventManager;
 }
-
 
 SpriteSheet &World::GetSpriteSheet()
 {
@@ -159,7 +169,6 @@ FireManager &World::GetFireManager()
     return *m_fireManager;
 }
 
-
 void World::OnRender()
 {
     m_tileManager->Render();
@@ -168,8 +177,12 @@ void World::OnRender()
     m_player->Render();
 }
 
-void World::OnKeyDown(unsigned char key)
+void World::OnKeyDown(uint8_t key)
 {
+    m_inputHandler->OnKeyDown(key);
+
+
+    /*
     switch(key)
     {
         case 'w':
@@ -192,10 +205,13 @@ void World::OnKeyDown(unsigned char key)
             m_player->DropBomb(*this);
             break;
     }
+    */
 }
 
-void World::OnKeyUp(unsigned char key)
+void World::OnKeyUp(uint8_t key)
 {
+    m_inputHandler->OnKeyUp(key);
+    /*
     switch(key)
     {
         case 'w':
@@ -209,6 +225,7 @@ void World::OnKeyUp(unsigned char key)
             m_player->SetState(PST_IDLE);
             break;
     }
+    */
 }
 
 void World::OnMouseMove(int x, int y)

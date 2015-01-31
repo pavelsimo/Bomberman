@@ -4,16 +4,16 @@
 #include "utility/SpriteSheet.h"
 #include "utility/TileManager.h"
 #include "utility/TileMap.h"
-#include "Block.h"
 #include "managers/BombManager.h"
 #include "managers/BlockManager.h"
 #include "managers/FireManager.h"
 #include "events/EventManager.h"
+#include "InputHandler.h"
 #include "Player.h"
 #include "Bomb.h"
 #include "Fire.h"
-
-#define SAFE_DELETE(p) { if(p != nullptr) { delete(p); (p)=nullptr; } }
+#include "Block.h"
+#include "Shortcuts.h"
 
 class World
 {
@@ -21,8 +21,8 @@ class World
         ~World();
 
         void Initialize(uint32_t width, uint32_t height);
-        void OnKeyDown(unsigned char key);
-        void OnKeyUp(unsigned char key);
+        void OnKeyDown(uint8_t key);
+        void OnKeyUp(uint8_t key);
         void OnMouseMove(int x, int y);
         void OnMouseClick(int button, int state, int x, int y);
         void OnUpdate();
@@ -69,7 +69,8 @@ class World
         BlockManager* m_blockManager;
         BombManager* m_bombManager;
         FireManager* m_fireManager;
-        EventManager *m_eventManager;
+        EventManager* m_eventManager;
+        InputHandler* m_inputHandler;
 };
 
 #endif //__WORLD_H_

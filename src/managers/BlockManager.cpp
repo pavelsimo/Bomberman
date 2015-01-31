@@ -11,22 +11,16 @@ BlockManager::BlockManager()
 BlockManager::~BlockManager()
 {
     // Removing Listener OnFireExtinguished
-    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
-            &BlockManager::OnFireExtinguished);
-
-    World::GetInstance().GetEventManager().RemoveListener(callbackFireExtinguished,
-            FireExtinguishedEvent::Id_EventType);
+    EVENT_MGR_REMOVE_LISTENER(callbackFireExtinguished, &BlockManager::OnFireExtinguished,
+            FireExtinguishedEvent::Id_EventType)
 }
 
 
 void BlockManager::Initialize()
 {
     // Adding Listener OnFireExtinguished
-    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
-            &BlockManager::OnFireExtinguished);
-
-    World::GetInstance().GetEventManager().AddListener(callbackFireExtinguished,
-            FireExtinguishedEvent::Id_EventType);
+    EVENT_MGR_ADD_LISTENER(callbackFireExtinguished, &BlockManager::OnFireExtinguished,
+            FireExtinguishedEvent::Id_EventType)
 }
 
 bool BlockManager::IsColliding(const Actor &actor, ActorPtr collider)

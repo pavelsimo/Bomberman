@@ -12,20 +12,16 @@ BombManager::BombManager()
 
 BombManager::~BombManager()
 {
-    EventListener callback = fastdelegate::MakeDelegate(this,
-            &BombManager::OnBombExploded);
-
-    World::GetInstance().GetEventManager().RemoveListener(callback,
-            BombExplodedEvent::Id_EventType);
+    // Removing Listener OnBombExploded
+    EVENT_MGR_REMOVE_LISTENER(callbackBombExploded, &BombManager::OnBombExploded,
+            BombExplodedEvent::Id_EventType)
 }
 
 void BombManager::Initialize()
 {
-    EventListener callback = fastdelegate::MakeDelegate(this,
-            &BombManager::OnBombExploded);
-
-    World::GetInstance().GetEventManager().AddListener(callback,
-            BombExplodedEvent::Id_EventType);
+    // Adding Listener OnBombExploded
+    EVENT_MGR_ADD_LISTENER(callbackBombExploded, &BombManager::OnBombExploded,
+            BombExplodedEvent::Id_EventType)
 }
 
 void BombManager::OnBombExploded(IEventPtr pEvent)

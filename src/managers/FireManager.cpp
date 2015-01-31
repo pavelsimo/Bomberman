@@ -4,8 +4,6 @@
 #include "../events/FireExtinguishedEvent.h"
 #include "../factories/FireFactory.h"
 
-#include <cstdio>
-
 FireManager::FireManager()
 : ActorManager()
 {
@@ -15,35 +13,21 @@ FireManager::FireManager()
 FireManager::~FireManager()
 {
     // Removing Listener OnBombExploded
-    EventListener callbackBombExploded = fastdelegate::MakeDelegate(this,
-            &FireManager::OnBombExploded);
-
-    World::GetInstance().GetEventManager().RemoveListener(callbackBombExploded,
-            BombExplodedEvent::Id_EventType);
-
+    EVENT_MGR_REMOVE_LISTENER(callbackBombExploded, &FireManager::OnBombExploded,
+            BombExplodedEvent::Id_EventType)
     // Removing Listener OnFireExtinguished
-    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
-            &FireManager::OnFireExtinguished);
-
-    World::GetInstance().GetEventManager().RemoveListener(callbackFireExtinguished,
-            FireExtinguishedEvent::Id_EventType);
+    EVENT_MGR_REMOVE_LISTENER(callbackFireExtinguished, &FireManager::OnFireExtinguished,
+            FireExtinguishedEvent::Id_EventType)
 }
 
 void FireManager::Initialize()
 {
     // Adding Listener OnBombExploded
-    EventListener callbackBombExploded = fastdelegate::MakeDelegate(this,
-            &FireManager::OnBombExploded);
-
-    World::GetInstance().GetEventManager().AddListener(callbackBombExploded,
-            BombExplodedEvent::Id_EventType);
-
+    EVENT_MGR_ADD_LISTENER(callbackBombExploded, &FireManager::OnBombExploded,
+            BombExplodedEvent::Id_EventType)
     // Adding Listener OnFireExtinguished
-    EventListener callbackFireExtinguished = fastdelegate::MakeDelegate(this,
-            &FireManager::OnFireExtinguished);
-
-    World::GetInstance().GetEventManager().AddListener(callbackFireExtinguished,
-            FireExtinguishedEvent::Id_EventType);
+    EVENT_MGR_ADD_LISTENER(callbackFireExtinguished, &FireManager::OnFireExtinguished,
+            FireExtinguishedEvent::Id_EventType)
 }
 
 void FireManager::OnBombExploded(IEventPtr pEvent)

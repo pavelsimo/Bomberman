@@ -7,6 +7,7 @@ namespace
     const float PLAYER_WIDTH = 47.0f;
     const float PLAYER_HEIGHT = 86.0f;
     const float PLAYER_SPEED = 5.0f;
+    const float PLAYER_DRAG = 0.9f;
     const float PLAYER_SHADOW_WIDTH = 16;
     const float PLAYER_SHADOW_HEIGHT = 8;
     const Vector2 PLAYER_DIR_UP = Vector2(0, -1);
@@ -18,7 +19,8 @@ namespace
 Player::Player()
 : m_lowerLeftCorner(0, 0),
   m_state(PST_IDLE),
-  m_curAnimation(nullptr)
+  m_curAnimation(nullptr),
+  m_speed(PLAYER_SPEED)
 {
 
 }
@@ -27,7 +29,8 @@ Player::Player(float x, float y)
 : Actor(x + PLAYER_WIDTH * 0.5f, y + PLAYER_HEIGHT - 10),
   m_lowerLeftCorner(x, y),
   m_state(PST_IDLE),
-  m_curAnimation(nullptr)
+  m_curAnimation(nullptr),
+  m_speed(PLAYER_SPEED)
 {
 
 }
@@ -60,19 +63,23 @@ void Player::OnBeforeUpdate(World &world)
     switch(m_state)
     {
         case PST_IDLE:
-            OnIdle();
+            // do nothing
             break;
         case PST_MOVING_UP:
-            OnMoveUp();
+            OnMove(PLAYER_DIR_UP);
+            NextAnimation(m_walkingUpAnimation);
             break;
         case PST_MOVING_DOWN:
-            OnMoveDown();
+            OnMove(PLAYER_DIR_DOWN);
+            NextAnimation(m_walkingDownAnimation);
             break;
         case PST_MOVING_LEFT:
-            OnMoveLeft();
+            OnMove(PLAYER_DIR_LEFT);
+            NextAnimation(m_walkingLeftAnimation);
             break;
         case PST_MOVING_RIGHT:
-            OnMoveRight();
+            OnMove(PLAYER_DIR_RIGHT);
+            NextAnimation(m_walkingRightAnimation);
             break;
         case PST_DEAD:
             // do nothing
@@ -139,37 +146,11 @@ void Player::Clamp(const Actor &collisionActor)
     }
 }
 
-void Player::OnIdle()
-{
-    // do nothing
-}
-
-void Player::OnMove(SpriteAnimation& animation, const Vector2& direction)
+void Player::OnMove(const Vector2& direction)
 {
     m_direction = direction;
-    m_position += m_direction * PLAYER_SPEED;
-    m_lowerLeftCorner += m_direction * PLAYER_SPEED;
-    NextAnimation(animation);
-}
-
-void Player::OnMoveUp()
-{
-    OnMove(m_walkingUpAnimation, PLAYER_DIR_UP);
-}
-
-void Player::OnMoveDown()
-{
-    OnMove(m_walkingDownAnimation, PLAYER_DIR_DOWN);
-}
-
-void Player::OnMoveLeft()
-{
-    OnMove(m_walkingLeftAnimation, PLAYER_DIR_LEFT);
-}
-
-void Player::OnMoveRight()
-{
-    OnMove(m_walkingRightAnimation, PLAYER_DIR_RIGHT);
+    m_position += m_direction * m_speed;
+    m_lowerLeftCorner += m_direction * m_speed;
 }
 
 void Player::SetSpriteSheet(SpriteSheet* spriteSheet)
@@ -267,8 +248,34 @@ void Player::MoveTo(float x, float y)
     m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
 }
 
-void Player::DropBomb(World& world)
+void Player::MoveLeft()
 {
+    SetState(PST_MOVING_LEFT);
+}
+
+void Player::MoveRight()
+{
+    SetState(PST_MOVING_RIGHT);
+}
+
+void Player::MoveUp()
+{
+    SetState(PST_MOVING_UP);
+}
+
+void Player::MoveDown()
+{
+    SetState(PST_MOVING_DOWN);
+}
+
+void Player::Idle()
+{
+    SetState(PST_IDLE);
+}
+
+void Player::DropBomb()
+{
+    World& world = World::GetInstance();
     uint32_t TILE_WIDTH = world.GetTileManager().GetTileWidth();
     uint32_t TILE_HEIGHT = world.GetTileManager().GetTileWidth();
     int x = floor(m_position.x / TILE_WIDTH) * TILE_WIDTH + (TILE_WIDTH - Bomb::WIDTH) * 0.5;

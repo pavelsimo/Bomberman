@@ -1,7 +1,6 @@
 #include "Bomb.h"
 #include "World.h"
 #include "events/BombExplodedEvent.h"
-
 #include <memory>
 
 namespace
@@ -45,6 +44,12 @@ void Bomb::Initialize()
 
 void Bomb::OnBeforeUpdate(World &world)
 {
+    Actor collisionFire;
+    if(world.GetFireManager().IsColliding(*this, &collisionFire))
+    {
+        SetLifeSpan(0);
+    }
+
     if(CanDelete() && m_bCanTriggerExplosion)
     {
         std::shared_ptr<BombExplodedEvent> bombExplosionEvent(new BombExplodedEvent(GetId(), m_position));

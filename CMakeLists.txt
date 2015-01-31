@@ -109,6 +109,13 @@ ADD_EXECUTABLE(
     src/events/FireExtinguishedEvent.cpp
     src/events/PlayerFireCollisionEvent.cpp
     src/factories/FireFactory.cpp
+    src/commands/MoveLeftCommand.cpp
+    src/commands/MoveRightCommand.cpp
+    src/commands/MoveDownCommand.cpp
+    src/commands/MoveUpCommand.cpp
+    src/commands/DropBombCommand.cpp
+    src/commands/IdleCommand.cpp
+    src/InputHandler.cpp
 )
 
 TARGET_LINK_LIBRARIES(

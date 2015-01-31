@@ -2,6 +2,7 @@
 #define __PLAYER_H_
 
 #include "Actor.h"
+#include "IDynamicActor.h"
 #include "utility/SpriteSheet.h"
 #include "utility/SpriteAnimation.h"
 
@@ -17,7 +18,7 @@ enum PlayerState
     PST_DEAD         = 16
 };
 
-class Player : public Actor
+class Player : public Actor, public IDynamicActor
 {
     public:
         Player();
@@ -25,17 +26,18 @@ class Player : public Actor
         ~Player();
 
         void Initialize();
-
-        void OnIdle();
         virtual void OnRender() override;
         virtual void OnBeforeUpdate(World &world) override;
         virtual void OnAfterUpdate(World &world) override;
-        void OnMoveUp();
-        void OnMoveDown();
-        void OnMoveLeft();
-        void OnMoveRight();
 
-        void DropBomb(World &world);
+        // IDynamicActor
+        //
+        virtual void Idle() override;
+        virtual void MoveLeft() override;
+        virtual void MoveRight() override;
+        virtual void MoveUp() override;
+        virtual void MoveDown() override;
+        virtual void DropBomb() override;
 
         void SetSpriteSheet(SpriteSheet* spriteSheet);
         SpriteSheet* GetSpriteSheet();
@@ -47,6 +49,7 @@ class Player : public Actor
         Vector2 m_lowerLeftCorner;
         PlayerState m_state;
         SpriteSheet* m_spriteSheet;
+        float m_speed;
 
         // sprite animations
         //
@@ -63,7 +66,7 @@ class Player : public Actor
         void InitializeAnimation();
         void Clamp(const Actor& collisionActor);
         void MoveTo(float x, float y);
-        void OnMove(SpriteAnimation& animation, const Vector2& direction);
+        void OnMove(const Vector2& direction);
 };
 
 #endif //__PLAYER_H_

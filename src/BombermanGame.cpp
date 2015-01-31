@@ -13,43 +13,12 @@ BombermanGame::~BombermanGame()
 
 void BombermanGame::OnKeyDown(SDL_KeyboardEvent& event)
 {
-    switch(event.keysym.sym)
-    {
-        case SDLK_w:
-            World::GetInstance().OnKeyDown('w');
-            break;
-        case SDLK_s:
-            World::GetInstance().OnKeyDown('s');
-            break;
-        case SDLK_a:
-            World::GetInstance().OnKeyDown('a');
-            break;
-        case SDLK_d:
-            World::GetInstance().OnKeyDown('d');
-            break;
-        case SDLK_SPACE:
-            World::GetInstance().OnKeyDown(' ');
-            break;
-    }
+    World::GetInstance().OnKeyDown(event.keysym.sym);
 }
 
 void BombermanGame::OnKeyUp(SDL_KeyboardEvent& event)
 {
-    switch(event.keysym.sym)
-    {
-        case SDLK_w:
-            World::GetInstance().OnKeyUp('w');
-            break;
-        case SDLK_s:
-            World::GetInstance().OnKeyUp('s');
-            break;
-        case SDLK_a:
-            World::GetInstance().OnKeyUp('a');
-            break;
-        case SDLK_d:
-            World::GetInstance().OnKeyUp('d');
-            break;
-    }
+    World::GetInstance().OnKeyUp(event.keysym.sym);
 }
 
 void BombermanGame::OnUpdate()
