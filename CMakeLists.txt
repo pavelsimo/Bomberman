@@ -81,6 +81,7 @@ ADD_EXECUTABLE(
     src/main.cpp
     src/Actor.cpp
     src/Player.cpp
+    src/Enemy.cpp
     src/World.cpp
     src/Block.cpp
     src/Bomb.cpp

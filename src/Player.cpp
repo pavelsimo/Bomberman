@@ -66,19 +66,19 @@ void Player::OnBeforeUpdate(World &world)
             // do nothing
             break;
         case PST_MOVING_UP:
-            OnMove(PLAYER_DIR_UP);
+            MoveToDirection(PLAYER_DIR_UP);
             NextAnimation(m_walkingUpAnimation);
             break;
         case PST_MOVING_DOWN:
-            OnMove(PLAYER_DIR_DOWN);
+            MoveToDirection(PLAYER_DIR_DOWN);
             NextAnimation(m_walkingDownAnimation);
             break;
         case PST_MOVING_LEFT:
-            OnMove(PLAYER_DIR_LEFT);
+            MoveToDirection(PLAYER_DIR_LEFT);
             NextAnimation(m_walkingLeftAnimation);
             break;
         case PST_MOVING_RIGHT:
-            OnMove(PLAYER_DIR_RIGHT);
+            MoveToDirection(PLAYER_DIR_RIGHT);
             NextAnimation(m_walkingRightAnimation);
             break;
         case PST_DEAD:
@@ -138,15 +138,15 @@ void Player::Clamp(const Actor &collisionActor)
     }
     else if(GetDirection() == PLAYER_DIR_LEFT)
     {
-        MoveTo(collisionActor.GetAABB2().max.x - PLAYER_SPEED, m_lowerLeftCorner.y);
+        MoveTo(collisionActor.GetAABB2().max.x - m_speed, m_lowerLeftCorner.y);
     }
     else if(GetDirection() == PLAYER_DIR_RIGHT)
     {
-        MoveTo(collisionActor.GetAABB2().min.x - PLAYER_WIDTH + PLAYER_SPEED, m_lowerLeftCorner.y);
+        MoveTo(collisionActor.GetAABB2().min.x - PLAYER_WIDTH + m_speed, m_lowerLeftCorner.y);
     }
 }
 
-void Player::OnMove(const Vector2& direction)
+void Player::MoveToDirection(const Vector2 &direction)
 {
     m_direction = direction;
     m_position += m_direction * m_speed;

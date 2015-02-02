@@ -22,6 +22,7 @@ World::~World()
     SAFE_DELETE(m_fireManager)
     SAFE_DELETE(m_eventManager)
     SAFE_DELETE(m_inputHandler)
+    SAFE_DELETE(m_enemy)
 }
 
 void World::Initialize(uint32_t width, uint32_t height)
@@ -34,6 +35,7 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_bombManager = nullptr;
     m_fireManager = nullptr;
     m_eventManager = nullptr;
+    m_enemy = nullptr;
     m_width = width;
     m_height = height;
 
@@ -49,7 +51,8 @@ void World::Initialize(uint32_t width, uint32_t height)
     // Tile map
     m_tileMap = new TileMap();
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
-    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt", TILE_NROWS, TILE_NCOLS);
+    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
+            TILE_NROWS, TILE_NCOLS);
 
     // Tile manager
     m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
@@ -98,6 +101,12 @@ void World::Initialize(uint32_t width, uint32_t height)
     // Input handler
     m_inputHandler = new InputHandler();
 
+    // Enemy
+    m_enemy = new Enemy(128, 256);
+    m_enemy->SetSpriteSheet(m_spriteSheet);
+    m_enemy->Initialize();
+    m_enemy->Update(*this);
+
     // Adding Listener OnPlayerFireCollision
     EVENT_MGR_ADD_LISTENER(callbackPlayerFireCollision,
             &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
@@ -130,6 +139,7 @@ void World::OnUpdate()
 
     m_eventManager->Update();
     m_player->Update(*this);
+    m_enemy->Update(*this);
     m_bombManager->Update(*this);
     m_fireManager->Update(*this);
 }
@@ -175,57 +185,17 @@ void World::OnRender()
     m_bombManager->Render();
     m_fireManager->Render();
     m_player->Render();
+    m_enemy->Render();
 }
 
 void World::OnKeyDown(uint8_t key)
 {
     m_inputHandler->OnKeyDown(key);
-
-
-    /*
-    switch(key)
-    {
-        case 'w':
-        case 'W':
-            m_player->SetState(PST_MOVING_UP);
-            break;
-        case 'a':
-        case 'A':
-            m_player->SetState(PST_MOVING_LEFT);
-            break;
-        case 's':
-        case 'S':
-            m_player->SetState(PST_MOVING_DOWN);
-            break;
-        case 'd':
-        case 'D':
-            m_player->SetState(PST_MOVING_RIGHT);
-            break;
-        case ' ':
-            m_player->DropBomb(*this);
-            break;
-    }
-    */
 }
 
 void World::OnKeyUp(uint8_t key)
 {
     m_inputHandler->OnKeyUp(key);
-    /*
-    switch(key)
-    {
-        case 'w':
-        case 'W':
-        case 'a':
-        case 'A':
-        case 's':
-        case 'S':
-        case 'd':
-        case 'D':
-            m_player->SetState(PST_IDLE);
-            break;
-    }
-    */
 }
 
 void World::OnMouseMove(int x, int y)

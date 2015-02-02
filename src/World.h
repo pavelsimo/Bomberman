@@ -13,6 +13,7 @@
 #include "Bomb.h"
 #include "Fire.h"
 #include "Block.h"
+#include "Enemy.h"
 #include "Shortcuts.h"
 
 class World
@@ -71,6 +72,9 @@ class World
         FireManager* m_fireManager;
         EventManager* m_eventManager;
         InputHandler* m_inputHandler;
+        // TODO: (Pavel) Remove this
+        Enemy* m_enemy;
+
 };
 
 #endif //__WORLD_H_

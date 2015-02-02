@@ -33,9 +33,14 @@ class InputHandler : public IKeyboardHandler
         InputHandler();
         virtual ~InputHandler();
 
+        //
+        // Keyboard handler
+        //
         virtual void OnKeyDown(uint8_t keyCode) override;
         virtual void OnKeyUp(uint8_t keyCode) override;
 
+        void AddCommand(uint8_t keyCode, CommandPtr command);
+        void RemoveCommand(uint8_t keyCode);
         bool IsPressed(Button button);
         void FetchCommands(CommandList& commandList);
         CommandPtr GetIdleCommand();
