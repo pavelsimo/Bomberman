@@ -67,12 +67,12 @@ class Player : public Actor, public IDynamicActor
         SpriteAnimation m_walkingUpAnimation;
         SpriteAnimation m_walkingLeftAnimation;
         SpriteAnimation m_walkingRightAnimation;
-        void NextAnimation(SpriteAnimation& animation);
 
         // helpers
         //
         void InitializeGeometry();
         void InitializeAnimation();
+        void NextAnimation(SpriteAnimation& animation);
         void Clamp(const Actor& collisionActor);
         void MoveTo(float x, float y);
         void MoveToDirection(const Vector2 &direction);

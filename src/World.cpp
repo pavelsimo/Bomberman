@@ -102,7 +102,7 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_inputHandler = new InputHandler();
 
     // Enemy
-    m_enemy = new Enemy(128, 256);
+    m_enemy = new Enemy(128, 400);
     m_enemy->SetSpriteSheet(m_spriteSheet);
     m_enemy->Initialize();
     m_enemy->Update(*this);
@@ -129,12 +129,14 @@ void World::OnUpdate()
         {
             CommandPtr command = *it;
             command->execute(*m_player);
+            command->execute(*m_enemy);
         }
     }
     else
     {
         CommandPtr idleCommand = m_inputHandler->GetIdleCommand();
         idleCommand->execute(*m_player);
+        idleCommand->execute(*m_enemy);
     }
 
     m_eventManager->Update();

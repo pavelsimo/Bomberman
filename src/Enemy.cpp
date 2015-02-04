@@ -1,28 +1,36 @@
 #include "Enemy.h"
+#include "World.h"
 
 namespace
 {
-    const float ENEMY_WIDTH = 64.0f;
-    const float ENEMY_HEIGHT = 64.0f;
+    const float ENEMY_WIDTH = 48.0f;
+    const float ENEMY_HEIGHT = 48.0f;
     const float ENEMY_SHADOW_WIDTH = 16;
     const float ENEMY_SHADOW_HEIGHT = 8;
+    const float ENEMY_SPEED = 5.0f;
+    const Vector2 ENEMY_DIR_UP = Vector2(0, -1);
+    const Vector2 ENEMY_DIR_DOWN = Vector2(0, 1);
+    const Vector2 ENEMY_DIR_LEFT = Vector2(-1, 0);
+    const Vector2 ENEMY_DIR_RIGHT = Vector2(1, 0);
 }
 
 Enemy::Enemy()
 : m_lowerLeftCorner(0, 0),
   m_state(EST_IDLE),
   m_curAnimation(nullptr),
-  m_spriteSheet(nullptr)
+  m_spriteSheet(nullptr),
+  m_speed(ENEMY_SPEED)
 {
 
 }
 
 Enemy::Enemy(float x, float y)
-: Actor(x + ENEMY_WIDTH * 0.5f, y + ENEMY_HEIGHT - 5),
+: Actor(x + 0.5f * ENEMY_WIDTH, y + ENEMY_HEIGHT - 5),
   m_lowerLeftCorner(x, y),
   m_state(EST_IDLE),
   m_curAnimation(nullptr),
-  m_spriteSheet(nullptr)
+  m_spriteSheet(nullptr),
+  m_speed(ENEMY_SPEED)
 {
 
 }
@@ -44,17 +52,51 @@ void Enemy::OnRender()
 
 void Enemy::OnBeforeUpdate(World &world)
 {
-
+    switch(m_state)
+    {
+        case EST_IDLE:
+            // do nothing
+            break;
+        case EST_MOVING_UP:
+            MoveToDirection(ENEMY_DIR_UP);
+            NextAnimation(m_walkingUpAnimation);
+            break;
+        case EST_MOVING_DOWN:
+            MoveToDirection(ENEMY_DIR_DOWN);
+            NextAnimation(m_walkingDownAnimation);
+            break;
+        case EST_MOVING_LEFT:
+            MoveToDirection(ENEMY_DIR_LEFT);
+            NextAnimation(m_walkingLeftAnimation);
+            break;
+        case EST_MOVING_RIGHT:
+            MoveToDirection(ENEMY_DIR_RIGHT);
+            NextAnimation(m_walkingRightAnimation);
+            break;
+        case EST_DEAD:
+            // do nothing
+            break;
+    }
 }
 
 void Enemy::OnAfterUpdate(World &world)
 {
-
+    Actor collisionBlock;
+    if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
+    {
+#if _DEBUG
+        std::cout << "EBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
+                << collisionBlock.GetAABB2().min.y << ")" << " "
+                << "(" << collisionBlock.GetAABB2().max.x << ","
+                << collisionBlock.GetAABB2().max.y << ")" << std::endl;
+#endif
+        Clamp(collisionBlock);
+    }
 }
 
 void Enemy::Idle()
 {
-
+    SetState(EST_IDLE);
 }
 
 void Enemy::MoveLeft()
@@ -155,4 +197,48 @@ void Enemy::SetState(EnemyState state)
 EnemyState Enemy::GetState() const
 {
     return m_state;
+}
+
+void Enemy::NextAnimation(SpriteAnimation &animation)
+{
+    m_curAnimation = &animation;
+    m_curAnimation->SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_curAnimation->NextFrame();
+}
+
+void Enemy::Clamp(const Actor &collisionActor)
+{
+    if(GetDirection() == ENEMY_DIR_UP)
+    {
+        MoveTo(m_lowerLeftCorner.x, collisionActor.GetAABB2().max.y - ENEMY_HEIGHT + 5 + ENEMY_SHADOW_HEIGHT);
+    }
+    else if(GetDirection() == ENEMY_DIR_DOWN)
+    {
+        MoveTo(m_lowerLeftCorner.x, collisionActor.GetAABB2().min.y - ENEMY_HEIGHT - 5);
+    }
+    else if(GetDirection() == ENEMY_DIR_LEFT)
+    {
+        MoveTo(collisionActor.GetAABB2().max.x - m_speed, m_lowerLeftCorner.y);
+    }
+    else if(GetDirection() == ENEMY_DIR_RIGHT)
+    {
+        MoveTo(collisionActor.GetAABB2().min.x - ENEMY_WIDTH + m_speed, m_lowerLeftCorner.y);
+    }
+}
+
+void Enemy::MoveTo(float x, float y)
+{
+    m_position = Vector2(x + 0.5f * ENEMY_WIDTH, y + ENEMY_HEIGHT - 5);
+    m_lowerLeftCorner = Vector2(x, y);
+    m_walkingDownAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingUpAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingLeftAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+    m_walkingRightAnimation.SetPosition(m_lowerLeftCorner.x, m_lowerLeftCorner.y);
+}
+
+void Enemy::MoveToDirection(const Vector2 &direction)
+{
+    m_direction = direction;
+    m_position += m_direction * m_speed;
+    m_lowerLeftCorner += m_direction * m_speed;
 }

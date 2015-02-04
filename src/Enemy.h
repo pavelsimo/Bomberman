@@ -57,12 +57,20 @@ class Enemy : public Actor, public IDynamicActor
         Vector2 m_lowerLeftCorner;
         EnemyState m_state;
         SpriteSheet* m_spriteSheet;
+        float m_speed;
 
         SpriteAnimation* m_curAnimation;
         SpriteAnimation m_walkingDownAnimation;
         SpriteAnimation m_walkingUpAnimation;
         SpriteAnimation m_walkingLeftAnimation;
         SpriteAnimation m_walkingRightAnimation;
+
+        // helpers
+        //
+        void NextAnimation(SpriteAnimation& animation);
+        void Clamp(const Actor& collisionActor);
+        void MoveTo(float x, float y);
+        void MoveToDirection(const Vector2 &direction);
 };
 
 
