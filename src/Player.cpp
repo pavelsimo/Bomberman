@@ -50,7 +50,7 @@ void Player::Initialize()
 
 void Player::OnRender()
 {
-    assert(m_spriteSheet != nullptr);
+    assert(m_spriteSheet);
     m_curAnimation->Render();
 
     #ifdef _DEBUG
@@ -58,7 +58,7 @@ void Player::OnRender()
     #endif
 }
 
-void Player::OnBeforeUpdate(World &world)
+void Player::OnBeforeUpdate()
 {
     switch(m_state)
     {
@@ -87,10 +87,11 @@ void Player::OnBeforeUpdate(World &world)
     }
 }
 
-void Player::OnAfterUpdate(World &world)
+void Player::OnAfterUpdate()
 {
+    WorldPtr world = World::GetInstance();
     Actor collisionBlock;
-    if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
+    if(world->GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
 #if _DEBUG
         std::cout << "CBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
@@ -102,7 +103,7 @@ void Player::OnAfterUpdate(World &world)
     }
 
     Actor collisionFire;
-    if(world.GetFireManager().IsColliding(*this, &collisionFire))
+    if(world->GetFireManager()->IsColliding(*this, &collisionFire))
     {
         ActorId fireId = collisionFire.GetId();
         Vector2 firePosition = collisionFire.GetPosition();
@@ -110,7 +111,7 @@ void Player::OnAfterUpdate(World &world)
 
         std::shared_ptr<PlayerFireCollisionEvent> playerFireCollisionEvent(
                 new PlayerFireCollisionEvent(fireId, firePosition, playerPosition));
-        world.GetEventManager().QueueEvent(playerFireCollisionEvent);
+        world->GetEventManager()->QueueEvent(playerFireCollisionEvent);
 
         #if _DEBUG
                 std::cout << "PLAYER IS DEAD!!" << std::endl;
@@ -153,7 +154,7 @@ void Player::MoveToDirection(const Vector2 &direction)
     m_lowerLeftCorner += m_direction * m_speed;
 }
 
-void Player::SetSpriteSheet(SpriteSheet* spriteSheet)
+void Player::SetSpriteSheet(SpriteSheetPtr spriteSheet)
 {
     m_spriteSheet = spriteSheet;
     m_walkingDownAnimation.SetSpriteSheet(spriteSheet);
@@ -172,7 +173,7 @@ PlayerState Player::GetState() const
     return m_state;
 }
 
-SpriteSheet* Player::GetSpriteSheet()
+SpriteSheetPtr Player::GetSpriteSheet()
 {
     return m_spriteSheet;
 }
@@ -275,9 +276,9 @@ void Player::Idle()
 
 void Player::DropBomb()
 {
-    World& world = World::GetInstance();
-    uint32_t TILE_WIDTH = world.GetTileManager().GetTileWidth();
-    uint32_t TILE_HEIGHT = world.GetTileManager().GetTileWidth();
+    WorldPtr world = World::GetInstance();
+    uint32_t TILE_WIDTH = world->GetTileManager()->GetTileWidth();
+    uint32_t TILE_HEIGHT = world->GetTileManager()->GetTileWidth();
     int x = floor(m_position.x / TILE_WIDTH) * TILE_WIDTH + (TILE_WIDTH - Bomb::WIDTH) * 0.5;
     int y = floor(m_position.y / TILE_HEIGHT) * TILE_HEIGHT + (TILE_HEIGHT - Bomb::HEIGHT) * 0.5;
 
@@ -285,12 +286,12 @@ void Player::DropBomb()
     Bomb *bomb = new Bomb(x, y);
     bomb->SetSpriteSheet(m_spriteSheet);
     bomb->Initialize();
-    bomb->Update(world);
+    bomb->Update();
 
 #if _DEBUG
     std::cout << "BOMB: " << x << " " << y << std::endl;
 #endif
 
     // adding a bomb to the world
-    world.GetBombManager().Add(bomb);
+    world->GetBombManager()->Add(bomb);
 }

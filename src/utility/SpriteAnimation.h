@@ -4,6 +4,7 @@
 #include "SpriteSheet.h"
 #include "Vector2.h"
 #include "Drawing.h"
+#include <memory>
 
 typedef std::vector<std::string> FrameList;
 
@@ -23,8 +24,8 @@ class SpriteAnimation
 
         // Sprite sheet
         //
-        const SpriteSheet* GetSpriteSheet() const;
-        void SetSpriteSheet(SpriteSheet* spriteSheet);
+        SpriteSheetPtr GetSpriteSheet() const;
+        void SetSpriteSheet(SpriteSheetPtr spriteSheet);
 
         // Position
         //
@@ -45,8 +46,10 @@ class SpriteAnimation
         uint32_t m_curFrame;
         FrameList m_frames;
         Vector2 m_position;
-        SpriteSheet* m_spriteSheet;
+        SpriteSheetPtr m_spriteSheet;
 };
+
+typedef std::shared_ptr<SpriteAnimation> SpriteAnimationPtr;
 
 #endif //__SPRITEANIMATION_H_
 

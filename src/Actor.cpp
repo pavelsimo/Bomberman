@@ -34,12 +34,11 @@ void Actor::Render()
 void Actor::OnRender()
 {
     // overwrite
-
 }
 
-void Actor::Update(World& world)
+void Actor::Update()
 {
-    OnBeforeUpdate(world);
+    OnBeforeUpdate();
 
     //
     // updating lifespan
@@ -58,15 +57,15 @@ void Actor::Update(World& world)
         m_aabb2.Add(point);
     }
 
-    OnAfterUpdate(world);
+    OnAfterUpdate();
 }
 
-void Actor::OnBeforeUpdate(World &world)
+void Actor::OnBeforeUpdate()
 {
     // overwrite
 }
 
-void Actor::OnAfterUpdate(World &world)
+void Actor::OnAfterUpdate()
 {
     // overwrite
 }

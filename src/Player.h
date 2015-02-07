@@ -33,8 +33,8 @@ class Player : public Actor, public IDynamicActor
         // Actor override
         //
         virtual void OnRender() override;
-        virtual void OnBeforeUpdate(World &world) override;
-        virtual void OnAfterUpdate(World &world) override;
+        virtual void OnBeforeUpdate() override;
+        virtual void OnAfterUpdate() override;
 
         //
         // IDynamicActor override
@@ -49,15 +49,15 @@ class Player : public Actor, public IDynamicActor
         //
         // getters & setters
         //
-        void SetSpriteSheet(SpriteSheet* spriteSheet);
-        SpriteSheet* GetSpriteSheet();
+        void SetSpriteSheet(SpriteSheetPtr spriteSheet);
+        SpriteSheetPtr GetSpriteSheet();
         void SetState(PlayerState state);
         PlayerState GetState() const;
 
     private:
         Vector2 m_lowerLeftCorner;
         PlayerState m_state;
-        SpriteSheet* m_spriteSheet;
+        SpriteSheetPtr m_spriteSheet;
         float m_speed;
 
         // sprite animations
@@ -77,5 +77,7 @@ class Player : public Actor, public IDynamicActor
         void MoveTo(float x, float y);
         void MoveToDirection(const Vector2 &direction);
 };
+
+typedef std::shared_ptr<Player> PlayerPtr;
 
 #endif //__PLAYER_H_

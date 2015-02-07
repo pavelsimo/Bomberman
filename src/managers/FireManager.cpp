@@ -35,11 +35,11 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     std::shared_ptr<BombExplodedEvent> bombExplosionEvent =
             std::static_pointer_cast<BombExplodedEvent>(pEvent);
 
-    World& world = World::GetInstance();
-    TileMap& tileMap = world.GetTileMap();
+    WorldPtr world = World::GetInstance();
+    TileMapPtr tileMap = world->GetTileMap();
     Vector2 bombPosition = bombExplosionEvent->GetBombPosition();
-    int tileWidth = world.GetTileManager().GetTileWidth();
-    int tileHeight = world.GetTileManager().GetTileHeight();
+    int tileWidth = world->GetTileManager()->GetTileWidth();
+    int tileHeight = world->GetTileManager()->GetTileHeight();
 
     Fire *fireCenter = FireFactory::GetInstance().CreateFire(bombPosition.x, bombPosition.y);
     Add(fireCenter);
@@ -58,7 +58,7 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
                 int yHorizontal = bombPosition.y;
                 int rowHorizontal = yHorizontal / tileHeight;
                 int colHorizontal = xHorizontal / tileWidth;
-                BlockType btHorizontal = static_cast<BlockType>(tileMap.GetTile(rowHorizontal, colHorizontal));
+                BlockType btHorizontal = static_cast<BlockType>(tileMap->GetTile(rowHorizontal, colHorizontal));
 
                 if(btHorizontal == BT_BACKGROUND || btHorizontal == BT_EXPLODABLE)
                 {
@@ -82,7 +82,7 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
                 int yVertical = bombPosition.y + (direction * amplitude) * tileHeight;
                 int rowVertical = yVertical / tileHeight;
                 int colVertical = xVertical / tileWidth;
-                BlockType btVertical = static_cast<BlockType>(tileMap.GetTile(rowVertical, colVertical));
+                BlockType btVertical = static_cast<BlockType>(tileMap->GetTile(rowVertical, colVertical));
                 if(btVertical == BT_BACKGROUND || btVertical == BT_EXPLODABLE)
                 {
                     Fire *fireVertical = FireFactory::GetInstance().CreateFire(xVertical, yVertical);

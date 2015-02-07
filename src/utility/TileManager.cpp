@@ -3,7 +3,7 @@
 #include <elf.h>
 #include "TileManager.h"
 
-TileManager::TileManager(SpriteSheet *spriteSheet, uint32_t tileWidth, uint32_t tileHeight
+TileManager::TileManager(SpriteSheetPtr spriteSheet, uint32_t tileWidth, uint32_t tileHeight
 ) : m_spriteSheet(spriteSheet),
     m_tileMap(nullptr),
     m_tileWidth(tileWidth),
@@ -64,12 +64,12 @@ void TileManager::Render()
     }
 }
 
-void TileManager::SetTileMap(TileMap *tileMap)
+void TileManager::SetTileMap(TileMapPtr tileMap)
 {
     m_tileMap = tileMap;
 }
 
-TileMap* TileManager::GetTileMap()
+TileMapPtr TileManager::GetTileMap()
 {
     return m_tileMap;
 }

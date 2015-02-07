@@ -1,8 +1,7 @@
 #include "SpriteAnimation.h"
 
 SpriteAnimation::SpriteAnimation()
-:
-  m_curFrame(0),
+: m_curFrame(0),
   m_spriteSheet(nullptr)
 {
 
@@ -18,12 +17,12 @@ void SpriteAnimation::AddFrame(const std::string& spriteName)
     m_frames.push_back(spriteName);
 }
 
-const SpriteSheet* SpriteAnimation::GetSpriteSheet() const
+SpriteSheetPtr SpriteAnimation::GetSpriteSheet() const
 {
     return m_spriteSheet;
 }
 
-void SpriteAnimation::SetSpriteSheet(SpriteSheet* spriteSheet)
+void SpriteAnimation::SetSpriteSheet(SpriteSheetPtr spriteSheet)
 {
     m_spriteSheet = spriteSheet;
 }
@@ -59,7 +58,7 @@ bool SpriteAnimation::PrevFrame()
 
 void SpriteAnimation::Render()
 {
-    if(m_spriteSheet != nullptr)
+    if(m_spriteSheet)
     {
         Sprite sprite = m_spriteSheet->GetSprite(m_frames[m_curFrame]);
         Rect rect;

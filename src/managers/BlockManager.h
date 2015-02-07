@@ -22,4 +22,6 @@ class BlockManager : public ActorManager
         void OnFireExtinguished(IEventPtr pEvent);
 };
 
+typedef std::shared_ptr<BlockManager> BlockManagerPtr;
+
 #endif //__BLOCKMANAGER_H_

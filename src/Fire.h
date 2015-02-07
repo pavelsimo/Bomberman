@@ -18,16 +18,16 @@ class Fire : public Actor
 
         void Initialize();
         virtual void OnRender() override;
-        virtual void OnBeforeUpdate(World &world) override;
+        virtual void OnBeforeUpdate() override;
 
         // getters & setters
         //
-        void SetSpriteSheet(SpriteSheet* spriteSheet);
-        SpriteSheet* GetSpriteSheet();
+        void SetSpriteSheet(SpriteSheetPtr spriteSheet);
+        SpriteSheetPtr GetSpriteSheet();
 
     private:
         SpriteAnimation m_animation;
-        SpriteSheet* m_spriteSheet;
+        SpriteSheetPtr m_spriteSheet;
         uint32_t m_nextFrameWait;
         bool m_bCanTriggerFireExtinguished;
 

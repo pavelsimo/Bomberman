@@ -21,5 +21,7 @@ class BombManager : public ActorManager
         void OnBombExploded(IEventPtr pEvent);
 };
 
+typedef std::shared_ptr<BombManager> BombManagerPtr;
+
 #endif //__BOMBMANAGER_H_
 

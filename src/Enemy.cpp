@@ -43,7 +43,7 @@ Enemy::~Enemy()
 
 void Enemy::OnRender()
 {
-    assert(m_spriteSheet != nullptr);
+    assert(m_spriteSheet);
     m_curAnimation->Render();
 
 #ifdef _DEBUG
@@ -51,7 +51,7 @@ void Enemy::OnRender()
 #endif
 }
 
-void Enemy::OnBeforeUpdate(World &world)
+void Enemy::OnBeforeUpdate()
 {
     switch(m_state)
     {
@@ -80,10 +80,11 @@ void Enemy::OnBeforeUpdate(World &world)
     }
 }
 
-void Enemy::OnAfterUpdate(World &world)
+void Enemy::OnAfterUpdate()
 {
+    WorldPtr world = World::GetInstance();
     Actor collisionBlock;
-    if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
+    if(world->GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
         RandomWalk::GetInstance().NextDirection();
 #if _DEBUG
@@ -177,7 +178,7 @@ void Enemy::Initialize()
     m_curAnimation = &m_walkingDownAnimation;
 }
 
-void Enemy::SetSpriteSheet(SpriteSheet *spriteSheet)
+void Enemy::SetSpriteSheet(SpriteSheetPtr spriteSheet)
 {
     m_spriteSheet = spriteSheet;
     m_walkingDownAnimation.SetSpriteSheet(spriteSheet);
@@ -186,7 +187,7 @@ void Enemy::SetSpriteSheet(SpriteSheet *spriteSheet)
     m_walkingRightAnimation.SetSpriteSheet(spriteSheet);
 }
 
-SpriteSheet* Enemy::GetSpriteSheet()
+SpriteSheetPtr Enemy::GetSpriteSheet()
 {
     return m_spriteSheet;
 }

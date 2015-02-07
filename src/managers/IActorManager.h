@@ -4,8 +4,6 @@
 #include <list>
 #include "../Actor.h"
 
-class World;
-
 typedef Actor* ActorPtr;
 typedef std::list<ActorPtr> ActorPtrList;
 
@@ -16,7 +14,7 @@ class IActorManager
         virtual void Add(const ActorPtr actor) = 0;
         virtual bool Remove(ActorId id) = 0;
         virtual ActorPtr Get(ActorId id) = 0;
-        virtual void Update(World& world) = 0;
+        virtual void Update() = 0;
         virtual void Render() = 0;
         virtual bool IsColliding(const Actor& actor, ActorPtr collider) = 0;
 };

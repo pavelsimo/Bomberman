@@ -30,4 +30,6 @@ class SpriteSheet : public Texture
         SpriteMap m_sprites;
 };
 
+typedef std::shared_ptr<SpriteSheet> SpriteSheetPtr;
+
 #endif //__SPRITE_H_

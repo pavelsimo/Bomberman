@@ -3,6 +3,7 @@
 
 #include "IActorManager.h"
 #include "../Actor.h"
+#include <memory>
 
 class World;
 
@@ -15,7 +16,7 @@ class ActorManager : public IActorManager
         virtual void Add(const ActorPtr actor) override;
         virtual bool Remove(ActorId id) override;
         virtual ActorPtr Get(ActorId id) override;
-        virtual void Update(World &world) override;
+        virtual void Update() override;
         virtual void Render() override;
         virtual bool IsColliding(const Actor &actor, ActorPtr collider) override;
 

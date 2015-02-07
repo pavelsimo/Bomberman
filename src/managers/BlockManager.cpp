@@ -58,9 +58,9 @@ void BlockManager::OnFireExtinguished(IEventPtr pEvent)
     std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent =
             std::static_pointer_cast<FireExtinguishedEvent>(pEvent);
 
-    World& world = World::GetInstance();
-    int tileWidth = world.GetTileManager().GetTileWidth();
-    int tileHeight = world.GetTileManager().GetTileHeight();
+    WorldPtr world = World::GetInstance();
+    int tileWidth = world->GetTileManager()->GetTileWidth();
+    int tileHeight = world->GetTileManager()->GetTileHeight();
     ActorId id = fireExtinguishedEvent->GetActorId();
     Vector2 firePosition = fireExtinguishedEvent->GetFirePosition();
 
@@ -80,7 +80,7 @@ void BlockManager::OnFireExtinguished(IEventPtr pEvent)
 #ifdef _DEBUG
             std::cout << "DESTROYING BLOCK : " << row << " " << col << std::endl;
 #endif
-            World::GetInstance().GetTileMap().SetTile(row, col, BT_BACKGROUND);
+            world->GetTileMap()->SetTile(row, col, BT_BACKGROUND);
         }
         else
         {

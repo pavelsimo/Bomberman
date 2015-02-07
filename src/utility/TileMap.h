@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <memory>
 
 // 1024 x 1024
 #define MAX_TILES 1048576
@@ -42,6 +43,8 @@ class TileMap
         uint32_t m_cols;
         uint8_t* m_tiles;
 };
+
+typedef std::shared_ptr<TileMap> TileMapPtr;
 
 #endif //__TILEMAP_H_
 

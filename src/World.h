@@ -15,6 +15,7 @@
 #include "Block.h"
 #include "Enemy.h"
 #include "Shortcuts.h"
+#include <memory>
 
 class World
 {
@@ -28,7 +29,6 @@ class World
         void OnMouseClick(int button, int state, int x, int y);
         void OnUpdate();
         void OnRender();
-        void OnDestroy();
 
         float GetWidth() const;
         float GetHeight() const;
@@ -37,20 +37,20 @@ class World
         float GetBottom() const;
         float GetTop() const;
 
-        static World& GetInstance()
+        static std::shared_ptr<World> GetInstance()
         {
-            static World instance;
+            static std::shared_ptr<World> instance = std::shared_ptr<World>(new World());
             return instance;
         }
 
-        BlockManager& GetBlockManager();
-        BombManager& GetBombManager();
-        FireManager& GetFireManager();
-        TileMap& GetTileMap();
-        TileManager& GetTileManager();
-        EventManager& GetEventManager();
-        SpriteSheet& GetSpriteSheet();
-        InputHandler& GetInputHandler();
+        BlockManagerPtr GetBlockManager();
+        BombManagerPtr GetBombManager();
+        FireManagerPtr GetFireManager();
+        TileMapPtr GetTileMap();
+        TileManagerPtr GetTileManager();
+        EventManagerPtr GetEventManager();
+        SpriteSheetPtr GetSpriteSheet();
+        InputHandlerPtr GetInputHandler();
 
         // events
         //
@@ -64,18 +64,19 @@ class World
 
         uint32_t m_width;
         uint32_t  m_height;
-        Player* m_player;
-        SpriteSheet* m_spriteSheet;
-        TileMap* m_tileMap;
-        TileManager* m_tileManager;
-        BlockManager* m_blockManager;
-        BombManager* m_bombManager;
-        FireManager* m_fireManager;
-        EventManager* m_eventManager;
-        InputHandler* m_inputHandler;
+        PlayerPtr m_player;
+        SpriteSheetPtr m_spriteSheet;
+        TileMapPtr m_tileMap;
+        TileManagerPtr m_tileManager;
+        BlockManagerPtr m_blockManager;
+        BombManagerPtr m_bombManager;
+        FireManagerPtr m_fireManager;
+        EventManagerPtr m_eventManager;
+        InputHandlerPtr m_inputHandler;
         // TODO: (Pavel) Remove this
-        Enemy* m_enemy;
-
+        EnemyPtr m_enemy;
 };
+
+typedef std::shared_ptr<World> WorldPtr;
 
 #endif //__WORLD_H_

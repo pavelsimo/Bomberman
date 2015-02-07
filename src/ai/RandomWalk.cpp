@@ -3,8 +3,8 @@
 
 CommandPtr RandomWalk::GetNextStep()
 {
-    InputHandler& inputHandler = World::GetInstance().GetInputHandler();
-    CommandPtr command = inputHandler.GetCommand(m_buttons[m_currentButton]);
+    InputHandlerPtr inputHandler = World::GetInstance()->GetInputHandler();
+    CommandPtr command = inputHandler->GetCommand(m_buttons[m_currentButton]);
     return command;
 }
 

@@ -51,12 +51,13 @@ void Fire::OnRender()
 #endif
 }
 
-void Fire::OnBeforeUpdate(World &world)
+void Fire::OnBeforeUpdate()
 {
+    WorldPtr world = World::GetInstance();
     if(CanDelete() && m_bCanTriggerFireExtinguished)
     {
         std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent(new FireExtinguishedEvent(GetId(), m_position));
-        world.GetEventManager().QueueEvent(fireExtinguishedEvent);
+        world->GetEventManager()->QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
 
@@ -71,13 +72,13 @@ void Fire::OnBeforeUpdate(World &world)
     }
 }
 
-void Fire::SetSpriteSheet(SpriteSheet *spriteSheet)
+void Fire::SetSpriteSheet(SpriteSheetPtr spriteSheet)
 {
     m_spriteSheet = spriteSheet;
     m_animation.SetSpriteSheet(spriteSheet);
 }
 
-SpriteSheet *Fire::GetSpriteSheet()
+SpriteSheetPtr Fire::GetSpriteSheet()
 {
     return m_spriteSheet;
 }

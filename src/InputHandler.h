@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <cstdint>
+#include <memory>
+
 #include "commands/Command.h"
 
 class IKeyboardHandler
@@ -42,9 +44,9 @@ class InputHandler : public IKeyboardHandler
 
         void AddCommand(uint8_t keyCode, CommandPtr command);
         void RemoveCommand(uint8_t keyCode);
+        CommandPtr GetCommand(Button button);
         bool IsPressed(Button button);
         void FetchCommands(CommandList& commandList);
-        CommandPtr GetCommand(Button button);
         CommandPtr GetIdleCommand();
 
     private:
@@ -54,5 +56,7 @@ class InputHandler : public IKeyboardHandler
         CommandPtr m_commands[NUM_KEYS];
         CommandPtr m_idleCommand;
 };
+
+typedef std::shared_ptr<InputHandler> InputHandlerPtr;
 
 #endif //__INPUTHANDLER_H_

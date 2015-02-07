@@ -42,10 +42,11 @@ void Bomb::Initialize()
     InitializeAnimation();
 }
 
-void Bomb::OnBeforeUpdate(World &world)
+void Bomb::OnBeforeUpdate()
 {
+    WorldPtr world = World::GetInstance();
     Actor collisionFire;
-    if(world.GetFireManager().IsColliding(*this, &collisionFire))
+    if(world->GetFireManager()->IsColliding(*this, &collisionFire))
     {
         SetLifeSpan(0);
     }
@@ -53,7 +54,7 @@ void Bomb::OnBeforeUpdate(World &world)
     if(CanDelete() && m_bCanTriggerExplosion)
     {
         std::shared_ptr<BombExplodedEvent> bombExplosionEvent(new BombExplodedEvent(GetId(), m_position));
-        world.GetEventManager().QueueEvent(bombExplosionEvent);
+        world->GetEventManager()->QueueEvent(bombExplosionEvent);
         m_bCanTriggerExplosion = false;
     }
 
@@ -95,13 +96,13 @@ void Bomb::InitializeAnimation()
     m_animation.AddFrame("Bomb_f03.png");
 }
 
-void Bomb::SetSpriteSheet(SpriteSheet *spriteSheet)
+void Bomb::SetSpriteSheet(SpriteSheetPtr spriteSheet)
 {
     m_spriteSheet = spriteSheet;
     m_animation.SetSpriteSheet(spriteSheet);
 }
 
-SpriteSheet *Bomb::GetSpriteSheet()
+SpriteSheetPtr Bomb::GetSpriteSheet()
 {
     return m_spriteSheet;
 }

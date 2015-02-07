@@ -53,12 +53,12 @@ ActorPtr ActorManager::Get(ActorId id)
     return nullptr;
 }
 
-void ActorManager::Update(World &world)
+void ActorManager::Update()
 {
     for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
     {
         ActorPtr actor = *it;
-        actor->Update(world);
+        actor->Update();
     }
 }
 

@@ -21,4 +21,6 @@ class FireManager : public ActorManager
         void OnFireExtinguished(IEventPtr pEvent);
 };
 
+typedef std::shared_ptr<FireManager> FireManagerPtr;
+
 #endif //__FIREMANAGER_H_

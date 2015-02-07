@@ -7,8 +7,6 @@
 #include "utility/Vector2.h"
 #include "utility/AABB2.h"
 
-class World;
-
 typedef std::vector<Vector2> VertexLst;
 typedef uint32_t ActorId;
 
@@ -24,14 +22,14 @@ class Actor
         // actions
         //
         void Render();
-        void Update(World& world);
+        void Update();
         bool IsColliding(const Actor& actor) const;
 
         // virtual
         //
         virtual void OnRender();
-        virtual void OnBeforeUpdate(World &world);
-        virtual void OnAfterUpdate(World &world);
+        virtual void OnBeforeUpdate();
+        virtual void OnAfterUpdate();
         virtual bool CanDelete();
 
         // getters & setters

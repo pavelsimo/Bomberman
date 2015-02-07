@@ -9,12 +9,12 @@
 
 #define EVENT_MGR_ADD_LISTENER(callback, listener, eventtype) { \
     EventListener callback = fastdelegate::MakeDelegate(this, listener); \
-    World::GetInstance().GetEventManager().AddListener(callback, eventtype); \
+    World::GetInstance()->GetEventManager()->AddListener(callback, eventtype); \
 }
 
 #define EVENT_MGR_REMOVE_LISTENER(callback, listener, eventtype) { \
     EventListener callback = fastdelegate::MakeDelegate(this, listener); \
-    World::GetInstance().GetEventManager().RemoveListener(callback, eventtype); \
+    World::GetInstance()->GetEventManager()->RemoveListener(callback, eventtype); \
 }
 
 #endif //__SHORTCUTS_H_

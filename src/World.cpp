@@ -4,61 +4,42 @@
 
 namespace
 {
-    const int TILE_WIDTH = 64;
-    const int TILE_HEIGHT = 64;
-    const int TILE_NROWS = 10;
-    const int TILE_NCOLS = 10;
+    const int WORLD_TILE_WIDTH = 64;
+    const int WORLD_TILE_HEIGHT = 64;
+    const int WORLD_TILE_NUM_ROWS = 10;
+    const int WORLD_TILE_NUM_COLS = 10;
 }
 
 World::~World()
 {
-    OnDestroy();
-
-    SAFE_DELETE(m_player)
-    SAFE_DELETE(m_spriteSheet)
-    SAFE_DELETE(m_tileMap)
-    SAFE_DELETE(m_tileManager)
-    SAFE_DELETE(m_blockManager)
-    SAFE_DELETE(m_bombManager)
-    SAFE_DELETE(m_fireManager)
-    SAFE_DELETE(m_eventManager)
-    SAFE_DELETE(m_inputHandler)
-    SAFE_DELETE(m_enemy)
+    EVENT_MGR_REMOVE_LISTENER(callbackPlayerFireCollision,
+            &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
 }
 
 void World::Initialize(uint32_t width, uint32_t height)
 {
-    m_player = nullptr;
-    m_spriteSheet = nullptr;
-    m_tileMap = nullptr;
-    m_tileManager = nullptr;
-    m_blockManager = nullptr;
-    m_bombManager = nullptr;
-    m_fireManager = nullptr;
-    m_eventManager = nullptr;
-    m_enemy = nullptr;
     m_width = width;
     m_height = height;
 
     srand(time(NULL));
 
     // Event Manager
-    m_eventManager = new EventManager();
+    m_eventManager = std::make_shared<EventManager>();
 
     // Sprite sheet
-    m_spriteSheet = new SpriteSheet();
+    m_spriteSheet = std::make_shared<SpriteSheet>();
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
     m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
     m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
 
     // Tile map
-    m_tileMap = new TileMap();
+    m_tileMap = std::make_shared<TileMap>();
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
     m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
-            TILE_NROWS, TILE_NCOLS);
+            WORLD_TILE_NUM_ROWS, WORLD_TILE_NUM_COLS);
 
     // Tile manager
-    m_tileManager = new TileManager(m_spriteSheet, TILE_WIDTH, TILE_HEIGHT);
+    m_tileManager = std::make_shared<TileManager>(m_spriteSheet, WORLD_TILE_WIDTH, WORLD_TILE_HEIGHT);
     m_tileManager->SetTileMap(m_tileMap);
     m_tileManager->AddSprite("Block_Background.png");
     m_tileManager->AddSprite("Block_Solid.png");
@@ -66,58 +47,52 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_tileManager->AddSprite("Block_Portal.png");
 
     // Block Manager
-    m_blockManager = new BlockManager();
+    m_blockManager = std::make_shared<BlockManager>();
     m_blockManager->Initialize();
 
-    for(int i = 0; i < TILE_NROWS; ++i)
+    for(int row = 0; row < WORLD_TILE_NUM_ROWS; ++row)
     {
-        for(int j = 0; j < TILE_NCOLS; ++j)
+        for(int col = 0; col < WORLD_TILE_NUM_COLS; ++col)
         {
-            int x = j * TILE_WIDTH + 0.5f * TILE_WIDTH;
-            int y = i * TILE_HEIGHT + 0.5f * TILE_HEIGHT;
+            int x = col * WORLD_TILE_WIDTH + 0.5f * WORLD_TILE_WIDTH;
+            int y = row * WORLD_TILE_HEIGHT + 0.5f * WORLD_TILE_HEIGHT;
 
-            BlockType blockType = static_cast<BlockType>(m_tileMap->GetTile(i, j));
+            BlockType blockType = static_cast<BlockType>(m_tileMap->GetTile(row, col));
             Block* block = new Block();
             block->Initialize();
             block->SetType(blockType);
             block->SetPosition(Vector2(x, y));
             // FIXME: (Pavel) The AABB2 should be initialize before call update
-            block->Update(*this);
+            block->Update();
             m_blockManager->Add(block);
         }
     }
 
     // Bomb Manager
-    m_bombManager = new BombManager();
+    m_bombManager = std::make_shared<BombManager>();
     m_bombManager->Initialize();
 
-    // Bomb Manager
-    m_fireManager = new FireManager();
+    // Fire Manager
+    m_fireManager = std::make_shared<FireManager>();
     m_fireManager->Initialize();
 
     // Player
-    m_player = new Player(128, 128);
+    m_player = std::make_shared<Player>(128, 128);
     m_player->SetSpriteSheet(m_spriteSheet);
     m_player->Initialize();
-    m_player->Update(*this);
-
-    // Input handler
-    m_inputHandler = new InputHandler();
+    m_player->Update();
 
     // Enemy
-    m_enemy = new Enemy(128, 400);
+    m_enemy = std::make_shared<Enemy>(128, 400);
     m_enemy->SetSpriteSheet(m_spriteSheet);
     m_enemy->Initialize();
-    m_enemy->Update(*this);
+    m_enemy->Update();
+
+    // Input handler
+    m_inputHandler = std::make_shared<InputHandler>();
 
     // Adding Listener OnPlayerFireCollision
     EVENT_MGR_ADD_LISTENER(callbackPlayerFireCollision,
-            &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
-}
-
-void World::OnDestroy()
-{
-    EVENT_MGR_REMOVE_LISTENER(callbackPlayerFireCollision,
             &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
 }
 
@@ -144,51 +119,51 @@ void World::OnUpdate()
     enemyCommand->execute(*m_enemy);
 
     m_eventManager->Update();
-    m_player->Update(*this);
-    m_enemy->Update(*this);
-    m_bombManager->Update(*this);
-    m_fireManager->Update(*this);
+    m_player->Update();
+    m_enemy->Update();
+    m_bombManager->Update();
+    m_fireManager->Update();
 }
 
-BlockManager& World::GetBlockManager()
+BlockManagerPtr World::GetBlockManager()
 {
-    return *m_blockManager;
+    return m_blockManager;
 }
 
-BombManager& World::GetBombManager()
+BombManagerPtr World::GetBombManager()
 {
-    return *m_bombManager;
+    return m_bombManager;
 }
 
-TileMap& World::GetTileMap()
+TileMapPtr World::GetTileMap()
 {
-    return *m_tileMap;
+    return m_tileMap;
 }
 
-TileManager& World::GetTileManager()
+TileManagerPtr World::GetTileManager()
 {
-    return *m_tileManager;
+    return m_tileManager;
 }
 
-EventManager &World::GetEventManager()
+EventManagerPtr World::GetEventManager()
 {
-    return *m_eventManager;
+    return m_eventManager;
 }
 
-SpriteSheet &World::GetSpriteSheet()
+SpriteSheetPtr World::GetSpriteSheet()
 {
-    return *m_spriteSheet;
+    return m_spriteSheet;
 }
 
-FireManager &World::GetFireManager()
+FireManagerPtr World::GetFireManager()
 {
-    return *m_fireManager;
+    return m_fireManager;
 }
 
 
-InputHandler &World::GetInputHandler()
+InputHandlerPtr World::GetInputHandler()
 {
-    return *m_inputHandler;
+    return m_inputHandler;
 }
 
 void World::OnRender()
@@ -258,5 +233,9 @@ void World::OnPlayerFireCollision(IEventPtr pEvent)
     // TODO: (Pavel) Trigger OnPlayerDead()
 
     ActorId fireId = fireExtinguishedEvent->GetFireId();
+
+#ifdef _DEBUG
     std::cout << "OnPlayerFireCollision()" << std::endl;
+#endif
+
 }

@@ -16,7 +16,7 @@ class TileManager
 
         // ctor & dtor
         //
-        TileManager(SpriteSheet* spriteSheet, uint32_t tileWidth, uint32_t tileHeight);
+        TileManager(SpriteSheetPtr spriteSheet, uint32_t tileWidth, uint32_t tileHeight);
         ~TileManager();
 
         // methods
@@ -26,18 +26,20 @@ class TileManager
 
         // getters & setters
         //
-        void SetTileMap(TileMap *tileMap);
-        TileMap* GetTileMap();
+        void SetTileMap(TileMapPtr tileMap);
+        TileMapPtr GetTileMap();
         uint32_t GetTileWidth() const;
         uint32_t GetTileHeight() const;
 
     private:
-        SpriteSheet* m_spriteSheet;
+        SpriteSheetPtr m_spriteSheet;
         SpriteList m_sprites;
-        TileMap* m_tileMap;
+        TileMapPtr m_tileMap;
         uint32_t m_tileWidth;
         uint32_t m_tileHeight;
 };
+
+typedef std::shared_ptr<TileManager> TileManagerPtr;
 
 #endif //__TILEMANAGER_H_
 

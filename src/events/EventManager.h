@@ -32,6 +32,8 @@ class EventManager : public IEventManager
         int m_activeQueue;
 };
 
+typedef std::shared_ptr<EventManager> EventManagerPtr;
+
 #endif //__EVENTMANAGER_H_
 
 

@@ -34,8 +34,8 @@ class Enemy : public Actor, public IDynamicActor
         // actor
         //
         virtual void OnRender() override;
-        virtual void OnBeforeUpdate(World &world) override;
-        virtual void OnAfterUpdate(World &world) override;
+        virtual void OnBeforeUpdate() override;
+        virtual void OnAfterUpdate() override;
 
         // dynamic actor
         //
@@ -48,15 +48,15 @@ class Enemy : public Actor, public IDynamicActor
 
         // getters & setters
         //
-        void SetSpriteSheet(SpriteSheet* spriteSheet);
-        SpriteSheet* GetSpriteSheet();
+        void SetSpriteSheet(SpriteSheetPtr spriteSheet);
+        SpriteSheetPtr GetSpriteSheet();
         void SetState(EnemyState state);
         EnemyState GetState() const;
 
     private:
         Vector2 m_lowerLeftCorner;
         EnemyState m_state;
-        SpriteSheet* m_spriteSheet;
+        SpriteSheetPtr m_spriteSheet;
         float m_speed;
 
         SpriteAnimation* m_curAnimation;
@@ -72,6 +72,8 @@ class Enemy : public Actor, public IDynamicActor
         void MoveTo(float x, float y);
         void MoveToDirection(const Vector2 &direction);
 };
+
+typedef std::shared_ptr<Enemy> EnemyPtr;
 
 
 #endif //__ENEMY_H_
