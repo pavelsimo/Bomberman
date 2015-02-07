@@ -50,6 +50,7 @@ class World
         TileManager& GetTileManager();
         EventManager& GetEventManager();
         SpriteSheet& GetSpriteSheet();
+        InputHandler& GetInputHandler();
 
         // events
         //

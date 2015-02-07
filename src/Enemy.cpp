@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "World.h"
+#include "ai/RandomWalk.h"
 
 namespace
 {
@@ -7,7 +8,7 @@ namespace
     const float ENEMY_HEIGHT = 48.0f;
     const float ENEMY_SHADOW_WIDTH = 16;
     const float ENEMY_SHADOW_HEIGHT = 8;
-    const float ENEMY_SPEED = 5.0f;
+    const float ENEMY_SPEED = 1.0f;
     const Vector2 ENEMY_DIR_UP = Vector2(0, -1);
     const Vector2 ENEMY_DIR_DOWN = Vector2(0, 1);
     const Vector2 ENEMY_DIR_LEFT = Vector2(-1, 0);
@@ -84,6 +85,7 @@ void Enemy::OnAfterUpdate(World &world)
     Actor collisionBlock;
     if(world.GetBlockManager().IsColliding(*this, &collisionBlock))
     {
+        RandomWalk::GetInstance().NextDirection();
 #if _DEBUG
         std::cout << "EBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
                 << collisionBlock.GetAABB2().min.y << ")" << " "

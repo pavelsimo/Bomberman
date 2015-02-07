@@ -3,8 +3,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(Bomberman)
 
 # Debug
-ADD_DEFINITIONS(-D_DEBUG)
-ADD_DEFINITIONS(-Wall)
+# ADD_DEFINITIONS(-D_DEBUG)
+# ADD_DEFINITIONS(-Wall)
 
 # Modules
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -116,6 +116,7 @@ ADD_EXECUTABLE(
     src/commands/MoveUpCommand.cpp
     src/commands/DropBombCommand.cpp
     src/commands/IdleCommand.cpp
+    src/ai/RandomWalk.cpp
     src/InputHandler.cpp
 )
 

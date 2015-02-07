@@ -2,6 +2,7 @@
 #define __INPUTHANDLER_H_
 
 #include <vector>
+#include <cstdint>
 #include "commands/Command.h"
 
 class IKeyboardHandler
@@ -43,6 +44,7 @@ class InputHandler : public IKeyboardHandler
         void RemoveCommand(uint8_t keyCode);
         bool IsPressed(Button button);
         void FetchCommands(CommandList& commandList);
+        CommandPtr GetCommand(Button button);
         CommandPtr GetIdleCommand();
 
     private:

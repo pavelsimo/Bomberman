@@ -10,7 +10,6 @@
 #include "commands/IdleCommand.h"
 #include "Shortcuts.h"
 #include <cassert>
-#include <stdint.h>
 
 InputHandler::InputHandler()
 : m_idleCommand(new IdleCommand())
@@ -65,10 +64,7 @@ void InputHandler::FetchCommands(CommandList &commandList)
     }
 }
 
-CommandPtr InputHandler::GetIdleCommand()
-{
-    return m_idleCommand;
-}
+
 
 void InputHandler::AddCommand(uint8_t keyCode, CommandPtr command)
 {
@@ -81,4 +77,14 @@ void InputHandler::RemoveCommand(uint8_t keyCode)
 {
     assert(keyCode >= 0 && keyCode < NUM_KEYS);
     SAFE_DELETE(m_commands[keyCode])
+}
+
+CommandPtr InputHandler::GetIdleCommand()
+{
+    return m_idleCommand;
+}
+
+CommandPtr InputHandler::GetCommand(Button button)
+{
+    return m_commands[button];
 }

@@ -1,5 +1,6 @@
 #include "World.h"
 #include "events/PlayerFireCollisionEvent.h"
+#include "ai/RandomWalk.h"
 
 namespace
 {
@@ -38,6 +39,8 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_enemy = nullptr;
     m_width = width;
     m_height = height;
+
+    srand(time(NULL));
 
     // Event Manager
     m_eventManager = new EventManager();
@@ -129,15 +132,16 @@ void World::OnUpdate()
         {
             CommandPtr command = *it;
             command->execute(*m_player);
-            command->execute(*m_enemy);
         }
     }
     else
     {
         CommandPtr idleCommand = m_inputHandler->GetIdleCommand();
         idleCommand->execute(*m_player);
-        idleCommand->execute(*m_enemy);
     }
+
+    CommandPtr enemyCommand = RandomWalk::GetInstance().GetNextStep();
+    enemyCommand->execute(*m_enemy);
 
     m_eventManager->Update();
     m_player->Update(*this);
@@ -179,6 +183,12 @@ SpriteSheet &World::GetSpriteSheet()
 FireManager &World::GetFireManager()
 {
     return *m_fireManager;
+}
+
+
+InputHandler &World::GetInputHandler()
+{
+    return *m_inputHandler;
 }
 
 void World::OnRender()
