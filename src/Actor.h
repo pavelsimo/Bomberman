@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <atomic>
+
 #include "ActorType.h"
 #include "utility/Vector2.h"
 #include "utility/AABB2.h"

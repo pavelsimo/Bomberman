@@ -27,13 +27,16 @@ Bomb::Bomb(float x, float y)
   m_bCanTriggerExplosion(true)
 {
     SetLifeSpan(BOMB_LIFESPAN);
+#ifdef _DEBUG
+    std::cout << "Creating the Bomb with ID " << GetId() << std::endl;;
+#endif
 }
 
 Bomb::~Bomb()
 {
-    #ifdef _DEBUG
-        std::cout << "DESTROY BOMB: " << GetId() << '\n';
-    #endif
+#ifdef _DEBUG
+    std::cout << "Destroying the Bomb with ID " << GetId() << '\n';
+#endif
 }
 
 void Bomb::Initialize()
@@ -44,9 +47,9 @@ void Bomb::Initialize()
 
 void Bomb::OnBeforeUpdate()
 {
-    WorldPtr world = World::GetInstance();
+    World& world = World::GetInstance();
     Actor collisionFire;
-    if(world->GetFireManager()->IsColliding(*this, &collisionFire))
+    if(world.GetFireManager()->IsColliding(*this, &collisionFire))
     {
         SetLifeSpan(0);
     }
@@ -54,7 +57,7 @@ void Bomb::OnBeforeUpdate()
     if(CanDelete() && m_bCanTriggerExplosion)
     {
         std::shared_ptr<BombExplodedEvent> bombExplosionEvent(new BombExplodedEvent(GetId(), m_position));
-        world->GetEventManager()->QueueEvent(bombExplosionEvent);
+        world.GetEventManager()->QueueEvent(bombExplosionEvent);
         m_bCanTriggerExplosion = false;
     }
 

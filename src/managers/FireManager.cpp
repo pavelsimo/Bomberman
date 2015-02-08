@@ -7,7 +7,9 @@
 FireManager::FireManager()
 : ActorManager()
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the FireManager" <<  std::endl;
+#endif
 }
 
 FireManager::~FireManager()
@@ -18,6 +20,10 @@ FireManager::~FireManager()
     // Removing Listener OnFireExtinguished
     EVENT_MGR_REMOVE_LISTENER(callbackFireExtinguished, &FireManager::OnFireExtinguished,
             FireExtinguishedEvent::Id_EventType)
+
+#ifdef _DEBUG
+    std::cout << "Destroying the FireManager" <<  std::endl;
+#endif
 }
 
 void FireManager::Initialize()
@@ -35,11 +41,11 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
     std::shared_ptr<BombExplodedEvent> bombExplosionEvent =
             std::static_pointer_cast<BombExplodedEvent>(pEvent);
 
-    WorldPtr world = World::GetInstance();
-    TileMapPtr tileMap = world->GetTileMap();
+    World& world = World::GetInstance();
+    TileMapPtr tileMap = world.GetTileMap();
     Vector2 bombPosition = bombExplosionEvent->GetBombPosition();
-    int tileWidth = world->GetTileManager()->GetTileWidth();
-    int tileHeight = world->GetTileManager()->GetTileHeight();
+    int tileWidth = world.GetTileManager()->GetTileWidth();
+    int tileHeight = world.GetTileManager()->GetTileHeight();
 
     Fire *fireCenter = FireFactory::GetInstance().CreateFire(bombPosition.x, bombPosition.y);
     Add(fireCenter);

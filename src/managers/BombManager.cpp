@@ -7,7 +7,9 @@
 BombManager::BombManager()
 : ActorManager()
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the BombManager" <<  std::endl;
+#endif
 }
 
 BombManager::~BombManager()
@@ -15,6 +17,10 @@ BombManager::~BombManager()
     // Removing Listener OnBombExploded
     EVENT_MGR_REMOVE_LISTENER(callbackBombExploded, &BombManager::OnBombExploded,
             BombExplodedEvent::Id_EventType)
+
+#ifdef _DEBUG
+    std::cout << "Destroying the BombManager" <<  std::endl;
+#endif
 }
 
 void BombManager::Initialize()

@@ -11,12 +11,17 @@ TileMap::TileMap()
   m_cols(0),
   m_tiles(nullptr)
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the TileMap " <<  std::endl;
+#endif
 }
 
 TileMap::~TileMap()
 {
     Clean();
+#ifdef _DEBUG
+    std::cout << "Destroying the TileMap " <<  std::endl;
+#endif
 }
 
 bool TileMap::LoadFromFile(const std::string &filename, uint32_t rows, uint32_t cols)

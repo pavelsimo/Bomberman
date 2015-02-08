@@ -5,7 +5,9 @@
 BlockManager::BlockManager()
 : ActorManager()
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the BlockManager" <<  std::endl;
+#endif
 }
 
 BlockManager::~BlockManager()
@@ -13,6 +15,10 @@ BlockManager::~BlockManager()
     // Removing Listener OnFireExtinguished
     EVENT_MGR_REMOVE_LISTENER(callbackFireExtinguished, &BlockManager::OnFireExtinguished,
             FireExtinguishedEvent::Id_EventType)
+
+#ifdef _DEBUG
+    std::cout << "Destroying the BlockManager" <<  std::endl;
+#endif
 }
 
 
@@ -58,9 +64,9 @@ void BlockManager::OnFireExtinguished(IEventPtr pEvent)
     std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent =
             std::static_pointer_cast<FireExtinguishedEvent>(pEvent);
 
-    WorldPtr world = World::GetInstance();
-    int tileWidth = world->GetTileManager()->GetTileWidth();
-    int tileHeight = world->GetTileManager()->GetTileHeight();
+    World& world = World::GetInstance();
+    int tileWidth = world.GetTileManager()->GetTileWidth();
+    int tileHeight = world.GetTileManager()->GetTileHeight();
     ActorId id = fireExtinguishedEvent->GetActorId();
     Vector2 firePosition = fireExtinguishedEvent->GetFirePosition();
 
@@ -80,7 +86,7 @@ void BlockManager::OnFireExtinguished(IEventPtr pEvent)
 #ifdef _DEBUG
             std::cout << "DESTROYING BLOCK : " << row << " " << col << std::endl;
 #endif
-            world->GetTileMap()->SetTile(row, col, BT_BACKGROUND);
+            world.GetTileMap()->SetTile(row, col, BT_BACKGROUND);
         }
         else
         {

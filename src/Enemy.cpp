@@ -33,12 +33,16 @@ Enemy::Enemy(float x, float y)
   m_spriteSheet(nullptr),
   m_speed(ENEMY_SPEED)
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the Enemy with ID " << GetId() << std::endl;;
+#endif
 }
 
 Enemy::~Enemy()
 {
-
+#ifdef _DEBUG
+    std::cout << "Destroying the Enemy with ID " << GetId() << std::endl;;
+#endif
 }
 
 void Enemy::OnRender()
@@ -82,9 +86,9 @@ void Enemy::OnBeforeUpdate()
 
 void Enemy::OnAfterUpdate()
 {
-    WorldPtr world = World::GetInstance();
+    World& world = World::GetInstance();
     Actor collisionBlock;
-    if(world->GetBlockManager()->IsColliding(*this, &collisionBlock))
+    if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
         RandomWalk::GetInstance().NextDirection();
 #if _DEBUG

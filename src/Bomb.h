@@ -4,8 +4,6 @@
 #include "Actor.h"
 #include "utility/SpriteAnimation.h"
 
-class World;
-
 class Bomb : public Actor
 {
     public:

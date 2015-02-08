@@ -37,9 +37,9 @@ class World
         float GetBottom() const;
         float GetTop() const;
 
-        static std::shared_ptr<World> GetInstance()
+        static World& GetInstance()
         {
-            static std::shared_ptr<World> instance = std::shared_ptr<World>(new World());
+            static World instance;
             return instance;
         }
 
@@ -56,8 +56,14 @@ class World
         //
         void OnPlayerFireCollision(IEventPtr pEvent);
 
+
     private:
-        World() {};
+        World()
+        {
+#ifdef _DEBUG
+            std::cout << "Creating the World" << std::endl;
+#endif
+        };
         // non-copyable
         World(const World& rhs);
         World& operator=(const World& rhs);
@@ -76,7 +82,5 @@ class World
         // TODO: (Pavel) Remove this
         EnemyPtr m_enemy;
 };
-
-typedef std::shared_ptr<World> WorldPtr;
 
 #endif //__WORLD_H_

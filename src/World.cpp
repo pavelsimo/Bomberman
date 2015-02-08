@@ -1,5 +1,7 @@
 #include "World.h"
 #include "events/PlayerFireCollisionEvent.h"
+#include "events/FireExtinguishedEvent.h"
+#include "events/BombExplodedEvent.h"
 #include "ai/RandomWalk.h"
 
 namespace
@@ -12,6 +14,13 @@ namespace
 
 World::~World()
 {
+    #ifdef _DEBUG
+        std::cout << "Destroying the World" << std::endl;
+    #endif
+
+    //
+    // Removing the World listeners
+    //
     EVENT_MGR_REMOVE_LISTENER(callbackPlayerFireCollision,
             &World::OnPlayerFireCollision, PlayerFireCollisionEvent::Id_EventType)
 }
@@ -20,7 +29,6 @@ void World::Initialize(uint32_t width, uint32_t height)
 {
     m_width = width;
     m_height = height;
-
     srand(time(NULL));
 
     // Event Manager

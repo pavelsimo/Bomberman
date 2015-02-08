@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <elf.h>
 #include "TileManager.h"
 
 TileManager::TileManager(SpriteSheetPtr spriteSheet, uint32_t tileWidth, uint32_t tileHeight
@@ -9,12 +8,17 @@ TileManager::TileManager(SpriteSheetPtr spriteSheet, uint32_t tileWidth, uint32_
     m_tileWidth(tileWidth),
     m_tileHeight(tileHeight)
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the TileManager " <<  std::endl;
+#endif
 }
 
 TileManager::~TileManager()
 {
     m_sprites.clear();
+#ifdef _DEBUG
+    std::cout << "Destroying the TileManager " <<  std::endl;
+#endif
 }
 
 void TileManager::AddSprite(const std::string &spriteName)

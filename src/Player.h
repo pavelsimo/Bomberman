@@ -6,7 +6,6 @@
 #include "utility/SpriteSheet.h"
 #include "utility/SpriteAnimation.h"
 
-class World;
 
 enum PlayerState
 {

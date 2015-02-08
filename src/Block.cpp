@@ -12,7 +12,9 @@ Block::Block()
 : Actor(),
   m_type(BT_BACKGROUND)
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the Block with ID " << GetId() << std::endl;;
+#endif
 }
 
 void Block::Initialize()
@@ -30,9 +32,9 @@ Block::Block(float x, float y, BlockType type)
 
 Block::~Block()
 {
-    #ifdef _DEBUG
-        std::cout << "DESTROY BLOCK: " << GetId() << '\n';
-    #endif
+#ifdef _DEBUG
+    std::cout << "Destroying the Block with ID " << GetId() << '\n';
+#endif
 }
 
 void Block::SetType(BlockType type)

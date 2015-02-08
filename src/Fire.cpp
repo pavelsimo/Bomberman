@@ -26,13 +26,16 @@ Fire::Fire(float x, float y)
   m_bCanTriggerFireExtinguished(true)
 {
     SetLifeSpan(FIRE_LIFESPAN);
+#ifdef _DEBUG
+    std::cout << "Creating the Fire with ID " << GetId() << std::endl;;
+#endif
 }
 
 Fire::~Fire()
 {
-    #ifdef _DEBUG
-        std::cout << "DESTROY FIRE: " << GetId() << '\n';
-    #endif
+#ifdef _DEBUG
+    std::cout << "Destroying the Fire with ID " << GetId() << std::endl;;
+#endif
 }
 
 void Fire::Initialize()
@@ -53,11 +56,11 @@ void Fire::OnRender()
 
 void Fire::OnBeforeUpdate()
 {
-    WorldPtr world = World::GetInstance();
+    World& world = World::GetInstance();
     if(CanDelete() && m_bCanTriggerFireExtinguished)
     {
         std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent(new FireExtinguishedEvent(GetId(), m_position));
-        world->GetEventManager()->QueueEvent(fireExtinguishedEvent);
+        world.GetEventManager()->QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
 

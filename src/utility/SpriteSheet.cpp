@@ -3,12 +3,17 @@
 SpriteSheet::SpriteSheet()
 : Texture()
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the SpriteSheet" <<  std::endl;
+#endif
 }
 
 SpriteSheet::~SpriteSheet()
 {
     m_sprites.clear();
+#ifdef _DEBUG
+    std::cout << "Destroying the SpriteSheet" <<  std::endl;
+#endif
 }
 
 void SpriteSheet::AddSprite(const std::string &name, uint32_t x, uint32_t y, uint32_t w, uint32_t h)

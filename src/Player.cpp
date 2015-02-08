@@ -32,14 +32,16 @@ Player::Player(float x, float y)
   m_curAnimation(nullptr),
   m_speed(PLAYER_SPEED)
 {
-
+#ifdef _DEBUG
+    std::cout << "Creating the Player with ID " << GetId() << std::endl;
+#endif
 }
 
 Player::~Player()
 {
-    #ifdef _DEBUG
-        std::cout << "DESTROY PLAYER: " << GetId() << '\n';
-    #endif
+#ifdef _DEBUG
+    std::cout << "Destroying the Player with ID " << GetId() << std::endl;;
+#endif
 }
 
 void Player::Initialize()
@@ -89,9 +91,9 @@ void Player::OnBeforeUpdate()
 
 void Player::OnAfterUpdate()
 {
-    WorldPtr world = World::GetInstance();
+    World& world = World::GetInstance();
     Actor collisionBlock;
-    if(world->GetBlockManager()->IsColliding(*this, &collisionBlock))
+    if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
 #if _DEBUG
         std::cout << "CBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
@@ -103,7 +105,7 @@ void Player::OnAfterUpdate()
     }
 
     Actor collisionFire;
-    if(world->GetFireManager()->IsColliding(*this, &collisionFire))
+    if(world.GetFireManager()->IsColliding(*this, &collisionFire))
     {
         ActorId fireId = collisionFire.GetId();
         Vector2 firePosition = collisionFire.GetPosition();
@@ -111,7 +113,7 @@ void Player::OnAfterUpdate()
 
         std::shared_ptr<PlayerFireCollisionEvent> playerFireCollisionEvent(
                 new PlayerFireCollisionEvent(fireId, firePosition, playerPosition));
-        world->GetEventManager()->QueueEvent(playerFireCollisionEvent);
+        world.GetEventManager()->QueueEvent(playerFireCollisionEvent);
 
         #if _DEBUG
                 std::cout << "PLAYER IS DEAD!!" << std::endl;
@@ -276,9 +278,9 @@ void Player::Idle()
 
 void Player::DropBomb()
 {
-    WorldPtr world = World::GetInstance();
-    uint32_t TILE_WIDTH = world->GetTileManager()->GetTileWidth();
-    uint32_t TILE_HEIGHT = world->GetTileManager()->GetTileWidth();
+    World& world = World::GetInstance();
+    uint32_t TILE_WIDTH = world.GetTileManager()->GetTileWidth();
+    uint32_t TILE_HEIGHT = world.GetTileManager()->GetTileWidth();
     int x = floor(m_position.x / TILE_WIDTH) * TILE_WIDTH + (TILE_WIDTH - Bomb::WIDTH) * 0.5;
     int y = floor(m_position.y / TILE_HEIGHT) * TILE_HEIGHT + (TILE_HEIGHT - Bomb::HEIGHT) * 0.5;
 
@@ -293,5 +295,5 @@ void Player::DropBomb()
 #endif
 
     // adding a bomb to the world
-    world->GetBombManager()->Add(bomb);
+    world.GetBombManager()->Add(bomb);
 }

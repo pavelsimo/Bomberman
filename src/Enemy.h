@@ -6,8 +6,6 @@
 #include "utility/SpriteSheet.h"
 #include "utility/SpriteAnimation.h"
 
-class World;
-
 enum EnemyState
 {
     EST_IDLE         = 0,
