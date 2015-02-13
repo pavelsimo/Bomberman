@@ -5,6 +5,7 @@
 #include "IDynamicActor.h"
 #include "utility/SpriteSheet.h"
 #include "utility/SpriteAnimation.h"
+#include "ai/RandomWalkAI.h"
 
 enum EnemyState
 {
@@ -50,6 +51,7 @@ class Enemy : public Actor, public IDynamicActor
         SpriteSheetPtr GetSpriteSheet();
         void SetState(EnemyState state);
         EnemyState GetState() const;
+        CommandPtr GetNextAction();
 
     private:
         Vector2 m_lowerLeftCorner;
@@ -62,6 +64,8 @@ class Enemy : public Actor, public IDynamicActor
         SpriteAnimation m_walkingUpAnimation;
         SpriteAnimation m_walkingLeftAnimation;
         SpriteAnimation m_walkingRightAnimation;
+
+        RandomWalkAI m_randomWalkAI;
 
         // helpers
         //

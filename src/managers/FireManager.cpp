@@ -58,6 +58,7 @@ void FireManager::OnBombExploded(IEventPtr pEvent)
         for(int amplitude = 1; amplitude <= 2; ++amplitude)
         {
             // FIXME: (Pavel) Create a method for both kinds of propagation
+            // FIXME: (Pavel) Avoid propagation out of the view port
             if(bCanPropagateHorizontal)
             {
                 int xHorizontal = bombPosition.x + (direction * amplitude) * tileWidth;

@@ -2,10 +2,8 @@
 #define __BLOCKMANAGER_H_
 
 #include "../events/IEventManager.h"
-#include "ActorManager.h"
 #include "../Actor.h"
-
-class World;
+#include "ActorManager.h"
 
 class BlockManager : public ActorManager
 {

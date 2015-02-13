@@ -1,6 +1,4 @@
 #include <iostream>
-#include <elf.h>
-
 #include "Actor.h"
 
 std::atomic<ActorId> Actor::counter(0);

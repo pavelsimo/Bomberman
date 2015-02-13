@@ -64,8 +64,6 @@ void InputHandler::FetchCommands(CommandList &commandList)
     }
 }
 
-
-
 void InputHandler::AddCommand(uint8_t keyCode, CommandPtr command)
 {
     assert(keyCode >= 0 && keyCode < NUM_KEYS);

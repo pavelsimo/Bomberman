@@ -104,6 +104,7 @@ ADD_EXECUTABLE(
     src/managers/BlockManager.cpp
     src/managers/BombManager.cpp
     src/managers/FireManager.cpp
+    src/managers/EnemyManager.cpp
     src/events/BaseEvent.cpp
     src/events/EventManager.cpp
     src/events/BombExplodedEvent.cpp
@@ -116,7 +117,7 @@ ADD_EXECUTABLE(
     src/commands/MoveUpCommand.cpp
     src/commands/DropBombCommand.cpp
     src/commands/IdleCommand.cpp
-    src/ai/RandomWalk.cpp
+    src/ai/RandomWalkAI.cpp
     src/InputHandler.cpp
 )
 

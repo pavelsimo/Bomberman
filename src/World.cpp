@@ -1,8 +1,6 @@
 #include "World.h"
 #include "events/PlayerFireCollisionEvent.h"
-#include "events/FireExtinguishedEvent.h"
-#include "events/BombExplodedEvent.h"
-#include "ai/RandomWalk.h"
+#include "Enemy.h"
 
 namespace
 {
@@ -46,6 +44,9 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
             WORLD_TILE_NUM_ROWS, WORLD_TILE_NUM_COLS);
 
+    // Input handler
+    m_inputHandler = std::make_shared<InputHandler>();
+
     // Tile manager
     m_tileManager = std::make_shared<TileManager>(m_spriteSheet, WORLD_TILE_WIDTH, WORLD_TILE_HEIGHT);
     m_tileManager->SetTileMap(m_tileMap);
@@ -84,20 +85,35 @@ void World::Initialize(uint32_t width, uint32_t height)
     m_fireManager = std::make_shared<FireManager>();
     m_fireManager->Initialize();
 
+    // Enemy Manager
+    m_enemyManager = std::make_shared<EnemyManager>();
+    m_enemyManager->Initialize();
+
+    // Enemy
+    Enemy* enemy1 = new Enemy(128, 500);
+    enemy1->SetSpriteSheet(m_spriteSheet);
+    enemy1->Initialize();
+    enemy1->Update();
+
+    Enemy* enemy2 = new Enemy(250, 400);
+    enemy2->SetSpriteSheet(m_spriteSheet);
+    enemy2->Initialize();
+    enemy2->Update();
+
+    Enemy* enemy3 = new Enemy(350, 400);
+    enemy3->SetSpriteSheet(m_spriteSheet);
+    enemy3->Initialize();
+    enemy3->Update();
+
+    m_enemyManager->Add(enemy1);
+    m_enemyManager->Add(enemy2);
+    m_enemyManager->Add(enemy3);
+
     // Player
-    m_player = std::make_shared<Player>(128, 128);
+    m_player = std::make_shared<Player>(80, 80);
     m_player->SetSpriteSheet(m_spriteSheet);
     m_player->Initialize();
     m_player->Update();
-
-    // Enemy
-    m_enemy = std::make_shared<Enemy>(128, 400);
-    m_enemy->SetSpriteSheet(m_spriteSheet);
-    m_enemy->Initialize();
-    m_enemy->Update();
-
-    // Input handler
-    m_inputHandler = std::make_shared<InputHandler>();
 
     // Adding Listener OnPlayerFireCollision
     EVENT_MGR_ADD_LISTENER(callbackPlayerFireCollision,
@@ -123,14 +139,12 @@ void World::OnUpdate()
         idleCommand->execute(*m_player);
     }
 
-    CommandPtr enemyCommand = RandomWalk::GetInstance().GetNextStep();
-    enemyCommand->execute(*m_enemy);
 
     m_eventManager->Update();
     m_player->Update();
-    m_enemy->Update();
     m_bombManager->Update();
     m_fireManager->Update();
+    m_enemyManager->Update();
 }
 
 BlockManagerPtr World::GetBlockManager()
@@ -179,8 +193,8 @@ void World::OnRender()
     m_tileManager->Render();
     m_bombManager->Render();
     m_fireManager->Render();
+    m_enemyManager->Render();
     m_player->Render();
-    m_enemy->Render();
 }
 
 void World::OnKeyDown(uint8_t key)

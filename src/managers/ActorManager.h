@@ -5,8 +5,6 @@
 #include "../Actor.h"
 #include <memory>
 
-class World;
-
 class ActorManager : public IActorManager
 {
     public:

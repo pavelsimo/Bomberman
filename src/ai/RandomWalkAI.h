@@ -6,19 +6,12 @@
 
 const int RANDOMWALK_NUMMOVES = 4;
 
-class RandomWalk
+class RandomWalkAI
 {
     public:
-
+        RandomWalkAI();
         CommandPtr GetNextStep();
-
         void NextDirection();
-
-        static RandomWalk& GetInstance()
-        {
-            static RandomWalk instance;
-            return instance;
-        }
 
     private:
         int m_currentButton;
@@ -29,11 +22,8 @@ class RandomWalk
             BUTTON_D
         };
 
-        RandomWalk()
-        : m_currentButton(0)
-        {}
-        RandomWalk(const RandomWalk& rhs);
-        RandomWalk& operator=(const RandomWalk& rhs);
+        RandomWalkAI(const RandomWalkAI & rhs);
+        RandomWalkAI & operator=(const RandomWalkAI & rhs);
 };
 
 

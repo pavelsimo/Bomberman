@@ -7,13 +7,14 @@
 #include "managers/BombManager.h"
 #include "managers/BlockManager.h"
 #include "managers/FireManager.h"
+#include "managers/EnemyManager.h"
 #include "events/EventManager.h"
 #include "InputHandler.h"
 #include "Player.h"
 #include "Bomb.h"
 #include "Fire.h"
 #include "Block.h"
-#include "Enemy.h"
+
 #include "Shortcuts.h"
 #include <memory>
 
@@ -77,10 +78,9 @@ class World
         BlockManagerPtr m_blockManager;
         BombManagerPtr m_bombManager;
         FireManagerPtr m_fireManager;
+        EnemyManagerPtr m_enemyManager;
         EventManagerPtr m_eventManager;
         InputHandlerPtr m_inputHandler;
-        // TODO: (Pavel) Remove this
-        EnemyPtr m_enemy;
 };
 
 #endif //__WORLD_H_

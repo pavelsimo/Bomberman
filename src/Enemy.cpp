@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "World.h"
-#include "ai/RandomWalk.h"
+#include "ai/RandomWalkAI.h"
 
 namespace
 {
@@ -90,7 +90,8 @@ void Enemy::OnAfterUpdate()
     Actor collisionBlock;
     if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
-        RandomWalk::GetInstance().NextDirection();
+        m_randomWalkAI.NextDirection();
+
 #if _DEBUG
         std::cout << "EBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
                 << collisionBlock.GetAABB2().min.y << ")" << " "
@@ -248,4 +249,10 @@ void Enemy::MoveToDirection(const Vector2 &direction)
     m_direction = direction;
     m_position += m_direction * m_speed;
     m_lowerLeftCorner += m_direction * m_speed;
+}
+
+
+CommandPtr Enemy::GetNextAction()
+{
+    return m_randomWalkAI.GetNextStep();
 }

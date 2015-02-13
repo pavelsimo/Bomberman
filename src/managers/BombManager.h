@@ -5,8 +5,6 @@
 #include "../Actor.h"
 #include "../events/IEventManager.h"
 
-class World;
-
 class BombManager : public ActorManager
 {
     public:
