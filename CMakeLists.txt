@@ -110,6 +110,7 @@ ADD_EXECUTABLE(
     src/events/BombExplodedEvent.cpp
     src/events/FireExtinguishedEvent.cpp
     src/events/PlayerFireCollisionEvent.cpp
+    src/events/EnemyFireCollisionEvent.cpp
     src/factories/FireFactory.cpp
     src/commands/MoveLeftCommand.cpp
     src/commands/MoveRightCommand.cpp

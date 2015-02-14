@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "World.h"
-#include "ai/RandomWalkAI.h"
+#include "events/EnemyFireCollisionEvent.h"
 
 namespace
 {
@@ -87,18 +87,37 @@ void Enemy::OnBeforeUpdate()
 void Enemy::OnAfterUpdate()
 {
     World& world = World::GetInstance();
+
     Actor collisionBlock;
     if(world.GetBlockManager()->IsColliding(*this, &collisionBlock))
     {
         m_randomWalkAI.NextDirection();
+        Clamp(collisionBlock);
+    }
+
+    Actor collisionBomb;
+    if(world.GetBombManager()->IsColliding(*this, &collisionBomb))
+    {
+        m_randomWalkAI.NextDirection();
+        Clamp(collisionBomb);
+    }
+
+    Actor collisionFire;
+    if(world.GetFireManager()->IsColliding(*this, &collisionFire))
+    {
+        ActorId fireId = collisionFire.GetId();
+        ActorId enemyId = GetId();
+        Vector2 firePosition = collisionFire.GetPosition();
+        Vector2 enemyPosition = GetPosition();
+
+        std::shared_ptr<EnemyFireCollisionEvent> enemyFireCollisionEvent =
+                std::make_shared<EnemyFireCollisionEvent>(fireId, enemyId, firePosition, enemyPosition);
+        world.GetEventManager()->QueueEvent(enemyFireCollisionEvent);
 
 #if _DEBUG
-        std::cout << "EBLOCK: " << "(" << collisionBlock.GetAABB2().min.x << ","
-                << collisionBlock.GetAABB2().min.y << ")" << " "
-                << "(" << collisionBlock.GetAABB2().max.x << ","
-                << collisionBlock.GetAABB2().max.y << ")" << std::endl;
+        std::cout << "ENEMY IS DEAD!!" << std::endl;
 #endif
-        Clamp(collisionBlock);
+
     }
 }
 
@@ -137,11 +156,11 @@ void Enemy::Initialize()
     //
     // Initialize Geometry
     //
+
     // upper-left corner
     m_geometry.push_back(Vector2(ENEMY_SHADOW_WIDTH, ENEMY_SHADOW_HEIGHT));
     // bottom-right corner
     m_geometry.push_back(Vector2(-ENEMY_SHADOW_WIDTH, -ENEMY_SHADOW_HEIGHT));
-
 
     //
     // Initialize Animation
@@ -250,7 +269,6 @@ void Enemy::MoveToDirection(const Vector2 &direction)
     m_position += m_direction * m_speed;
     m_lowerLeftCorner += m_direction * m_speed;
 }
-
 
 CommandPtr Enemy::GetNextAction()
 {

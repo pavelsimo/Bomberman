@@ -19,12 +19,6 @@ InputHandler::InputHandler()
         m_commands[i] = nullptr;
         m_bIsPressed[i] = false;
     }
-    // FIXME: (Pavel) This should be added dynamically
-    m_commands[BUTTON_A] = new MoveLeftCommand();
-    m_commands[BUTTON_D] = new MoveRightCommand();
-    m_commands[BUTTON_W] = new MoveUpCommand();
-    m_commands[BUTTON_S] = new MoveDownCommand();
-    m_commands[BUTTON_SPACE] = new DropBombCommand();
 }
 
 InputHandler::~InputHandler()

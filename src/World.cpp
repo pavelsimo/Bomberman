@@ -1,6 +1,12 @@
 #include "World.h"
 #include "events/PlayerFireCollisionEvent.h"
 #include "Enemy.h"
+#include "commands/Command.h"
+#include "commands/MoveDownCommand.h"
+#include "commands/MoveLeftCommand.h"
+#include "commands/MoveRightCommand.h"
+#include "commands/MoveUpCommand.h"
+#include "commands/DropBombCommand.h"
 
 namespace
 {
@@ -46,6 +52,16 @@ void World::Initialize(uint32_t width, uint32_t height)
 
     // Input handler
     m_inputHandler = std::make_shared<InputHandler>();
+    CommandPtr moveLeftCommand = new MoveLeftCommand();
+    CommandPtr moveRightCommand = new MoveRightCommand();
+    CommandPtr moveUpCommand = new MoveUpCommand();
+    CommandPtr moveDownCommand = new MoveDownCommand();
+    CommandPtr dropBombCommand = new DropBombCommand();
+    m_inputHandler->AddCommand(BUTTON_A, moveLeftCommand);
+    m_inputHandler->AddCommand(BUTTON_D, moveRightCommand);
+    m_inputHandler->AddCommand(BUTTON_W, moveUpCommand);
+    m_inputHandler->AddCommand(BUTTON_S, moveDownCommand);
+    m_inputHandler->AddCommand(BUTTON_SPACE, dropBombCommand);
 
     // Tile manager
     m_tileManager = std::make_shared<TileManager>(m_spriteSheet, WORLD_TILE_WIDTH, WORLD_TILE_HEIGHT);
@@ -100,7 +116,7 @@ void World::Initialize(uint32_t width, uint32_t height)
     enemy2->Initialize();
     enemy2->Update();
 
-    Enemy* enemy3 = new Enemy(350, 400);
+    Enemy* enemy3 = new Enemy(380, 400);
     enemy3->SetSpriteSheet(m_spriteSheet);
     enemy3->Initialize();
     enemy3->Update();
@@ -138,7 +154,6 @@ void World::OnUpdate()
         CommandPtr idleCommand = m_inputHandler->GetIdleCommand();
         idleCommand->execute(*m_player);
     }
-
 
     m_eventManager->Update();
     m_player->Update();
@@ -182,6 +197,11 @@ FireManagerPtr World::GetFireManager()
     return m_fireManager;
 }
 
+
+EnemyManagerPtr World::GetEnemyManager()
+{
+    return m_enemyManager;
+}
 
 InputHandlerPtr World::GetInputHandler()
 {

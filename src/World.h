@@ -14,7 +14,6 @@
 #include "Bomb.h"
 #include "Fire.h"
 #include "Block.h"
-
 #include "Shortcuts.h"
 #include <memory>
 
@@ -47,6 +46,7 @@ class World
         BlockManagerPtr GetBlockManager();
         BombManagerPtr GetBombManager();
         FireManagerPtr GetFireManager();
+        EnemyManagerPtr GetEnemyManager();
         TileMapPtr GetTileMap();
         TileManagerPtr GetTileManager();
         EventManagerPtr GetEventManager();
