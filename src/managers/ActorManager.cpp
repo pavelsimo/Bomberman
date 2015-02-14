@@ -30,11 +30,14 @@ bool ActorManager::Remove(ActorId id)
     for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
     {
         ActorPtr actor = *it;
-        if(actor->GetId() == id)
+        if(actor != nullptr)
         {
-            delete actor;
-            m_actors.erase(it);
-            return true;
+            if(actor->GetId() == id)
+            {
+                delete actor;
+                m_actors.erase(it);
+                return true;
+            }
         }
     }
     return false;
@@ -76,10 +79,31 @@ bool ActorManager::IsColliding(const Actor &actor, ActorPtr collider)
     for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
     {
         ActorPtr currentActor = *it;
-        if(actor.IsColliding(*currentActor))
+        if(currentActor != nullptr)
         {
-            *collider = *currentActor;
-            return true;
+            if(actor.IsColliding(*currentActor))
+            {
+                *collider = *currentActor;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool ActorManager::IsColliding(const AABB2& box, ActorPtr collider)
+{
+    for(auto it = m_actors.begin(); it != m_actors.end(); ++it)
+    {
+        ActorPtr currentActor = *it;
+        if(currentActor != nullptr)
+        {
+            AABB2 currentActorAABB = currentActor->GetAABB2();
+            if(currentActorAABB.Intersects(box))
+            {
+                *collider = *currentActor;
+                return true;
+            }
         }
     }
     return false;

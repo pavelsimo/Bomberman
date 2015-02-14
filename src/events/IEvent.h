@@ -1,5 +1,5 @@
-#ifndef __IEVENTDATA_H_
-#define __IEVENTDATA_H_
+#ifndef __IEVENT_H_
+#define __IEVENT_H_
 
 #include <ostream>
 
@@ -15,4 +15,4 @@ class IEvent
         virtual const std::string& GetName() const = 0;
 };
 
-#endif //__IEVENTDATA_H_
+#endif //__IEVENT_H_

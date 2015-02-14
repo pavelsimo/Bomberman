@@ -3,6 +3,7 @@
 
 #include <list>
 #include "../Actor.h"
+#include "../utility/AABB2.h"
 
 typedef Actor* ActorPtr;
 typedef std::list<ActorPtr> ActorPtrList;
@@ -17,6 +18,7 @@ class IActorManager
         virtual void Update() = 0;
         virtual void Render() = 0;
         virtual bool IsColliding(const Actor& actor, ActorPtr collider) = 0;
+        virtual bool IsColliding(const AABB2& box, ActorPtr collider) = 0;
 };
 
 #endif //__IACTORMANAGER_H_

@@ -16,9 +16,10 @@ class ActorManager : public IActorManager
         virtual ActorPtr Get(ActorId id) override;
         virtual void Update() override;
         virtual void Render() override;
-        virtual bool IsColliding(const Actor &actor, ActorPtr collider) override;
+        virtual bool IsColliding(const Actor& actor, ActorPtr collider) override;
+        virtual bool IsColliding(const AABB2& box, ActorPtr collider) override;
 
-    private:
+private:
         // non-copyable
         ActorManager(const ActorManager& rhs);
         ActorManager& operator=(const ActorManager& rhs);

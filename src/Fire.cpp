@@ -104,7 +104,6 @@ void Fire::InitializeAnimation()
     m_animation.AddFrame("Flame_F04.png");
 }
 
-
 bool Fire::CanRenderNextFrame()
 {
     return m_nextFrameWait == 0;

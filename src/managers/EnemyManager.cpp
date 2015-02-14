@@ -40,7 +40,6 @@ void EnemyManager::Update()
     }
 }
 
-
 void EnemyManager::OnEnemyFireCollision(IEventPtr pEvent)
 {
     std::shared_ptr<EnemyFireCollisionEvent> enemyFireCollisionEvent =
