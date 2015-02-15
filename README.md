@@ -43,5 +43,5 @@ How the game looks
 Special thanks
 ==============
 
-* [Kyatric](http://tutsplus.com/authors/kyatric), this game is a C++ version of his tutorial [Create a Bomberman-Inspired Game in Construct 2](http://gamedevelopment.tutsplus.com/series/create-a-bomberman-inspired-game-in-construct-2--gamedev-12711)
+* [Kyatric](http://tutsplus.com/authors/kyatric), this game is inspired in his tutorial [Create a Bomberman-Inspired Game in Construct 2](http://gamedevelopment.tutsplus.com/series/create-a-bomberman-inspired-game-in-construct-2--gamedev-12711)
 * [Jacob Zinman-Jeanes](http://jeanes.co/), for creating these awesome sprites!
