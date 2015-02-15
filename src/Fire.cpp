@@ -64,7 +64,8 @@ void Fire::OnBeforeUpdate()
     {
         ActorId fireId = GetId();
 
-        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent = std::make_shared<FireExtinguishedEvent>(fireId, m_position);
+        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent =
+                std::make_shared<FireExtinguishedEvent>(fireId, m_position);
         world.GetEventManager()->QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
