@@ -14,14 +14,9 @@ class RandomWalkAI
         void NextDirection();
 
     private:
+        static const Button buttons[RANDOMWALK_NUMMOVES];
         int m_currentButton;
-        Button m_buttons[RANDOMWALK_NUMMOVES] = {
-            BUTTON_W,
-            BUTTON_A,
-            BUTTON_S,
-            BUTTON_D
-        };
-
+        
         RandomWalkAI(const RandomWalkAI & rhs);
         RandomWalkAI & operator=(const RandomWalkAI & rhs);
 };

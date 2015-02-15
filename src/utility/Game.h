@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL.h>
+#undef main
 #include <SDL_opengl.h>
 #include "LDevIL.h"
 

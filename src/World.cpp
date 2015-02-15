@@ -41,13 +41,13 @@ void World::Initialize(uint32_t width, uint32_t height)
     // Sprite sheet
     m_spriteSheet = std::make_shared<SpriteSheet>();
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
-    m_spriteSheet->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.png");
-    m_spriteSheet->LoadSpritesFromXML("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/BombermanSpriteSheet.xml");
+    m_spriteSheet->LoadFromFile("resources/BombermanSpriteSheet.png");
+    m_spriteSheet->LoadSpritesFromXML("resources/BombermanSpriteSheet.xml");
 
     // Tile map
     m_tileMap = std::make_shared<TileMap>();
     // FIXME: (Pavel) Replaced this absolute paths with relative ones.
-    m_tileMap->LoadFromFile("/home/pavelsimo/workspace/Games_Cpp/Bomberman/resources/levels/lvl_002.txt",
+    m_tileMap->LoadFromFile("resources/levels/lvl_002.txt",
             WORLD_TILE_NUM_ROWS, WORLD_TILE_NUM_COLS);
 
     // Input handler

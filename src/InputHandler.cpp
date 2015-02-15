@@ -1,5 +1,4 @@
-#include <elf.h>
-#include <stdint-gcc.h>
+#include <cstdint>
 #include "InputHandler.h"
 
 #include "commands/MoveLeftCommand.h"

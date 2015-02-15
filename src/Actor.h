@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <atomic>
+#include <algorithm>
 
 #include "ActorType.h"
 #include "utility/Vector2.h"

@@ -1,6 +1,9 @@
+#include <memory>
+
 #include "Fire.h"
 #include "World.h"
 #include "events/FireExtinguishedEvent.h"
+
 
 namespace
 {
@@ -59,7 +62,9 @@ void Fire::OnBeforeUpdate()
     World& world = World::GetInstance();
     if(CanDelete() && CanTriggerFireExtinguished())
     {
-        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent = std::make_shared(GetId(), m_position);
+        ActorId fireId = GetId();
+
+        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent = std::make_shared<FireExtinguishedEvent>(fireId, m_position);
         world.GetEventManager()->QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
