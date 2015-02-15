@@ -111,8 +111,8 @@ void Player::OnAfterUpdate()
         Vector2 firePosition = collisionFire.GetPosition();
         Vector2 playerPosition = GetPosition();
 
-        std::shared_ptr<PlayerFireCollisionEvent> playerFireCollisionEvent(
-                new PlayerFireCollisionEvent(fireId, firePosition, playerPosition));
+        std::shared_ptr<PlayerFireCollisionEvent> playerFireCollisionEvent
+            = std::make_shared<PlayerFireCollisionEvent>(fireId, firePosition, playerPosition);
         world.GetEventManager()->QueueEvent(playerFireCollisionEvent);
 
         #if _DEBUG

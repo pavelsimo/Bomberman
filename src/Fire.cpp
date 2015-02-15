@@ -57,9 +57,9 @@ void Fire::OnRender()
 void Fire::OnBeforeUpdate()
 {
     World& world = World::GetInstance();
-    if(CanDelete() && m_bCanTriggerFireExtinguished)
+    if(CanDelete() && CanTriggerFireExtinguished())
     {
-        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent(new FireExtinguishedEvent(GetId(), m_position));
+        std::shared_ptr<FireExtinguishedEvent> fireExtinguishedEvent = std::make_shared(GetId(), m_position);
         world.GetEventManager()->QueueEvent(fireExtinguishedEvent);
         m_bCanTriggerFireExtinguished = false;
     }
@@ -107,4 +107,9 @@ void Fire::InitializeAnimation()
 bool Fire::CanRenderNextFrame()
 {
     return m_nextFrameWait == 0;
+}
+
+bool Fire::CanTriggerFireExtinguished()
+{
+    return m_bCanTriggerFireExtinguished;
 }

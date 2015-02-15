@@ -54,7 +54,7 @@ void Bomb::OnBeforeUpdate()
         SetLifeSpan(0);
     }
 
-    if(CanDelete() && m_bCanTriggerExplosion)
+    if(CanDelete() && CanTriggerExplosion())
     {
         std::shared_ptr<BombExplodedEvent> bombExplosionEvent(new BombExplodedEvent(GetId(), m_position));
         world.GetEventManager()->QueueEvent(bombExplosionEvent);
@@ -115,3 +115,8 @@ bool Bomb::CanRenderNextFrame()
     return m_nextFrameWait == 0;
 }
 
+
+bool Bomb::CanTriggerExplosion()
+{
+    return m_bCanTriggerExplosion;
+}

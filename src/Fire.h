@@ -32,6 +32,7 @@ class Fire : public Actor
         bool m_bCanTriggerFireExtinguished;
 
         bool CanRenderNextFrame();
+        bool CanTriggerFireExtinguished();
         void InitializeGeometry();
         void InitializeAnimation();
 };

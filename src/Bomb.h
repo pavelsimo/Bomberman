@@ -31,6 +31,7 @@ class Bomb : public Actor
         uint32_t m_nextFrameWait;
         bool m_bCanTriggerExplosion;
 
+        bool CanTriggerExplosion();
         bool CanRenderNextFrame();
         void InitializeGeometry();
         void InitializeAnimation();
